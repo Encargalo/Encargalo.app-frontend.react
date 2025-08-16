@@ -86,7 +86,7 @@ const ShopMenu = ({ user, isLoggedIn }) => {
         </div>
 
         {/* Filtros de categorías */}
-        <nav className="px-4 sm:px-6 lg:px-8 py-4 sticky top-[68px] z-40">
+        <nav className="px-4 sm:px-6 lg:px-8 py-4 sticky top-[68px] bg-white z-40">
           <div className="flex items-center space-x-2 overflow-x-auto pb-2">
             {/* Botón para mostrar todas las categorías */}
             <button
