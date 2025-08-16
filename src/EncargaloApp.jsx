@@ -71,7 +71,7 @@ const EncargaloApp = () => {
   );
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-orange-200 to-orange-400">
+    <div className="min-h-screen w-sreen relative background">
       <Header
         isLoggedIn={isLoggedIn}
         user={user}

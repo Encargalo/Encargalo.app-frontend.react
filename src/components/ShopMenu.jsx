@@ -35,7 +35,7 @@ const ShopMenu = ({ user, isLoggedIn }) => {
   };
 
   return (
-    <section className="min-h-screen bg-white">
+    <section className="min-h-screen bg-white background">
       <header className="bg-white shadow-lg sticky top-0 z-50 border-b">
         <div className="w-full px-4 sm:px-6 lg:px-8 py-3">
           <div className="flex items-center justify-between">
@@ -86,7 +86,7 @@ const ShopMenu = ({ user, isLoggedIn }) => {
         </div>
 
         {/* Filtros de categorías */}
-        <nav className="px-4 sm:px-6 lg:px-8 py-4 sticky top-[68px] bg-white z-40 border-b">
+        <nav className="px-4 sm:px-6 lg:px-8 py-4 sticky top-[68px] z-40">
           <div className="flex items-center space-x-2 overflow-x-auto pb-2">
             {/* Botón para mostrar todas las categorías */}
             <button
@@ -121,7 +121,8 @@ const ShopMenu = ({ user, isLoggedIn }) => {
           {categories.map(
             (category) =>
               // Muestra la categoría solo si está seleccionada o si se eligen "Todas"
-              (selectedCategory === "all" || selectedCategory === category.id) && (
+              (selectedCategory === "all" ||
+                selectedCategory === category.id) && (
                 <section key={category.id} className="mb-8">
                   <h2 className="text-2xl font-bold text-gray-900 mb-6">
                     {category.name}

@@ -2,6 +2,21 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer utilities {
+  .bg-gradient-modern-orange {
+    background-image: linear-gradient(
+      to bottom right,
+      #c64f0b,
+      #f06310,
+      #ff984e
+    );
+  }
+}
+
+.background {
+  @apply bg-gradient-to-br from-orange-300 to-orange-500 w-full h-full rounded-lg ;
+}
+
 a {
   font-weight: 500;
   color: #646cff;

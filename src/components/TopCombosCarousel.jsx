@@ -45,11 +45,11 @@ const TopCombosCarousel = ({ carouselRef }) => {
         <header className="flex items-center justify-between mb-4 sm:mb-6">
           <figure>
             {/* title header */}
-            <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900 mb-1 sm:mb-2">
+            <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold text-white mb-1 sm:mb-2">
               ¡Los mejores combos!
             </h2>
             {/* subtitle header */}
-            <p className="text-neutral-500 text-sm sm:text-base lg:text-lg">
+            <p className="text-orange-950 text-sm sm:text-base lg:text-lg">
               Los combos más populares y mejor valorados
             </p>
           </figure>
@@ -112,7 +112,7 @@ const TopCombosCarousel = ({ carouselRef }) => {
                     {/* score carrusel */}
                     <div className="absolute top-2 sm:top-4 right-2 sm:right-4 bg-white/90 backdrop-blur-sm px-2 sm:px-3 py-1 rounded-full shadow-md">
                       <Star className="w-3 sm:w-4 h-3 sm:h-4 text-orange-500 fill-current mr-1 inline" />
-                      <span className="text-xs sm:text-sm font-bold text-gray-900">
+                      <span className="text-xs sm:text-sm font-bold">
                         {item.score}
                       </span>
                     </div>
@@ -128,7 +128,7 @@ const TopCombosCarousel = ({ carouselRef }) => {
                   {/* footer carrusel */}
                   <figure className="p-3 sm:p-5">
                     {/* name item */}
-                    <h4 className="font-bold text-gray-900 text-sm sm:text-lg group-hover:text-orange-600 transition-colors mb-1 sm:mb-2">
+                    <h4 className="font-bold text-sm sm:text-lg group-hover:text-orange-600 transition-colors mb-1 sm:mb-2">
                       {item.name}
                     </h4>
                     {/* description item */}
@@ -137,7 +137,7 @@ const TopCombosCarousel = ({ carouselRef }) => {
                     </p>
 
                     {/* price item */}
-                    <foouter className="flex items-center justify-between">
+                    <footer className="flex items-center justify-between">
                       {/* price item */}
                       <div className="text-lg sm:text-2xl font-bold text-orange-600">
                         ${item.price.toLocaleString()}
@@ -152,7 +152,7 @@ const TopCombosCarousel = ({ carouselRef }) => {
                           {item.shop.name}
                         </p>
                       </div>
-                    </foouter>
+                    </footer>
                   </figure>
                 </div>
               );

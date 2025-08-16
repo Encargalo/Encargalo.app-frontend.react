@@ -71,13 +71,13 @@ const FoodDashboard = ({ favorites, toggleFavorite }) => {
       {/* Restaurantes filtrados */}
       <aside className="mb-6 sm:mb-8">
         {/* title */}
-        <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900 mb-2 sm:mb-3">
+        <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold text-white mb-2 sm:mb-3">
           {searchTerm
             ? `Resultados para "${searchTerm}"`
             : "Restaurantes disponibles"}
         </h2>
         {/* subtitle */}
-        <p className="text-gray-600 text-sm sm:text-base lg:text-lg">
+        <p className="text-orange-950 text-sm sm:text-base lg:text-lg">
           {filteredShops.length}{" "}
           {filteredShops.length === 1
             ? "restaurante encontrado"
@@ -106,11 +106,11 @@ const FoodDashboard = ({ favorites, toggleFavorite }) => {
             🍽️
           </div>
           {/* Mensaje de no se encontraron restaurantes */}
-          <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-3 sm:mb-4">
+          <h3 className="text-xl sm:text-2xl font-bold text-white mb-3 sm:mb-4">
             No se encontraron restaurantes
           </h3>
           {/* Descripción del mensaje */}
-          <p className="text-gray-500 text-sm sm:text-base lg:text-lg">
+          <p className="text-orange-100 text-sm sm:text-base lg:text-lg">
             Intenta cambiar los filtros o el término de búsqueda
           </p>
         </div>
