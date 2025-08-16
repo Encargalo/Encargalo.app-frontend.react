@@ -1,10 +1,11 @@
+import "./index.css";
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import "./index.css";
-import EncargaloApp from "./EncargaloApp.jsx";
+import RoutesSystem from "./RoutesSytem.jsx";
+import { RouterProvider } from "react-router-dom";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
-    <EncargaloApp />
+    <RouterProvider router={RoutesSystem} />
   </StrictMode>
 );

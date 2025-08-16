@@ -12,7 +12,6 @@ const SearchAndFilters = ({
   onToggleFilters,
 }) => {
   const [filterChevron, setFilterChevron] = useState(false);
-  const [shortChevron, setShortChevron] = useState(false);
 
   return (
     <aside className="bg-white rounded-2xl shadow-xl p-4 sm:p-6 lg:p-8 mb-6 sm:mb-8 border border-gray-100">
@@ -45,11 +44,13 @@ const SearchAndFilters = ({
 
         {/* filters options */}
         {showFilters && (
-          <div className="flex flex-col items-center sm:flex-row gap-2 sm:gap-3 w-full sm:w-auto">
+          <div>
+            <h4 className="font-semibold text-gray-700 hidden sm:block mb-2">Busca por filtros:</h4>
             {/* filter all */}
 
+          <div className="flex gap-3 items-center w-full sm:w-auto">
             <div
-              className="relative cursor-pointer w-full sm:w-auto"
+              className="relative w-full sm:w-auto"
               onClick={() => setFilterChevron(!filterChevron)}
             >
               <select
@@ -57,40 +58,29 @@ const SearchAndFilters = ({
                 onChange={(e) => {
                   onFilterChange(e.target.value);
                 }}
-                className="w-full sm:w-auto border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 font-medium pl-4 pr-7 py-2.5"
+                className="w-full sm:w-auto bg-transparent border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 font-medium px-4 py-2 cursor-pointer"
               >
                 <option value="all">Todos</option>
                 <option value="open">Abiertos</option>
                 <option value="favorites">Favoritos</option>
               </select>
-              <ChevronDown
-                className={`w-4 h-4 transition-transform absolute top-4 translate-y-0.5 right-2.5 inline-block ${
-                  filterChevron ? "rotate-180" : ""
-                }`}
-              />
             </div>
 
             {/* most calified */}
-
             <div
-              className="relative cursor-pointer w-full sm:w-auto"
-              onClick={() => setShortChevron(!shortChevron)}
+              className="relative w-full sm:w-auto"
             >
               <select
                 value={sortBy}
                 onChange={(e) => onSortChange(e.target.value)}
-                className="w-full sm:w-auto border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 font-medium pl-4 pr-8 py-2"
+                className="w-full sm:w-auto border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 font-medium px-4 py-2 cursor-pointer "
               >
                 <option value="score">Mejor calificado</option>
-                <option value="deliveryTime">Tiempo de entrega</option>
                 <option value="name">Nombre A-Z</option>
               </select>
-              <ChevronDown
-                className={`w-4 h-4 transition-transform absolute top-4 right-2.5  ${
-                  shortChevron ? "rotate-180" : ""
-                }`}
-              />
             </div>
+
+          </div>
           </div>
         )}
       </section>

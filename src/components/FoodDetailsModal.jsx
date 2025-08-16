@@ -1,8 +1,12 @@
 //lucide-react
 import { X, Star, MapPin } from "lucide-react";
+//react router dom
+import { useNavigate } from "react-router-dom";
 
-const ComboDetailModal = ({ combo, onClose }) => {
+const FoodDetailsModal = ({ combo, onClose }) => {
   if (!combo) return null;
+
+  const navigate = useNavigate();
 
   return (
     <dialog
@@ -33,8 +37,8 @@ const ComboDetailModal = ({ combo, onClose }) => {
 
         {/* combo details */}
         <figure className="p-6">
-          <div className="flex flex-col justify-between items-start mb-4 gap-3">
-            <div className="w-full flex justify-between items-center">
+          <div className="flex flex-col justify-between items-start  mb-4 gap-3">
+            <div className="w-full flex justify-between items-center flex-wrap gap-2 lg:gap-9">
               {/* name combo */}
               <h2 className="text-3xl font-bold text-gray-900">{combo.name}</h2>
               {/* price combo */}
@@ -84,19 +88,28 @@ const ComboDetailModal = ({ combo, onClose }) => {
           </figure>
 
           {/* footer */}
-          <footer className="mt-6 flex justify-end">
+          <footer className="mt-6 flex justify-between items-center">
             {/* close modal */}
-            <button
-              onClick={onClose}
-              className="bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-6 rounded-lg mr-4 transition-colors"
-            >
-              Cerrar
-            </button>
 
-            {/* add to cart */}
-            <button className="bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 px-6 rounded-lg transition-colors">
-              Agregar al Carrito
+            <button
+              className="bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 px-6 rounded-lg transition-colors"
+              onClick={() => navigate(`/${combo.shop.tag}`)}
+            >
+              Ir a la tienda
             </button>
+            <div>
+              <button
+                onClick={onClose}
+                className="bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-6 rounded-lg mr-4 transition-colors"
+              >
+                Cerrar
+              </button>
+
+              {/* add to cart */}
+              <button className="bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 px-6 rounded-lg transition-colors">
+                Agregar al Carrito
+              </button>
+            </div>
           </footer>
         </figure>
       </aside>
@@ -104,4 +117,4 @@ const ComboDetailModal = ({ combo, onClose }) => {
   );
 };
 
-export default ComboDetailModal;
+export default FoodDetailsModal;

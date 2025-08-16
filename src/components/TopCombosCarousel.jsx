@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 //services
 import getCombosCarrusel from "../services/getCombosCarrusel";
 //components
-import ComboDetailModal from "./ComboDetailsModal";
+import FoodDetailsModal from "./FoodDetailsModal";
 
 const TopCombosCarousel = ({ carouselRef }) => {
   const [items, setItems] = useState([]);
@@ -162,7 +162,7 @@ const TopCombosCarousel = ({ carouselRef }) => {
       </section>
 
       {/* combo detail modal */}
-      <ComboDetailModal combo={selectedCombo} onClose={handleCloseModal} />
+      <FoodDetailsModal combo={selectedCombo} onClose={handleCloseModal} />
     </>
   );
 };

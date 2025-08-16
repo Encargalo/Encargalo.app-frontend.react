@@ -4,11 +4,7 @@ import { useState } from "react";
 // components
 import Header from "./components/Header";
 import LoginModal from "./components/LoginModal";
-import ShopMenu from "./components/ShopMenu.jsx";
 import FoodDashboard from "./components/FoodDashboard.jsx";
-
-// Datos mock
-import { ITEMS_DATA, SHOPS_DATA } from "../db.js";
 
 const EncargaloApp = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -84,21 +80,7 @@ const EncargaloApp = () => {
         cartTotal={cartTotal}
         cart={cart}
       />
-      {/*  {selectedShop ? (
-        <ShopMenu
-          shop={selectedShop}
-          items={ITEMS_DATA}
-          user={user}
-          isLoggedIn={isLoggedIn}
-          cart={cart}
-          addToCart={addToCart}
-          cartTotal={cartTotal}
-          onBack={() => setSelectedShop(null)}
-        />
-      ) : (
-        )} */}
       <FoodDashboard
-        shops={SHOPS_DATA}
         favorites={favorites}
         toggleFavorite={toggleFavorite}
         addToCart={addToCart}
