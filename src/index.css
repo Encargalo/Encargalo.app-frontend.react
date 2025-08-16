@@ -2,19 +2,19 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
+@layer utilities {
+  .bg-gradient-modern-orange {
+    background-image: linear-gradient(
+      to bottom right,
+      #c64f0b,
+      #f06310,
+      #ff984e
+    );
+  }
+}
 
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
-
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+.background {
+  @apply bg-gradient-to-br from-orange-300 to-orange-500 w-full h-full rounded-lg ;
 }
 
 a {
@@ -38,13 +38,18 @@ button {
   font-size: 1em;
   font-weight: 500;
   font-family: inherit;
-  background-color: #1a1a1a;
   cursor: pointer;
   transition: border-color 0.25s;
 }
 button:hover {
-  border-color: #646cff;
+  border-color: #f8b374;
 }
+
+select {
+  appearance: none;
+  position: relative;
+}
+
 button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
