@@ -58,7 +58,7 @@ const SearchAndFilters = ({
                 onChange={(e) => {
                   onFilterChange(e.target.value);
                 }}
-                className="w-full sm:w-auto bg-transparent border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 font-medium px-4 py-2 cursor-pointer"
+                className="w-full sm:w-auto bg-transparent border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 font-medium p-2 cursor-pointer text-center"
               >
                 <option value="all">Todos</option>
                 <option value="open">Abiertos</option>
@@ -73,7 +73,7 @@ const SearchAndFilters = ({
               <select
                 value={sortBy}
                 onChange={(e) => onSortChange(e.target.value)}
-                className="w-full sm:w-auto border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 font-medium px-4 py-2 cursor-pointer "
+                className="w-full sm:w-auto border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 font-medium p-2 text-center cursor-pointer "
               >
                 <option value="score">Mejor calificado</option>
                 <option value="name">Nombre A-Z</option>

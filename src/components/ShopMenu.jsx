@@ -41,7 +41,7 @@ const ShopMenu = ({ user, isLoggedIn }) => {
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-4">
               <button
-                onClick={() => navigate(-1)}
+                onClick={() => navigate("/")}
                 className="text-orange-500 hover:text-orange-600 font-semibold"
               >
                 ← Volver
@@ -49,14 +49,12 @@ const ShopMenu = ({ user, isLoggedIn }) => {
               <h1 className="text-xl font-bold text-gray-900">{shop.name}</h1>
             </div>
 
-            {isLoggedIn && (
               <div className="flex items-center space-x-2 bg-orange-50 px-3 py-1.5 rounded-xl border border-orange-200">
                 <User className="w-4 h-4 text-orange-600" />
                 <span className="text-sm font-medium text-gray-700">
-                  {user.name}
+                  Ruben
                 </span>
               </div>
-            )}
           </div>
         </div>
       </header>
@@ -145,7 +143,7 @@ const ShopMenu = ({ user, isLoggedIn }) => {
                       <h3 className="text-xl font-medium text-gray-900">
                         No hay productos disponibles
                       </h3>
-                      <p className="text-gray-500">
+                      <p className="text-orange-950">
                         Esta categoría no tiene productos por el momento.
                       </p>
                     </div>

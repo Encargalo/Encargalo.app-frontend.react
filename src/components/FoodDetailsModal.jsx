@@ -88,7 +88,7 @@ const FoodDetailsModal = ({ combo, onClose }) => {
           </figure>
 
           {/* footer */}
-          <footer className="mt-6 flex justify-between items-center">
+          <footer className="mt-6 flex justify-between items-center flex-col sm:flex-row gap-3">
             {/* close modal */}
 
             <button
