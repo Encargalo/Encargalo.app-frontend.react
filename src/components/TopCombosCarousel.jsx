@@ -162,7 +162,10 @@ const TopCombosCarousel = ({ carouselRef }) => {
       </section>
 
       {/* combo detail modal */}
-      <FoodDetailsModal combo={selectedCombo} onClose={handleCloseModal} />
+
+      {selectedCombo && (
+        <FoodDetailsModal combo={selectedCombo} onClose={handleCloseModal} />
+      )}
     </>
   );
 };
