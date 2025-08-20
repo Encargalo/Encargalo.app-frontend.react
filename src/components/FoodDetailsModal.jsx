@@ -1,12 +1,16 @@
 //lucide-react
 import { X, Star, MapPin } from "lucide-react";
+import { useEffect } from "react";
 //react router dom
 import { useNavigate } from "react-router-dom";
+import getAdditionals from "../services/getAdditionals";
 
 const FoodDetailsModal = ({ combo, onClose }) => {
-  if (!combo) return null;
-
   const navigate = useNavigate();
+
+  useEffect(() => {
+    getAdditionals(getAdditionals, combo.id);
+  }, [combo.id]);
 
   return (
     <dialog

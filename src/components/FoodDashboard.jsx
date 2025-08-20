@@ -71,17 +71,14 @@ const FoodDashboard = ({ favorites, toggleFavorite }) => {
       {/* Restaurantes filtrados */}
       <aside className="mb-6 sm:mb-8">
         {/* title */}
-        <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold text-white mb-2 sm:mb-3">
+        <h2 className="text-2xl sm:text-2xl lg:text-3xl font-bold text-white mb-2 sm:mb-3">
           {searchTerm
             ? `Resultados para "${searchTerm}"`
             : "Restaurantes disponibles"}
         </h2>
         {/* subtitle */}
-        <p className="text-orange-950 text-sm sm:text-base lg:text-lg">
-          {filteredShops.length}{" "}
-          {filteredShops.length === 1
-            ? "restaurante encontrado"
-            : "restaurantes encontrados"}
+        <p className="text-orange-950 text-lg sm:text-base lg:text-lg">
+          Encuentra tu proxima comida favorita
         </p>
       </aside>
 
