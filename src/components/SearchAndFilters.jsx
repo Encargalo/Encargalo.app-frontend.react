@@ -45,42 +45,41 @@ const SearchAndFilters = ({
         {/* filters options */}
         {showFilters && (
           <div>
-            <h4 className="font-semibold text-gray-700 hidden sm:block mb-2">Busca por filtros:</h4>
+            <h4 className="font-semibold text-gray-700 hidden sm:block mb-2">
+              Busca por filtros:
+            </h4>
             {/* filter all */}
 
-          <div className="flex gap-3 items-center w-full sm:w-auto">
-            <div
-              className="relative w-full sm:w-auto"
-              onClick={() => setFilterChevron(!filterChevron)}
-            >
-              <select
-                value={selectedFilter}
-                onChange={(e) => {
-                  onFilterChange(e.target.value);
-                }}
-                className="w-full sm:w-auto bg-transparent border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 font-medium p-2 cursor-pointer text-center"
+            <div className="flex gap-3 items-center w-full sm:w-auto">
+              <div
+                className="relative w-full sm:w-auto"
+                onClick={() => setFilterChevron(!filterChevron)}
               >
-                <option value="all">Todos</option>
-                <option value="open">Abiertos</option>
-                <option value="favorites">Favoritos</option>
-              </select>
-            </div>
+                <select
+                  value={selectedFilter}
+                  onChange={(e) => {
+                    onFilterChange(e.target.value);
+                  }}
+                  className="sm:w-auto bg-transparent border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 font-medium p-2 cursor-pointer text-center"
+                >
+                  <option value="all">Todos</option>
+                  <option value="open">Abiertos</option>
+                  <option value="favorites">Favoritos</option>
+                </select>
+              </div>
 
-            {/* most calified */}
-            <div
-              className="relative w-full sm:w-auto"
-            >
-              <select
-                value={sortBy}
-                onChange={(e) => onSortChange(e.target.value)}
-                className="w-full sm:w-auto border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 font-medium p-2 text-center cursor-pointer "
-              >
-                <option value="score">Mejor calificado</option>
-                <option value="name">Nombre A-Z</option>
-              </select>
+              {/* most calified */}
+              <div className="relative w-full sm:w-auto">
+                <select
+                  value={sortBy}
+                  onChange={(e) => onSortChange(e.target.value)}
+                  className="sm:w-auto border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 font-medium p-2 text-center cursor-pointer "
+                >
+                  <option value="score">Mejor calificado</option>
+                  <option value="name">Nombre A-Z</option>
+                </select>
+              </div>
             </div>
-
-          </div>
           </div>
         )}
       </section>

@@ -11,12 +11,14 @@ const Header = ({ isLoggedIn, user, onLogin, onLogout }) => {
             EncargaloApp
           </h1>
 
-          <div className="flex items-center space-x-2 sm:space-x-4">
+          <div className="flex items-center space-x-4">
             {/* address */}
-            <MapPin className="w-4 sm:w-5 h-4 sm:h-5 text-orange-500" />
-            <address className="text-xs sm:text-sm text-gray-700 font-medium">
-              Buenos Aires, Argentina
-            </address>
+            <div className="items-center hidden md:flex space-x-2">
+              <MapPin className="w-4 sm:w-5 h-4 sm:h-5 text-orange-500" />
+              <address className="text-xs sm:text-sm text-gray-700 font-medium">
+                Buenos Aires, Argentina
+              </address>
+            </div>
 
             {/* Botones de autenticación */}
             {isLoggedIn ? (
@@ -42,7 +44,7 @@ const Header = ({ isLoggedIn, user, onLogin, onLogout }) => {
               /* login */
               <button
                 onClick={onLogin}
-                className="bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white px-3 sm:px-6 py-1 sm:py-2 rounded-xl font-semibold transition-all duration-300 shadow-lg hover:shadow-xl text-xs sm:text-sm"
+                className="bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white px-3 sm:px-6 py-1 sm:py-2 rounded-xl font-semibold transition-all duration-300 shadow-lg hover:shadow-xl text-sm sm:text-xl"
               >
                 Iniciar Sesión
               </button>

@@ -42,20 +42,20 @@ const TopCombosCarousel = ({ carouselRef }) => {
     <>
       <section className="mb-8 sm:mb-12">
         {/* header */}
-        <header className="flex items-center justify-between mb-4 sm:mb-6">
+        <header className="flex sm:items-center justify-between mb-4 sm:mb-6">
           <figure>
             {/* title header */}
-            <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold text-white mb-1 sm:mb-2">
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-white mb-1 sm:mb-2">
               ¡Los mejores combos!
             </h2>
             {/* subtitle header */}
-            <p className="text-orange-950 text-sm sm:text-base lg:text-lg">
+            <p className="text-orange-950 text-lg sm:text-base lg:text-lg w-full">
               Los combos más populares y mejor valorados
             </p>
           </figure>
 
           {/* scroll carousel */}
-          <div className="flex space-x-1 sm:space-x-2">
+          <div className="flex space-x-1 sm:space-x-2 items-start h-full">
             {/* scroll left */}
             <button
               onClick={() => scrollCarousel("left")}
@@ -110,9 +110,9 @@ const TopCombosCarousel = ({ carouselRef }) => {
                     </div>
 
                     {/* score carrusel */}
-                    <div className="absolute top-2 sm:top-4 right-2 sm:right-4 bg-white/90 backdrop-blur-sm px-2 sm:px-3 py-1 rounded-full shadow-md">
-                      <Star className="w-3 sm:w-4 h-3 sm:h-4 text-orange-500 fill-current mr-1 inline" />
-                      <span className="text-xs sm:text-sm font-bold">
+                    <div className="absolute top-2 sm:top-4 right-2 sm:right-4 bg-white/90 backdrop-blur-sm px-2 sm:px-3 py-1 rounded-full shadow-md flex items-center">
+                      <Star className="w-4 sm:w-4 h-3 sm:h-4 text-orange-500 fill-current mr-1 inline" />
+                      <span className="text-xm sm:text-sm font-bold">
                         {item.score}
                       </span>
                     </div>
@@ -120,7 +120,7 @@ const TopCombosCarousel = ({ carouselRef }) => {
                     {/* add to cart */}
                     <div className="absolute bottom-2 sm:bottom-4 right-2 sm:right-4">
                       <button className="bg-orange-500 hover:bg-orange-600 text-white rounded-full p-1 sm:p-2 shadow-lg transition-all duration-300 hover:scale-110">
-                        <Plus className="w-3 sm:w-4 h-3 sm:h-4" />
+                        <Plus className="w-7 sm:w-4 h-7 sm:h-4" />
                       </button>
                     </div>
                   </header>
@@ -128,16 +128,16 @@ const TopCombosCarousel = ({ carouselRef }) => {
                   {/* footer carrusel */}
                   <figure className="p-3 sm:p-5">
                     {/* name item */}
-                    <h4 className="font-bold text-sm sm:text-lg group-hover:text-orange-600 transition-colors mb-1 sm:mb-2">
+                    <h4 className="font-bold text-xl sm:text-3xl group-hover:text-orange-600 transition-colors mb-1 sm:mb-2">
                       {item.name}
                     </h4>
                     {/* description item */}
-                    <p className="text-xs sm:text-sm text-gray-600 mb-2 sm:mb-3 line-clamp-2 leading-relaxed">
+                    <p className="text-xm sm:text-xl text-gray-600 mb-2 sm:mb-3 leading-relaxed truncate">
                       {item.description}
                     </p>
 
                     {/* price item */}
-                    <footer className="flex items-center justify-between">
+                    <footer className="flex items-end justify-between">
                       {/* price item */}
                       <div className="text-lg sm:text-2xl font-bold text-orange-600">
                         ${item.price.toLocaleString()}
@@ -145,10 +145,10 @@ const TopCombosCarousel = ({ carouselRef }) => {
 
                       {/* shop info */}
                       <div className="text-right">
-                        <p className="text-xs text-gray-500 mb-1">
+                        <p className="text-xm sm:text-xl text-gray-500">
                           Disponible en:
                         </p>
-                        <p className="text-xs sm:text-sm font-semibold text-gray-700">
+                        <p className="text-xl sm:text-xl font-semibold text-gray-700">
                           {item.shop.name}
                         </p>
                       </div>

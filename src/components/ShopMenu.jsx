@@ -51,13 +51,13 @@ const ShopMenu = () => {
               >
                 ← Volver
               </button>
-              <h1 className="text-xl font-bold text-gray-900">{shop.name}</h1>
+              <h1 className="hidden sm:block text-2xl font-bold text-gray-900">{shop.name}</h1>
             </div>
 
             {/* user */}
             <div className="flex items-center space-x-2 bg-orange-50 px-3 py-1.5 rounded-xl border border-orange-200">
               <User className="w-4 h-4 text-orange-600" />
-              <span className="text-sm font-medium text-gray-700">Ruben</span>
+              <span className="text-base font-medium text-gray-700">Ruben</span>
             </div>
           </div>
         </div>
@@ -93,7 +93,7 @@ const ShopMenu = () => {
             {/* button all categories */}
             <button
               onClick={() => setSelectedCategory("all")}
-              className={`px-4 py-2 text-sm font-medium rounded-full transition-colors ${
+              className={`px-4 py-2 text-lg font-medium rounded-full transition-colors ${
                 selectedCategory === "all"
                   ? "bg-orange-500 text-white"
                   : "bg-gray-200 text-gray-700 hover:bg-gray-300"
@@ -107,7 +107,7 @@ const ShopMenu = () => {
               <button
                 key={category.id}
                 onClick={() => setSelectedCategory(category.id)}
-                className={`px-4 py-2 text-sm font-medium rounded-full transition-colors whitespace-nowrap ${
+                className={`px-4 py-2 text-xl font-medium rounded-full transition-colors whitespace-nowrap ${
                   selectedCategory === category.id
                     ? "bg-orange-500 text-white"
                     : "bg-gray-200 text-gray-700 hover:bg-gray-300"
@@ -120,7 +120,7 @@ const ShopMenu = () => {
         </nav>
 
         {/* list categories*/}
-        <div className="w-full px-4 sm:px-6 lg:px-8 py-8">
+        <div className="w-full px-4 sm:px-6 lg:px-8 py-5">
           {categories.map(
             (category) =>
               // Muestra la categoría solo si está seleccionada o si se eligen "Todas"
@@ -128,7 +128,7 @@ const ShopMenu = () => {
                 selectedCategory === category.id) && (
                 <section key={category.id} className="mb-8">
                   {/* name category */}
-                  <h2 className="text-2xl font-bold text-gray-900 mb-6">
+                  <h2 className="text-3xl font-bold text-gray-900 mb-5 mt-10">
                     {category.name}
                   </h2>
 
@@ -146,11 +146,11 @@ const ShopMenu = () => {
                   ) : (
                     // mmessage not products
                     <div className="text-center py-16">
-                      <div className="text-gray-400 text-5xl mb-4">🍽️</div>
-                      <h3 className="text-xl font-medium text-gray-900">
+                      <div className="text-gray-400 text-7xl sm:text-9xl mb-4">🍽️</div>
+                      <h3 className="text-2xl sm:text-4xl mb-3 font-medium text-gray-900">
                         No hay productos disponibles
                       </h3>
-                      <p className="text-orange-950">
+                      <p className="text-orange-950 text-xl sm:text-2xl">
                         Esta categoría no tiene productos por el momento.
                       </p>
                     </div>
