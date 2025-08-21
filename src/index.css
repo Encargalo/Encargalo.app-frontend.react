@@ -2,6 +2,38 @@
 @tailwind components;
 @tailwind utilities;
 
+@keyframes fade-out-right {
+  from {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+}
+
+@keyframes fade-in-right {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+
+.animate-fade-out-right {
+  animation: fade-out-right 0.5s ease-in-out;
+}
+
+.animate-fade-in-right {
+  animation: fade-in-right 0.5s ease-in-out;
+}
+
+
 @layer utilities {
   .bg-gradient-modern-orange {
     background-image: linear-gradient(
@@ -15,6 +47,11 @@
 
 .background {
   @apply bg-gradient-to-br from-orange-300 to-orange-500 w-full h-full rounded-lg ;
+}
+
+.aspect-ration-default {
+  aspect-ratio: 16 / 9;
+
 }
 
 a {

@@ -1,12 +1,17 @@
 //react
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 // components
 import Header from "./components/Header";
 import LoginModal from "./components/LoginModal";
 import FoodDashboard from "./components/FoodDashboard.jsx";
+import Loader from "./components/Loader.jsx";
+//utils
+import { getDecryptedItem, setEncryptedItem } from './utils/encryptionUtilities.js'
+import useLoaderStore from "./store/loaderStore.js";
 
 const EncargaloApp = () => {
+  const { isLoading } = useLoaderStore();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [user, setUser] = useState(null);
   const [showLogin, setShowLogin] = useState(false);
@@ -70,29 +75,52 @@ const EncargaloApp = () => {
     0
   );
 
+  //validate user session
+  const user_session = 'user_session';
+
+  const user_data = getDecryptedItem(user_session);
+
+  useEffect(() => {
+    const userSession = {
+      session: false,
+      data: null,
+    };
+
+    if (!user_data) {
+      setEncryptedItem(user_session, userSession);
+    }
+
+  }, [user_session, user_data]);
+
+
   return (
-    <div className="min-h-screen w-sreen relative background">
-      <Header
-        isLoggedIn={isLoggedIn}
-        user={user}
-        onLogin={() => setShowLogin(true)}
-        onLogout={handleLogout}
-        cartTotal={cartTotal}
-        cart={cart}
-      />
-      <FoodDashboard
-        favorites={favorites}
-        toggleFavorite={toggleFavorite}
-        addToCart={addToCart}
-      />
-      <LoginModal
-        show={showLogin}
-        onClose={() => setShowLogin(false)}
-        onLogin={handleLogin}
-        isLoading={isLoggingIn}
-      />
-    </div>
-  );
+    <div>
+      {isLoading && <Loader />}
+
+      <div className="min-h-screen w-full relative background">
+        <Header
+          isLoggedIn={isLoggedIn}
+          user={user}
+          onLogin={() => setShowLogin(true)}
+          onLogout={handleLogout}
+          cartTotal={cartTotal}
+          cart={cart}
+        />
+        <FoodDashboard
+          favorites={favorites}
+          toggleFavorite={toggleFavorite}
+          addToCart={addToCart}
+        />
+
+        <LoginModal
+          show={showLogin}
+          onClose={() => setShowLogin(false)}
+          onLogin={handleLogin}
+          isLoading={isLoggingIn}
+        />
+
+      </div>
+    </div>)
 };
 
 export default EncargaloApp;
