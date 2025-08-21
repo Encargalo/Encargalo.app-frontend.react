@@ -26,7 +26,7 @@ const ItemCard = ({ item, onAddToCart, onItemClick }) => {
           {/* star icon */}
           <Star className="w-3 sm:w-4 h-3 sm:h-4 text-orange-500 fill-current mr-1 inline" />
           {/* score */}
-          <span className="text-xl font-bold text-gray-900">{item.score}</span>
+          <span className="text-base font-bold text-gray-900">{item.score}</span>
         </div>
       </header>
 
@@ -34,11 +34,11 @@ const ItemCard = ({ item, onAddToCart, onItemClick }) => {
         {/* details */}
         <figure className="mb-4">
           {/* name */}
-          <h3 className="text-2xl sm:text-3xl font-bold text-gray-900">
+          <h3 className="text-2xl sm:text-2xl font-bold text-gray-900">
             {item.name}
           </h3>
           {/* description */}
-          <p className="text-gray-600 text-xl sm:text-2xl leading-relaxed truncate">
+          <p className="text-gray-600 text-xl sm:text-1xl leading-relaxed truncate">
             {item.description}
           </p>
         </figure>
@@ -57,7 +57,7 @@ const ItemCard = ({ item, onAddToCart, onItemClick }) => {
             aria-label={`Agregar ${item.name} al carrito`}
           >
             <Plus className="w-6 h-6" />
-            <span className="text-xl sm:text-1xl">Agregar</span>
+            <span className="text-base">Agregar</span>
           </button>
         </footer>
       </div>
