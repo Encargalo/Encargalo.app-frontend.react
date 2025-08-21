@@ -8,30 +8,24 @@ const WelcomeCustomerModal = ({ show, onClose }) => {
         location.reload();
     }
 
-    if (!show) return null;
+    /*   if (!show) return null; */
 
     return (
         <dialog className="fixed inset-0 bg-transparent w-full h-full backdrop-blur-sm flex items-center justify-center z-50 p-4">
-            <section className="bg-white rounded-2xl shadow-2xl w-full max-w-sm overflow-hidden animate-fadeIn">
+            <section className="bg-white rounded-2xl shadow-2xl w-full  sm:w-2/4 overflow-hidden animate-fadeIn">
                 {/* Header */}
                 <header className="bg-gradient-to-r from-orange-500 to-orange-600 px-8 py-7">
-                    <figure className="flex items-center justify-between">
-                        <h2 className="text-3xl font-bold text-white">¡Bienvenido!</h2>
-                        <button
-                            onClick={onClose}
-                            className="text-white hover:text-orange-200 p-2 rounded-full w-max h-max bg-orange-400 text-2xl font-bold"
-                        >
-                            <X />
-                        </button>
+                    <figure className="flex flex-col justify-between gap-2">
+                        <h2 className="text-5xl font-bold text-white">¡Bienvenido!</h2>
+                        <p className="text-orange-100 mt-1 text-xl">
+                            Pide lo que quieras, cuando quieras
+                        </p>
                     </figure>
-                    <p className="text-orange-100 mt-1 text-x">
-                        Pide lo que quieras, cuando quieras
-                    </p>
                 </header>
 
                 {/* Contenido */}
-                <div className="px-6 pt-6 pb-4 text-center space-y-4 text-gray-700 text-lg font-medium">
-                    <p className="">
+                <div className="px-6 pt-6 pb-4 text-center space-y-4 text-gray-700 text-xl font-medium">
+                    <p>
                         Haz tus pedidos de comida rápida de forma fácil y rápida.
                     </p>
                     <p>¡Disfruta de tus comidas favoritos en minutos!</p>

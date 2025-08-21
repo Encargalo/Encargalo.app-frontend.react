@@ -1,5 +1,5 @@
 //icons
-import { MapPin, User, LogOut } from "lucide-react";
+import { MapPin, User, LogOut, ChevronRight } from "lucide-react";
 //react
 import { useEffect, useState } from "react";
 //utils
@@ -42,11 +42,12 @@ const Header = ({ onLogin }) => {
             {userData.session ? (
               /* user info */
               <div className="flex items-center space-x-2 sm:space-x-3">
-                <figure className="flex items-center space-x-1 sm:space-x-2 bg-orange-50 px-2 sm:px-3 py-1 sm:py-1 rounded-xl border border-orange-200">
-                  <User className="w-4 h-4 text-orange-600" />
-                  <p className="text-sm sm:text-base font-medium text-gray-700">
+                <figure className="flex items-center space-x-1 sm:space-x-2 bg-orange-50 px-3 sm:px-3 py-2 sm:py-2 rounded-xl border border-orange-200 group">
+                  <User className="size-6 text-orange-600" />
+                  <p className="text-base sm:text-xl font-medium text-gray-700">
                     {userData.data.name}
                   </p>
+                  <ChevronRight className="size-6 text-orange-600 transition-transform duration-200 transform group-active:translate-x-2" />
                 </figure>
 
                 {/* logout */}
@@ -55,8 +56,8 @@ const Header = ({ onLogin }) => {
 
                   onClick={logOutCustomer}
                 >
-                  <LogOut className="w-5 h-4" />
-                  <span className="text-xs sm:text-sm font-medium">Salir</span>
+                  <LogOut className="size-6" />
+                  <span className="text-base sm:text-xl font-medium">Salir</span>
                 </button>
               </div>
             ) : (

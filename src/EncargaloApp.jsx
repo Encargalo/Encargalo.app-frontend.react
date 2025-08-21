@@ -3,7 +3,6 @@ import { lazy, Suspense, useEffect, useState } from "react";
 
 // components
 import Header from "./components/Header";
-import LoginModal from "./components/LoginModal";
 const FoodDashboard = lazy(() => import('./components/FoodDashboard.jsx'))
 import Loader from "./components/Loader.jsx";
 import WelcomeCustomerModal from "./components/WelcomeCustomerModal.jsx";
@@ -11,6 +10,7 @@ import WelcomeCustomerModal from "./components/WelcomeCustomerModal.jsx";
 import useLoaderStore from "./store/loaderStore.js";
 //services
 import getInformationCustomer from "./services/getInformationCustomer.js";
+import SessionModal from "./components/SessionCustomer/SessionModal.jsx";
 
 const EncargaloApp = () => {
   //show login
@@ -51,7 +51,7 @@ const EncargaloApp = () => {
           />
         </Suspense>
 
-        <LoginModal
+        <SessionModal
           show={showLogin}
           onClose={() => setShowLogin(false)}
           onOpenWelcome={() => setShowWelcome(true)}
