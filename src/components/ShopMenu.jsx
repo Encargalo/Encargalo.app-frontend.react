@@ -9,6 +9,7 @@ import getShopDetails from "../services/getShopDetails";
 //react
 import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
+import { getDecryptedItem } from "../utils/encryptionUtilities";
 
 const ShopMenu = () => {
   // Estados
@@ -16,6 +17,7 @@ const ShopMenu = () => {
   const [shop, setShop] = useState({});
   const [selectedCategory, setSelectedCategory] = useState("all");
   const carouselRef = useRef(null);
+  const [userData, setUserData] = useState({})
 
 
   // Hooks de Navegación
@@ -54,6 +56,13 @@ const ShopMenu = () => {
     }
   };
 
+  //user data
+  useEffect(() => {
+    const user_session = 'user_session';
+    const user_data = getDecryptedItem(user_session)
+    setUserData(user_data)
+  }, [])
+
   return (
     <div>
       <section className="min-h-screen bg-white background">
@@ -65,7 +74,7 @@ const ShopMenu = () => {
               <div className="flex items-center space-x-4">
                 <button
                   onClick={() => navigate("/")}
-                  className="text-orange-500 hover:text-orange-600 font-semibold"
+                  className="text-orange-500 hover:text-orange-600 font-semibold sm:text-2xl"
                 >
                   ← Volver
                 </button>
@@ -74,8 +83,10 @@ const ShopMenu = () => {
 
               {/* user */}
               <div className="flex items-center space-x-2 bg-orange-50 px-3 py-1.5 rounded-xl border border-orange-200">
-                <User className="w-4 h-4 text-orange-600" />
-                <span className="text-base font-medium text-gray-700">Ruben</span>
+                <User className="w-5 h-5 text-orange-600" />
+                <span className="text-base sm:text-xl font-medium text-gray-700">{
+                  userData.data?.name
+                }</span>
               </div>
             </div>
           </div>
@@ -83,7 +94,7 @@ const ShopMenu = () => {
 
         <main>
           {/* banner shop*/}
-          <div className="relative h-64 overflow-hidden">
+          <div className="relative sm:h-[40em] overflow-hidden">
             <img
               src={shop.logo_image}
               alt={`Logo de ${shop.name}`}
@@ -93,30 +104,30 @@ const ShopMenu = () => {
             <div className="absolute bottom-6 left-3 sm:left-6 text-white px-2">
               <div className="flex items-center space-x-4 mb-2">
                 {/* score */}
-                <div className="flex items-center bg-white/20 backdrop-blur-sm px-3 py-1 rounded-full">
-                  <Star className="w-4 h-4 text-yellow-400 fill-current mr-1" />
-                  <span className="font-bold text-sm">{shop.score}</span>
+                <div className="flex items-center bg-white/20 backdrop-blur-sm px-3 py-1 sm:px-4 sm:py-2 rounded-full">
+                  <Star className="w-4 h-4 sm:w-7 sm:h-7 text-yellow-400 fill-current mr-2" />
+                  <span className="font-bold sm:text-2xl">{shop.score}</span>
                 </div>
               </div>
               {/* address shop */}
-              <p className="text-white bg-white/20 backdrop-blur-sm px-3 py-1 rounded-full">
+              <p className="text-white bg-white/20 sm:text-2xl backdrop-blur-sm px-3 py-1 rounded-full">
                 {shop.address}
               </p>
             </div>
           </div>
 
           {/* filtering categories */}
-          <nav className="sm:px-6 lg:px-8 py-4 sticky top-[68px] bg-white z-30">
+          <nav className="sm:px-6 lg:px-8 py-7 sticky top-[68px] bg-white z-30">
             {/* button move carousel filtering */}
             <button
               onClick={() => scrollCarouselFiltering("left")}
-              className="bg-white hover:bg-orange-50 border-2 border-gray-200 hover:border-orange-300 rounded-full p-2 sm:p-3 transition-all duration-300 shadow-md hover:shadow-lg absolute left-2 z-30 bottom-6 sm:left-4"
+              className="bg-white hover:bg-orange-50 border-2 border-gray-200 hover:border-orange-300 rounded-full p-2 sm:p-3 transition-all duration-300 shadow-md hover:shadow-lg absolute left-2 z-30 bottom-7 sm:left-4"
             >
               <ChevronLeft className="w-8 sm:w-5 h-8 sm:h-5 text-gray-600 hover:text-orange-600" />
             </button>
 
             {/* buttons actions */}
-            <div className="relative flex items-center space-x-2 overflow-x-auto pb-2 px-12"
+            <div className="relative flex space-x-2 overflow-x-auto px-12"
               ref={carouselRef}>
               {/* button all categories */}
               <button
@@ -147,7 +158,7 @@ const ShopMenu = () => {
             {/* button move carousel filtering */}
             <button
               onClick={() => scrollCarouselFiltering("right")}
-              className="bg-white hover:bg-orange-50 border-2 border-gray-200 hover:border-orange-300 rounded-full p-2 sm:p-3 transition-all duration-300 shadow-md hover:shadow-lg absolute top-3 right-2 sm:right-4"
+              className="bg-white hover:bg-orange-50 border-2 border-gray-200 hover:border-orange-300 rounded-full p-2 sm:p-3 transition-all duration-300 shadow-md hover:shadow-lg absolute top-6 right-2 sm:right-4"
             >
               <ChevronRight className="w-8 sm:w-6 h-8 sm:h-6 text-gray-600 hover:text-orange-600" />
             </button>

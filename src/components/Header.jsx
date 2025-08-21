@@ -1,8 +1,25 @@
+//icons
 import { MapPin, User, LogOut } from "lucide-react";
+//react
+import { useEffect, useState } from "react";
+//utils
+import { getDecryptedItem } from "../utils/encryptionUtilities";
+//services
+import logOutCustomer from "../services/logOutCustomer";
 
-const Header = ({ isLoggedIn, user, onLogin, onLogout }) => {
+const Header = ({ onLogin }) => {
+  const [userData, setUserData] = useState({})
+
+  useEffect(() => {
+    const user_session = 'user_session';
+    const user = getDecryptedItem(user_session)
+    setUserData(user)
+  }, [])
+
   return (
+    /* header */
     <header className="bg-white shadow-lg sticky top-0 z-30 border-b border-gray-200">
+      {/* titlte */}
       <section className="w-full px-4 sm:px-6 lg:px-8 py-4 sm:py-4">
         <div className="flex items-center justify-between">
           {/* title */}
@@ -10,9 +27,11 @@ const Header = ({ isLoggedIn, user, onLogin, onLogout }) => {
             EncargaloApp
           </h1>
 
+          {/* address */}
           <div className="flex items-center space-x-4">
-            {/* address */}
+            {/* address info*/}
             <div className="items-center hidden md:flex space-x-2">
+              {/* address icon */}
               <MapPin className="w-4 sm:w-5 h-4 sm:h-5 text-orange-500" />
               <address className="text-xs sm:text-sm text-gray-700 font-medium">
                 Buenos Aires, Argentina
@@ -20,22 +39,23 @@ const Header = ({ isLoggedIn, user, onLogin, onLogout }) => {
             </div>
 
             {/* Botones de autenticación */}
-            {isLoggedIn ? (
+            {userData.session ? (
               /* user info */
               <div className="flex items-center space-x-2 sm:space-x-3">
-                <figure className="flex items-center space-x-1 sm:space-x-2 bg-orange-50 px-2 sm:px-4 py-1 sm:py-2 rounded-xl border border-orange-200">
-                  <User className="w-3 sm:w-4 h-3 sm:h-4 text-orange-600" />
-                  <p className="text-xs sm:text-sm font-medium text-gray-700">
-                    {user?.name}
+                <figure className="flex items-center space-x-1 sm:space-x-2 bg-orange-50 px-2 sm:px-3 py-1 sm:py-1 rounded-xl border border-orange-200">
+                  <User className="w-4 h-4 text-orange-600" />
+                  <p className="text-sm sm:text-base font-medium text-gray-700">
+                    {userData.data.name}
                   </p>
                 </figure>
 
                 {/* logout */}
                 <button
-                  onClick={onLogout}
-                  className="flex items-center space-x-1 sm:space-x-2 hover:text-orange-600 px-2 sm:px-3 py-1 sm:py-2 rounded-xl hover:bg-orange-50 hover:border-orange-500 transition-all duration-300"
+                  className="flex items-center space-x-1 sm:space-x-2 hover:text-orange-600 px-2 sm:px-3 py-2 sm:py-2 rounded-xl hover:bg-orange-50 hover:border-orange-500 transition-all duration-300"
+
+                  onClick={logOutCustomer}
                 >
-                  <LogOut className="w-3 sm:w-4 h-3 sm:h-4" />
+                  <LogOut className="w-5 h-4" />
                   <span className="text-xs sm:text-sm font-medium">Salir</span>
                 </button>
               </div>
