@@ -1,9 +1,8 @@
-import React from "react";
 import { MapPin, User, LogOut } from "lucide-react";
 
 const Header = ({ isLoggedIn, user, onLogin, onLogout }) => {
   return (
-    <header className="bg-white shadow-lg sticky top-0 z-50 border-b border-gray-200">
+    <header className="bg-white shadow-lg sticky top-0 z-30 border-b border-gray-200">
       <section className="w-full px-4 sm:px-6 lg:px-8 py-4 sm:py-4">
         <div className="flex items-center justify-between">
           {/* title */}

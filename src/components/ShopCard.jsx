@@ -17,12 +17,12 @@ const ShopCard = ({ shop, favorites, onToggleFavorite }) => {
       onClick={() => navigate(`/${shop.tag}`)}
     >
       {/* header */}
-      <header className="relative">
+      <header className="relative mb-3">
         {/* img */}
         <img
           src={shop.logo}
           alt={shop.name}
-          className="w-full h-50 sm:h-52 object-cover group-hover:scale-105 transition-transform duration-300"
+          className="w-full h-50 sm:h-50 object-cover group-hover:scale-105 transition-transform duration-300"
         />
         {/* heart */}
         <button
@@ -33,25 +33,24 @@ const ShopCard = ({ shop, favorites, onToggleFavorite }) => {
           className="absolute top-3 right-3 bg-white/90 backdrop-blur-sm rounded-full p-2 hover:bg-white transition-colors shadow-md"
         >
           <Heart
-            className={`w-6 h-6 ${
-              favorites.has(shop.id)
-                ? "fill-orange-500 text-orange-500"
-                : "text-gray-600"
-            }`}
+            className={`w-6 h-6 ${favorites.has(shop.id)
+              ? "fill-orange-500 text-orange-500"
+              : "text-gray-600"
+              }`}
           />
         </button>
 
         {/* shop status */}
         {!shop.opened && (
           <div className="absolute inset-0 bg-black/60 flex items-center justify-center">
-            <span className="bg-red-500 text-white px-3 py-1 rounded-full text-lg font-semibold">
+            <span className="bg-red-500 text-white px-3 py-1 rounded-full text-base font-semibold">
               Cerrado
             </span>
           </div>
         )}
         {shop.opened && (
           <div className="absolute bottom-3 left-3">
-            <span className="bg-green-500 text-white px-2 py-1 rounded-full text-lg font-medium">
+            <span className="bg-green-500 text-white px-2 py-1 rounded-full text-base font-medium">
               Abierto
             </span>
           </div>
@@ -62,7 +61,7 @@ const ShopCard = ({ shop, favorites, onToggleFavorite }) => {
       <div className="p-4 sm:p-5">
         {/* shop name */}
         <figure className="flex items-start justify-between">
-          <h3 className="text-2xl  font-bold text-gray-900 group-hover:text-orange-600 transition-colors flex-1">
+          <h3 className="text-2xl  font-bold text-gray-900 group-hover:text-orange-600 transition-colors flex-1 mb-2">
             {shop.name}
           </h3>
           {/* shop score */}
@@ -81,7 +80,7 @@ const ShopCard = ({ shop, favorites, onToggleFavorite }) => {
 
         {/* footer */}
         {/* shop address */}
-        <footer className="flex items-center text-xl sm:text-lg text-gray-500 mb-3 sm:mb-4">
+        <footer className="flex items-center text-xl sm:text-lg text-gray-500 mb-3">
           <MapPin className="w-7 h-7 mr-1 sm:mr-2 text-orange-500" />
           <span className="truncate">{shop.address}</span>
         </footer>

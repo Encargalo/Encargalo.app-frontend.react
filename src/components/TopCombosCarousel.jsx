@@ -101,7 +101,7 @@ const TopCombosCarousel = ({ carouselRef }) => {
                     <img
                       src={item.image}
                       alt={item.name}
-                      className="w-full h-36 sm:h-48 object-cover group-hover:scale-105 transition-transform duration-300"
+                      className="w-full h-36 sm:h-48 object-cover group-hover:scale-105 transition-transform duration-300 aspect-3/2 "
                     />
 
                     {/* top carrusel */}
@@ -128,7 +128,7 @@ const TopCombosCarousel = ({ carouselRef }) => {
                   {/* footer carrusel */}
                   <figure className="p-3 sm:p-5">
                     {/* name item */}
-                    <h4 className="font-bold text-xl sm:text-3xl group-hover:text-orange-600 transition-colors mb-1 sm:mb-2">
+                    <h4 className="font-bold text-xl sm:text-3xl group-hover:text-orange-600 transition-colors mb-1 mt-2 sm:mb-2">
                       {item.name}
                     </h4>
                     {/* description item */}

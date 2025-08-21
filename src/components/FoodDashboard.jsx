@@ -5,6 +5,7 @@ import getShops from "../services/getShops";
 import SearchAndFilters from "./SearchAndFilters";
 import ShopCard from "./ShopCard";
 import TopCombosCarousel from "./TopCombosCarousel";
+import useLoaderStore from "../store/loaderStore";
 
 const FoodDashboard = ({ favorites, toggleFavorite }) => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -13,6 +14,8 @@ const FoodDashboard = ({ favorites, toggleFavorite }) => {
   const [showFilters, setShowFilters] = useState(true);
   const carouselRef = useRef(null);
   const [shops, setShops] = useState([]);
+
+  //loader
 
   //Get shops
   useEffect(() => {
@@ -52,8 +55,13 @@ const FoodDashboard = ({ favorites, toggleFavorite }) => {
     return filtered;
   }, [shops, searchTerm, selectedFilter, sortBy, favorites]);
 
+  //loader
+  const {isLoading} = useLoaderStore()
+
+  if (isLoading) return null
+
   return (
-    <section className="w-full px-4 sm:px-6 lg:px-8 py-4 sm:py-6 lg:py-8">
+    <section className='w-full $ px-4 sm:px-6 lg:px-8 py-4 sm:py-6 lg:py-8'>
       {/* Search and filters */}
       <SearchAndFilters
         searchTerm={searchTerm}
@@ -71,7 +79,7 @@ const FoodDashboard = ({ favorites, toggleFavorite }) => {
       {/* Restaurantes filtrados */}
       <aside className="mb-6 sm:mb-8">
         {/* title */}
-        <h2 className="text-2xl sm:text-2xl lg:text-3xl font-bold text-white mb-2 sm:mb-3">
+        <h2 className="text-2xl sm:text-4xl lg:text-3xl font-bold text-white mb-2 sm:mb-3">
           {searchTerm
             ? `Resultados para "${searchTerm}"`
             : "Restaurantes disponibles"}
