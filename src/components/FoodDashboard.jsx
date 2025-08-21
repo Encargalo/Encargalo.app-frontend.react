@@ -5,8 +5,6 @@ import getShops from "../services/getShops";
 import SearchAndFilters from "./SearchAndFilters";
 import ShopCard from "./ShopCard";
 import TopCombosCarousel from "./TopCombosCarousel";
-import useLoaderStore from "../store/loaderStore";
-
 const FoodDashboard = ({ favorites, toggleFavorite }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedFilter, setSelectedFilter] = useState("all");
@@ -53,11 +51,6 @@ const FoodDashboard = ({ favorites, toggleFavorite }) => {
 
     return filtered;
   }, [shops, searchTerm, selectedFilter, sortBy, favorites]);
-
-  //loader
-  const {isLoading} = useLoaderStore()
-
-  if (isLoading) return null
 
   return (
     <section className='w-full $ px-4 sm:px-6 lg:px-8 py-4 sm:py-6 lg:py-8'>
