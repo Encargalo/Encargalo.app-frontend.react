@@ -5,10 +5,10 @@ import Lottie from "lottie-react";
 import animation_delivery_on_a_bike from "../assets/animations/animation_delivery_on _a_bike.json";
 
 const loadingTexts = [
+  "¿Qué vamos a comer hoy?",
   "Buscando los mejores restaurantes...",
   "Cargando el menú que te antoja...",
   "Un momento, estamos preparando tu pedido...",
-  "¿Qué vamos a comer hoy?",
   "Buscando las mejores ofertas para ti...",
   "Casi listo para que hagas tu pedido.",
   "La comida que te encanta, a un clic.",
