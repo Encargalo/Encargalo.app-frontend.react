@@ -27,15 +27,21 @@ const Loader = () => {
   const [animationClass, setAnimationClass] = useState("animate-fade-in-right");
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      setAnimationClass("animate-fade-out-right");
-      setTimeout(() => {
-        setLoadingText(getRandomText());
-        setAnimationClass("animate-fade-in-right");
-      }, 500);
-    }, 3000);
+    const timeout = setTimeout(() => {
+      const interval = setInterval(() => {
+        setAnimationClass("animate-fade-out-right");
 
-    return () => clearInterval(interval);
+        setTimeout(() => {
+          setLoadingText(getRandomText());
+          setAnimationClass("animate-fade-in-right");
+        }, 500); // duración de la animación de salida
+      }, 3000); // cada 4s cambia el texto
+
+      // limpiar el intervalo
+      return () => clearInterval(interval);
+    }, 4000); // espera 4s antes del primer cambio
+
+    return () => clearTimeout(timeout);
   }, []);
 
   return (
