@@ -1,17 +1,16 @@
 //react
-import { useEffect, useState } from "react";
+import { lazy, Suspense, useEffect, useState } from "react";
 
 // components
 import Header from "./components/Header";
 import LoginModal from "./components/LoginModal";
-import FoodDashboard from "./components/FoodDashboard.jsx";
+const FoodDashboard = lazy(() => import('./components/FoodDashboard.jsx'))
 import Loader from "./components/Loader.jsx";
 //utils
 import { getDecryptedItem, setEncryptedItem } from './utils/encryptionUtilities.js'
 import useLoaderStore from "./store/loaderStore.js";
 
 const EncargaloApp = () => {
-  const { isLoading } = useLoaderStore();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [user, setUser] = useState(null);
   const [showLogin, setShowLogin] = useState(false);
@@ -92,11 +91,13 @@ const EncargaloApp = () => {
 
   }, [user_session, user_data]);
 
+  const { isLoading } = useLoaderStore();
 
   return (
     <div>
-      {isLoading && <Loader />}
-
+      {isLoading && (
+        <Loader />
+      )}
       <div className="min-h-screen w-full relative background">
         <Header
           isLoggedIn={isLoggedIn}
@@ -106,11 +107,13 @@ const EncargaloApp = () => {
           cartTotal={cartTotal}
           cart={cart}
         />
-        <FoodDashboard
-          favorites={favorites}
-          toggleFavorite={toggleFavorite}
-          addToCart={addToCart}
-        />
+        <Suspense fallback={<Loader />}>
+          <FoodDashboard
+            favorites={favorites}
+            toggleFavorite={toggleFavorite}
+            addToCart={addToCart}
+          />
+        </Suspense>
 
         <LoginModal
           show={showLogin}

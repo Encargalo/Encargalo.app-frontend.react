@@ -19,24 +19,27 @@ const loadingTexts = [
 ];
 
 const Loader = () => {
-  const [loadingText, setLoadingText] = useState(loadingTexts[0]);
+  //ramdom text
+  const getRandomText = () =>
+    loadingTexts[Math.floor(Math.random() * loadingTexts.length)];
+  const [loadingText, setLoadingText] = useState(getRandomText());
+  //animation text
   const [animationClass, setAnimationClass] = useState("animate-fade-in-right");
 
   useEffect(() => {
     const interval = setInterval(() => {
       setAnimationClass("animate-fade-out-right");
       setTimeout(() => {
-        const randomIndex = Math.floor(Math.random() * loadingTexts.length);
-        setLoadingText(loadingTexts[randomIndex]);
+        setLoadingText(getRandomText());
         setAnimationClass("animate-fade-in-right");
-      }, 500); // Duration of the fade-out animation
-    }, 3000); // Change text every 3 seconds
+      }, 500);
+    }, 3000);
 
     return () => clearInterval(interval);
   }, []);
 
   return (
-    <div className="absolute z-50 bg-orange-50 w-screen h-full flex items-center flex-col p-5 justify-center">
+    <div className="bg-orange-100 w-screen h-full flex items-center flex-col p-5 justify-center top-0 fixed inset-0 z-[9999] pointer-events-auto">
       <div className="w-full flex justify-center items-center">
         <Lottie
           animationData={animation_delivery_on_a_bike}

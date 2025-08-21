@@ -9,15 +9,12 @@ import getShopDetails from "../services/getShopDetails";
 //react
 import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
-//stores
-import useLoaderStore from "../store/loaderStore";
 
 const ShopMenu = () => {
   // Estados
   const [categories, setCategories] = useState([]);
   const [shop, setShop] = useState({});
   const [selectedCategory, setSelectedCategory] = useState("all");
-  const { isLoading } = useLoaderStore();
   const carouselRef = useRef(null);
 
 
@@ -59,8 +56,6 @@ const ShopMenu = () => {
 
   return (
     <div>
-      {isLoading && <Loader />}
-
       <section className="min-h-screen bg-white background">
         {/* header */}
         <header className="bg-white shadow-lg sticky top-0 z-40 border-b">
@@ -95,7 +90,7 @@ const ShopMenu = () => {
               className="w-full h-full object-cover"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
-            <div className="absolute bottom-6 left-6 text-white">
+            <div className="absolute bottom-6 left-3 sm:left-6 text-white px-2">
               <div className="flex items-center space-x-4 mb-2">
                 {/* score */}
                 <div className="flex items-center bg-white/20 backdrop-blur-sm px-3 py-1 rounded-full">
