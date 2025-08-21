@@ -1,5 +1,5 @@
 //react
-import { useState, useMemo, useRef, useEffect } from "react";
+import { useState, useMemo, useEffect } from "react";
 //components
 import getShops from "../services/getShops";
 import SearchAndFilters from "./SearchAndFilters";
@@ -12,7 +12,6 @@ const FoodDashboard = ({ favorites, toggleFavorite }) => {
   const [selectedFilter, setSelectedFilter] = useState("all");
   const [sortBy, setSortBy] = useState("score");
   const [showFilters, setShowFilters] = useState(true);
-  const carouselRef = useRef(null);
   const [shops, setShops] = useState([]);
 
   //loader
@@ -75,7 +74,7 @@ const FoodDashboard = ({ favorites, toggleFavorite }) => {
       />
 
       {/* Top combos carousel */}
-      {!searchTerm && <TopCombosCarousel carouselRef={carouselRef} />}
+      {!searchTerm && <TopCombosCarousel />}
       {/* Restaurantes filtrados */}
       <aside className="mb-6 sm:mb-8">
         {/* title */}

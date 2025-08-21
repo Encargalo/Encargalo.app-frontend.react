@@ -1,15 +1,17 @@
 //lucide-react
 import { ChevronLeft, ChevronRight, Star, Plus } from "lucide-react";
 //react
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 //services
 import getCombosCarrusel from "../services/getCombosCarrusel";
 //components
 import FoodDetailsModal from "./FoodDetailsModal";
 
-const TopCombosCarousel = ({ carouselRef }) => {
+const TopCombosCarousel = () => {
   const [items, setItems] = useState([]);
   const [selectedCombo, setSelectedCombo] = useState(null);
+  const carouselRef = useRef(null);
+
 
   const handleComboClick = (combo) => {
     setSelectedCombo(combo);
@@ -128,7 +130,7 @@ const TopCombosCarousel = ({ carouselRef }) => {
                   {/* footer carrusel */}
                   <figure className="p-3 sm:p-5">
                     {/* name item */}
-                    <h4 className="font-bold text-xl sm:text-3xl group-hover:text-orange-600 transition-colors mb-1 mt-2 sm:mb-2">
+                    <h4 className="font-bold text-xl sm:text-2xl group-hover:text-orange-600 transition-colors mb-1 sm:mb-2">
                       {item.name}
                     </h4>
                     {/* description item */}
@@ -148,7 +150,7 @@ const TopCombosCarousel = ({ carouselRef }) => {
                         <p className="text-xm sm:text-xl text-gray-500">
                           Disponible en:
                         </p>
-                        <p className="text-xl sm:text-xl font-semibold text-gray-700">
+                        <p className="text-xm sm:text-xl font-semibold text-gray-700">
                           {item.shop.name}
                         </p>
                       </div>

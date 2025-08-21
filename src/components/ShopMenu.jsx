@@ -1,16 +1,16 @@
 //lucide react
-import { User, Star, Clock } from "lucide-react";
+import { User, Star, Clock, ChevronLeft, ChevronRight } from "lucide-react";
 //components
 import ItemCard from "./ItemCard";
 import FoodDetailsModal from "./FoodDetailsModal";
+import Loader from "./Loader";
 //services
 import getShopDetails from "../services/getShopDetails";
 //react
 import { useLocation, useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 //stores
 import useLoaderStore from "../store/loaderStore";
-import Loader from "./Loader";
 
 const ShopMenu = () => {
   // Estados
@@ -18,6 +18,7 @@ const ShopMenu = () => {
   const [shop, setShop] = useState({});
   const [selectedCategory, setSelectedCategory] = useState("all");
   const { isLoading } = useLoaderStore();
+  const carouselRef = useRef(null);
 
 
   // Hooks de Navegación
@@ -40,6 +41,20 @@ const ShopMenu = () => {
 
   const handleCloseModal = () => {
     setSelectedCombo(null);
+  };
+
+  //Carousel filtering
+  const scrollCarouselFiltering = (direction) => {
+    if (carouselRef.current) {
+      const scrollAmount = 280;
+      const newScrollLeft =
+        carouselRef.current.scrollLeft +
+        (direction === "left" ? -scrollAmount : scrollAmount);
+      carouselRef.current.scrollTo({
+        left: newScrollLeft,
+        behavior: "smooth",
+      });
+    }
   };
 
   return (
@@ -96,8 +111,18 @@ const ShopMenu = () => {
           </div>
 
           {/* filtering categories */}
-          <nav className="px-4 sm:px-6 lg:px-8 py-4 sticky top-[68px] bg-white z-40">
-            <div className="flex items-center space-x-2 overflow-x-auto pb-2">
+          <nav className="sm:px-6 lg:px-8 py-4 sticky top-[68px] bg-white z-30">
+            {/* button move carousel filtering */}
+            <button
+              onClick={() => scrollCarouselFiltering("left")}
+              className="bg-white hover:bg-orange-50 border-2 border-gray-200 hover:border-orange-300 rounded-full p-2 sm:p-3 transition-all duration-300 shadow-md hover:shadow-lg absolute left-2 z-30 bottom-6 sm:left-4"
+            >
+              <ChevronLeft className="w-8 sm:w-5 h-8 sm:h-5 text-gray-600 hover:text-orange-600" />
+            </button>
+
+            {/* buttons actions */}
+            <div className="relative flex items-center space-x-2 overflow-x-auto pb-2 px-12"
+              ref={carouselRef}>
               {/* button all categories */}
               <button
                 onClick={() => setSelectedCategory("all")}
@@ -122,7 +147,15 @@ const ShopMenu = () => {
                   {category.name}
                 </button>
               ))}
+
             </div>
+            {/* button move carousel filtering */}
+            <button
+              onClick={() => scrollCarouselFiltering("right")}
+              className="bg-white hover:bg-orange-50 border-2 border-gray-200 hover:border-orange-300 rounded-full p-2 sm:p-3 transition-all duration-300 shadow-md hover:shadow-lg absolute top-3 right-2 sm:right-4"
+            >
+              <ChevronRight className="w-8 sm:w-6 h-8 sm:h-6 text-gray-600 hover:text-orange-600" />
+            </button>
           </nav>
 
           {/* list categories*/}

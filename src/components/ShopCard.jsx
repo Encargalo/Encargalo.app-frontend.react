@@ -17,7 +17,7 @@ const ShopCard = ({ shop, favorites, onToggleFavorite }) => {
       onClick={() => navigate(`/${shop.tag}`)}
     >
       {/* header */}
-      <header className="relative mb-3">
+      <header className="relative">
         {/* img */}
         <img
           src={shop.logo}
@@ -33,7 +33,7 @@ const ShopCard = ({ shop, favorites, onToggleFavorite }) => {
           className="absolute top-3 right-3 bg-white/90 backdrop-blur-sm rounded-full p-2 hover:bg-white transition-colors shadow-md"
         >
           <Heart
-            className={`w-6 h-6 ${favorites.has(shop.id)
+            className={`w-6 h-6 sm:w-4 sm:h-4 ${favorites.has(shop.id)
               ? "fill-orange-500 text-orange-500"
               : "text-gray-600"
               }`}
@@ -50,7 +50,7 @@ const ShopCard = ({ shop, favorites, onToggleFavorite }) => {
         )}
         {shop.opened && (
           <div className="absolute bottom-3 left-3">
-            <span className="bg-green-500 text-white px-2 py-1 rounded-full text-base font-medium">
+            <span className="bg-green-500 text-white px-2 py-1 rounded-full text-xs font-medium">
               Abierto
             </span>
           </div>
@@ -58,16 +58,16 @@ const ShopCard = ({ shop, favorites, onToggleFavorite }) => {
       </header>
 
       {/* shop details */}
-      <div className="p-4 sm:p-5">
+      <div className="p-4">
         {/* shop name */}
-        <figure className="flex items-start justify-between">
+        <figure className="flex items-center justify-between">
           <h3 className="text-2xl  font-bold text-gray-900 group-hover:text-orange-600 transition-colors flex-1 mb-2">
             {shop.name}
           </h3>
           {/* shop score */}
           <div className="flex items-center bg-gradient-to-r from-orange-100 to-orange-50 px-2 sm:px-3 py-1 rounded-full border border-orange-200 ml-2">
             <Star className="w-4 sm:w-4 h-4 sm:h-4 text-orange-500 fill-current mr-1" />
-            <span className="text-xl sm:text-sm font-bold text-gray-900">
+            <span className="text-base sm:text-sm font-bold text-gray-900">
               {shop.score}
             </span>
           </div>
