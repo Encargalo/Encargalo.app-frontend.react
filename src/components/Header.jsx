@@ -3,12 +3,14 @@ import { MapPin, User, LogOut, ChevronRight } from "lucide-react";
 //react
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { GoogleMap, Marker, useJsApiLoader } from "@react-google-maps/api";
 //utils
 import { getDecryptedItem } from "../utils/encryptionUtilities";
 //services
 import logOutCustomer from "../services/logOutCustomer";
+import getAddress from "../services/getAddress";
 
-const Header = ({ onLogin, addressHeader }) => {
+const Header = ({ onLogin }) => {
   const [userData, setUserData] = useState({})
 
   const navigate = useNavigate()
@@ -20,11 +22,25 @@ const Header = ({ onLogin, addressHeader }) => {
 
   }, [])
 
+  const [address, setAddress] = useState(null);
+
+  useEffect(() => {
+    getAddress(setAddress)
+  }, []);
+
+
   const handleNavigate = () => {
     navigate("/customer_profile")
   }
 
+  /* 
+   <MapPin className="w-4 sm:w-5 h-4 sm:h-5 text-orange-500" />
+                  <address className="text-xs sm:text-xl text-gray-700 font-medium text-clip">
+                    {addressHeader[0].address.split(' ').slice(0, 3).join(' ')}
+                  </address>
+  */
 
+  console.log(address)
   return (
     /* header */
     <header className="bg-white shadow-lg sticky top-0 z-30 border-b border-gray-200">
@@ -39,17 +55,9 @@ const Header = ({ onLogin, addressHeader }) => {
           {/* address */}
           <div className="flex items-center space-x-4 sm:space-x-6">
             {/* address info*/}
+            {/* address icon */}
             <div className="items-center hidden md:flex space-x-2">
-              {/* address icon */}
-              {
-                addressHeader &&
-                <>
-                  <MapPin className="w-4 sm:w-5 h-4 sm:h-5 text-orange-500" />
-                  <address className="text-xs sm:text-xl text-gray-700 font-medium text-clip">
-                    {addressHeader[0].address.split(' ').slice(0, 3).join(' ')}
-                  </address>
-                </>
-              }
+              {address && <p>{address}</p>}
             </div>
 
             {/* Botones de autenticación */}

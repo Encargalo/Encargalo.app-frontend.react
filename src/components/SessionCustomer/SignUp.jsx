@@ -15,8 +15,7 @@ const SignUp = ({
     onOpenWelcome,
     session,
     setSession,
-    setAddress,
-    setAddressHeader
+    setAddress
 }) => {
     //form data
     const {
@@ -49,8 +48,7 @@ const SignUp = ({
             reset,
             onClose,
             onOpenWelcome,
-            setAddress,
-            setAddressHeader
+            setAddress
         );
     };
 

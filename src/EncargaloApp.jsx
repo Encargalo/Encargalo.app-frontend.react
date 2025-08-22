@@ -20,10 +20,8 @@ const EncargaloApp = () => {
   const [showWelcome, setShowWelcome] = useState(false)
   //favorites
   const [favorites, setFavorites] = useState(new Set());
-  //adddress
+  //validate addresss
   const [address, setAddress] = useState(false);
-  //addres header
-  const [addressHeader, setAddressHeader] = useState()
 
   // Favoritos
   const toggleFavorite = (shopId) => {
@@ -36,7 +34,6 @@ const EncargaloApp = () => {
 
   useEffect(() => {
     getInformationCustomer()
-    getAddressCustomer(setAddress, setAddressHeader)
   }, []);
 
   const { isLoading } = useLoaderStore();
@@ -49,7 +46,6 @@ const EncargaloApp = () => {
       <div className="min-h-screen w-full relative background">
         <Header
           onLogin={() => setShowLogin(true)}
-          addressHeader={addressHeader}
         />
         <Suspense fallback={<Loader />}>
           <FoodDashboard
@@ -63,14 +59,12 @@ const EncargaloApp = () => {
           onClose={() => setShowLogin(false)}
           onOpenWelcome={() => setShowWelcome(true)}
           setAddress={setAddress}
-          setAddressHeader={setAddressHeader}
         />
 
         <WelcomeCustomerModal
           show={showWelcome}
           onClose={() => setShowWelcome(false)}
           address={address}
-          addressHeader={addressHeader}
         />
 
       </div>

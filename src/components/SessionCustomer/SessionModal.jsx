@@ -5,7 +5,7 @@ import Login from "./Login";
 import SignUp from "./SignUp";
 //services
 
-const SessionModal = ({ show, onClose, onOpenWelcome, setAddress, setAddressHeader }) => {
+const SessionModal = ({ show, onClose, onOpenWelcome, setAddress }) => {
     const [isLoading, setIsLoading] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
     const [session, setSession] = useState(true)
@@ -33,7 +33,7 @@ const SessionModal = ({ show, onClose, onOpenWelcome, setAddress, setAddressHead
                                 session={session}
                                 setSession={setSession}
                                 setAddress={setAddress}
-                                setAddressHeader={setAddressHeader}
+
                             />
                         </div>
                         :
@@ -52,7 +52,6 @@ const SessionModal = ({ show, onClose, onOpenWelcome, setAddress, setAddressHead
                                 session={session}
                                 setSession={setSession}
                                 setAddress={setAddress}
-                                setAddressHeader={setAddressHeader}
                             />
                         </div>
 
