@@ -2,6 +2,17 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer utilities {
+  .no-scrollbar::-webkit-scrollbar {
+    display: none; /* Chrome, Safari y Opera */
+  }
+
+  .no-scrollbar {
+    -ms-overflow-style: none; /* IE y Edge */
+    scrollbar-width: none; /* Firefox */
+  }
+}
+
 @keyframes fade-out-right {
   from {
     opacity: 1;
@@ -24,7 +35,6 @@
   }
 }
 
-
 .animate-fade-out-right {
   animation: fade-out-right 0.5s ease-in-out;
 }
@@ -32,7 +42,6 @@
 .animate-fade-in-right {
   animation: fade-in-right 0.5s ease-in-out;
 }
-
 
 @layer utilities {
   .bg-gradient-modern-orange {
@@ -46,12 +55,11 @@
 }
 
 .background {
-  @apply bg-gradient-to-br from-orange-300 to-orange-500 w-full h-full rounded-lg ;
+  @apply bg-gradient-to-br from-orange-300 to-orange-500 w-full h-full rounded-lg;
 }
 
 .aspect-ration-default {
   aspect-ratio: 16 / 9;
-
 }
 
 a {

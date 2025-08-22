@@ -122,7 +122,7 @@ const TopCombosCarousel = () => {
                     {/* add to cart */}
                     <div className="absolute bottom-2 sm:bottom-4 right-2 sm:right-4">
                       <button className="bg-orange-500 hover:bg-orange-600 text-white rounded-full p-1 sm:p-2 shadow-lg transition-all duration-300 hover:scale-110">
-                        <Plus className="w-7 sm:w-4 h-7 sm:h-4" />
+                        <Plus className="size-7 sm:size-6" />
                       </button>
                     </div>
                   </header>

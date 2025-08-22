@@ -61,11 +61,11 @@ const Header = ({ onLogin, addressHeader }) => {
                 <figure className="flex items-center space-x-1 sm:space-x-2 bg-orange-50 px-3 sm:px-3 py-2 sm:py-2 rounded-xl border border-orange-200 group cursor-pointer"
                   onClick={handleNavigate}
                 >
-                  <User className="size-6 text-orange-600" />
-                  <p className="text-base sm:text-xl font-medium text-gray-700">
+                  <User className="size-4 sm:size-7 text-orange-600" />
+                  <p className="text-sm sm:text-xl font-medium text-gray-700">
                     {userData.data.name}
                   </p>
-                  <ChevronRight className="size-6 text-orange-600 transition-transform duration-200 transform group-active:translate-x-2" />
+                  <ChevronRight className="size-4 sm:size-6 text-orange-600 transition-transform duration-200 transform group-active:translate-x-2" />
                 </figure>
 
                 {/* logout */}
@@ -74,8 +74,8 @@ const Header = ({ onLogin, addressHeader }) => {
 
                   onClick={logOutCustomer}
                 >
-                  <LogOut className="size-6" />
-                  <span className="text-base sm:text-xl font-medium">Salir</span>
+                  <LogOut className="size-4 sm:size-6 text-orange-600" />
+                  <span className="text-sm sm:text-xl font-medium">Salir</span>
                 </button>
               </div>
             ) : (

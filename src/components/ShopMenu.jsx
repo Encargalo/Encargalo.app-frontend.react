@@ -117,17 +117,17 @@ const ShopMenu = () => {
           </div>
 
           {/* filtering categories */}
-          <nav className="sm:px-6 lg:px-8 py-7 sticky top-[68px] bg-white z-30">
+          <nav className="sm:px-6 lg:px-8 py-4 sticky top-[68px] bg-white z-30">
             {/* button move carousel filtering */}
             <button
               onClick={() => scrollCarouselFiltering("left")}
-              className="bg-white hover:bg-orange-50 border-2 border-gray-200 hover:border-orange-300 rounded-full p-2 sm:p-3 transition-all duration-300 shadow-md hover:shadow-lg absolute left-2 z-30 bottom-7 sm:left-4"
+              className="bg-white hover:bg-orange-50 border-2 border-gray-200 hover:border-orange-300 rounded-full p-2 sm:p-3 transition-all duration-300 shadow-md hover:shadow-lg absolute left-2 z-30 bottom-4 sm:left-4"
             >
-              <ChevronLeft className="w-8 sm:w-5 h-8 sm:h-5 text-gray-600 hover:text-orange-600" />
+              <ChevronLeft className="size-7 sm:size-6 text-gray-600 hover:text-orange-600" />
             </button>
 
             {/* buttons actions */}
-            <div className="relative flex space-x-2 overflow-x-auto px-12"
+            <div className="relative flex space-x-2 overflow-x-auto px-12 no-scrollbar"
               ref={carouselRef}>
               {/* button all categories */}
               <button
@@ -158,9 +158,9 @@ const ShopMenu = () => {
             {/* button move carousel filtering */}
             <button
               onClick={() => scrollCarouselFiltering("right")}
-              className="bg-white hover:bg-orange-50 border-2 border-gray-200 hover:border-orange-300 rounded-full p-2 sm:p-3 transition-all duration-300 shadow-md hover:shadow-lg absolute top-6 right-2 sm:right-4"
+              className="bg-white hover:bg-orange-50 border-2 border-gray-200 hover:border-orange-300 rounded-full p-2 sm:p-3 transition-all duration-300 shadow-md hover:shadow-lg absolute top-3 right-2 sm:right-4"
             >
-              <ChevronRight className="w-8 sm:w-6 h-8 sm:h-6 text-gray-600 hover:text-orange-600" />
+              <ChevronRight className="size-7 sm:size-6 text-gray-600 hover:text-orange-600" />
             </button>
           </nav>
 
