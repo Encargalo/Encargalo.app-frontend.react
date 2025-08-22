@@ -1,9 +1,9 @@
-import api from "../lib/api";
+import api from '../lib/api';
 
-const getAdditionals = async (setAdditionals, shop_id) => {
+const getAdditionals = async (setAdditionals, category_id) => {
   try {
     const response = await api.get(
-      `/products/adiciones?category_id=${shop_id}`
+      `/products/adiciones?category_id=${category_id}`
     );
 
     console.log(response);

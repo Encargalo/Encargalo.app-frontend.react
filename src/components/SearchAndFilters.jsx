@@ -20,7 +20,7 @@ const SearchAndFilters = ({
         <Search className="absolute left-4 sm:left-6 top-1/2 transform -translate-y-1/2 text-orange-400 w-5 sm:w-6 h-5 sm:h-6 " />
         <input
           type="text"
-          placeholder="Busca restaurantes o comida..."
+          placeholder="Busca restaurantes..."
           value={searchTerm}
           onChange={(e) => onSearchChange(e.target.value)}
           className="w-full pl-12 sm:pl-16 pr-4 sm:pr-6 py-3 sm:py-4 border-2 border-gray-200 rounded-xl sm:rounded-2xl focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 bg-slate-50 text-base sm:text-lg text-"
@@ -36,9 +36,8 @@ const SearchAndFilters = ({
           <Filter className="w-4 sm:w-5 h-4 sm:h-5 text-orange-500" />
           <span className="font-semibold text-gray-700">Filtros</span>
           <ChevronDown
-            className={`w-4 h-4 transition-transform ${
-              showFilters ? "rotate-180" : ""
-            }`}
+            className={`w-4 h-4 transition-transform ${showFilters ? "rotate-180" : ""
+              }`}
           />
         </button>
 

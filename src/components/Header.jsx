@@ -20,8 +20,6 @@ const Header = ({ onLogin, addressHeader }) => {
 
   }, [])
 
-  console.log(addressHeader)
-
   const handleNavigate = () => {
     navigate("/customer_profile")
   }
