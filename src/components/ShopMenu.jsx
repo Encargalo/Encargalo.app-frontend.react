@@ -58,7 +58,7 @@ const ShopMenu = () => {
 
   //user data
   useEffect(() => {
-    const user_session = 'user_session';
+    const user_session = import.meta.env.VITE_USER_SESSION
     const user_data = getDecryptedItem(user_session)
     setUserData(user_data)
   }, [])

@@ -12,35 +12,28 @@ import getAddress from "../services/getAddress";
 
 const Header = ({ onLogin }) => {
   const [userData, setUserData] = useState({})
+  const [address, setAddress] = useState(null);
 
   const navigate = useNavigate()
 
+  //get user data
   useEffect(() => {
-    const user_session = 'user_session';
+    const user_session = import.meta.env.VITE_USER_SESSION
     const user = getDecryptedItem(user_session)
     setUserData(user)
 
   }, [])
 
-  const [address, setAddress] = useState(null);
-
+  //get address
   useEffect(() => {
     getAddress(setAddress)
   }, []);
 
-
+  //navigate customer profile
   const handleNavigate = () => {
     navigate("/customer_profile")
   }
 
-  /* 
-   <MapPin className="w-4 sm:w-5 h-4 sm:h-5 text-orange-500" />
-                  <address className="text-xs sm:text-xl text-gray-700 font-medium text-clip">
-                    {addressHeader[0].address.split(' ').slice(0, 3).join(' ')}
-                  </address>
-  */
-
-  console.log(address)
   return (
     /* header */
     <header className="bg-white shadow-lg sticky top-0 z-30 border-b border-gray-200">
@@ -56,9 +49,15 @@ const Header = ({ onLogin }) => {
           <div className="flex items-center space-x-4 sm:space-x-6">
             {/* address info*/}
             {/* address icon */}
-            <div className="items-center hidden md:flex space-x-2">
-              {address && <p>{address}</p>}
-            </div>
+            {address && userData.session &&
+              <div div className="items-center hidden md:flex space-x-2">
+                <MapPin className="w-4 sm:w-5 h-4 sm:h-5 text-orange-500" />
+                <address className="text-xs sm:text-base text-gray-700 font-medium text-clip">
+                  {address}
+                </address>
+              </div>
+            }
+
 
             {/* Botones de autenticación */}
             {userData?.session ? (
@@ -96,7 +95,7 @@ const Header = ({ onLogin }) => {
           </div>
         </div>
       </section>
-    </header>
+    </header >
   );
 };
 
