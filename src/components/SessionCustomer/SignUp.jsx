@@ -15,6 +15,8 @@ const SignUp = ({
     onOpenWelcome,
     session,
     setSession,
+    setAddress,
+    setAddressHeader
 }) => {
     //form data
     const {
@@ -46,7 +48,9 @@ const SignUp = ({
             setError,
             reset,
             onClose,
-            onOpenWelcome
+            onOpenWelcome,
+            setAddress,
+            setAddressHeader
         );
     };
 
@@ -306,7 +310,7 @@ const SignUp = ({
                         <button
                             type="button"
                             onClick={() => setShowPassword(!showPassword)}
-                            className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-orange-500"
+                            className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-orange-500 lg:right-1"
                         >
                             {showPassword ? (
                                 <EyeOff className="size-5" />
@@ -327,11 +331,11 @@ const SignUp = ({
                     <button
                         disabled={isLoading}
                         type="submit"
-                        className="w-1/2 bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 disabled:from-gray-300 disabled:to-gray-400 text-white font-bold py-3 rounded-xl text-xl mt-6 shadow-lg"
+                        className="w-full sm:w-2/4 bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 disabled:from-gray-300 disabled:to-gray-400 text-white font-bold py-3 rounded-xl text-xl mt-6 shadow-lg"
                     >
                         {isLoading ? (
                             <div className="flex items-center justify-center space-x-2">
-                                <div className="animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent"></div>
+                                <div className="animate-spin rounded-full size-7 border-2 border-white border-t-transparent"></div>
                             </div>
                         ) : (
                             'Registrate'

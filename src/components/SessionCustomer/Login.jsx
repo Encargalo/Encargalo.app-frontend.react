@@ -4,7 +4,7 @@ import { Phone, Lock, Eye, EyeOff, X } from "lucide-react";
 import { Controller, useForm } from "react-hook-form";
 import logInCustomers from "../../services/logInCustomers";
 
-const Login = ({ onClose, showPassword, setShowPassword, isLoading, setIsLoading, onOpenWelcome, session, setSession }) => {
+const Login = ({ onClose, showPassword, setShowPassword, isLoading, setIsLoading, onOpenWelcome, session, setSession, setAddress, setAddressHeader }) => {
 
     //form data
     const {
@@ -30,16 +30,18 @@ const Login = ({ onClose, showPassword, setShowPassword, isLoading, setIsLoading
             setIsLoading,
             setError,
             onClose,
-            onOpenWelcome
+            onOpenWelcome,
+            setAddress,
+            setAddressHeader
         );
     };
 
     return (
-        <section className="bg-white rounded-2xl shadow-2xl p-6 lg:w-2/5">
+        <section className="bg-white rounded-2xl shadow-2xl p-6 w-full lg:w-2/5">
             {/* Header */}
             <header className="bg-gradient-to-r from-orange-500 to-orange-600 px-9 py-9 lg:py-12 lg:px-10 rounded-t-2xl -mx-6 -mt-6 mb-7">
                 <figure className="flex items-center justify-between gap-2 sm:gap-20">
-                    <h2 className="text-3xl sm:text-5xl font-bold text-white">Iniciar Sesión</h2>
+                    <h2 className="text-4xl sm:text-5xl font-bold text-white">Iniciar Sesión</h2>
                     <button
                         onClick={onClose}
                         className="text-white hover:text-orange-200 p-2 rounded-full bg-orange-400"
@@ -151,8 +153,7 @@ const Login = ({ onClose, showPassword, setShowPassword, isLoading, setIsLoading
                 >
                     {isLoading ? (
                         <div className="flex items-center justify-center space-x-2">
-                            <div className="animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent"></div>
-                            <span>Iniciando sesión...</span>
+                            <div className="animate-spin rounded-full size-7 border-2 border-white border-t-transparent"></div>
                         </div>
                     ) : (
                         "Iniciar Sesión"
@@ -161,7 +162,7 @@ const Login = ({ onClose, showPassword, setShowPassword, isLoading, setIsLoading
             </form>
 
             {/* Footer */}
-            <footer className="mt-8 mb-4 flex items-center justify-between sm:justify-center sm:gap-10 w-full">
+            <footer className="mt-8 mb-4 flex items-center  justify-center gap-1 sm:gap-10 w-full">
                 <p className="text-gray-600">
                     ¿No tienes cuenta?
                 </p>

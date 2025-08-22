@@ -42,6 +42,11 @@ const RoutesSystem = createBrowserRouter([
 
     ),
   },
+  {
+    path: "/customer_profile",
+    element: <h1>Algo</h1>,
+  }
+
 ]);
 
 export default RoutesSystem;
