@@ -32,7 +32,7 @@ const UpdatePassword = () => {
         <div className="p-8">
             <header className="w-full flex flex-col items-center sm:flex-row sm:items-end sm:gap-x-4 gap-y-1">
                 <h1 className="text-gray-600 text-4xl sm:text-5xl">Contraseña</h1>
-                {/* {confirmUpdate && */} <p className="text-sm sm:text-xl italic text-green-600">Se cambio la contraseña correctamente</p>
+                {confirmUpdate && <p className="text-sm sm:text-xl italic text-green-600">Se cambio la contraseña correctamente</p>}
             </header>
 
 
