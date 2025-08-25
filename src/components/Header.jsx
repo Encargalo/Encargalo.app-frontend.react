@@ -3,7 +3,6 @@ import { MapPin, User, LogOut, ChevronRight } from "lucide-react";
 //react
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { GoogleMap, Marker, useJsApiLoader } from "@react-google-maps/api";
 //utils
 import { getDecryptedItem } from "../utils/encryptionUtilities";
 //services
@@ -21,12 +20,12 @@ const Header = ({ onLogin }) => {
     const user_session = import.meta.env.VITE_USER_SESSION
     const user = getDecryptedItem(user_session)
     setUserData(user)
-
   }, [])
+
 
   //get address
   useEffect(() => {
-    getAddress(setAddress)
+    getAddress(setAddress);
   }, []);
 
   //navigate customer profile
@@ -47,8 +46,6 @@ const Header = ({ onLogin }) => {
 
           {/* address */}
           <div className="flex items-center space-x-4 sm:space-x-6">
-            {/* address info*/}
-            {/* address icon */}
             {address && userData.session &&
               <div div className="items-center hidden md:flex space-x-2">
                 <MapPin className="w-4 sm:w-5 h-4 sm:h-5 text-orange-500" />
@@ -87,7 +84,7 @@ const Header = ({ onLogin }) => {
               /* login */
               <button
                 onClick={onLogin}
-                className="bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white px-3 sm:px-6 py-1 sm:py-2 rounded-xl font-semibold transition-all duration-300 shadow-lg hover:shadow-xl text-xl sm:text-2xl"
+                className="bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white px-3 sm:px-6 py-1 sm:py-2 rounded-xl font-semibold transition-all duration-300 shadow-lg hover:shadow-xl sm:text-2xl"
               >
                 Iniciar Sesión
               </button>

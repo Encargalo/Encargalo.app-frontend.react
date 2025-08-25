@@ -11,7 +11,6 @@ import useLoaderStore from "./store/loaderStore.js";
 //services
 import getInformationCustomer from "./services/getInformationCustomer.js";
 import SessionModal from "./components/SessionCustomer/SessionModal.jsx";
-import getAddressCustomer from "./services/getAddressCustomer.js";
 
 const EncargaloApp = () => {
   //show login

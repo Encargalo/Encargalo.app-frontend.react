@@ -6,11 +6,11 @@ const getAddressCustomer = async (setAddress) => {
 
     if (response.status === 200) {
       if (response.data === null) {
-        setAddress(false);
+        setAddress([]);
         return;
       }
 
-      setAddress(true);
+      setAddress(response.data);
     }
   } catch (error) {
     const response = error.response;
