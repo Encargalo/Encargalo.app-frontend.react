@@ -33,26 +33,25 @@ const CustomerProfile = () => {
     if (!user?.session) return
 
     return (
-        <main className="min-h-screen w-dvh relative background p-4 sm:p-12 flex flex-col gap-y-3 lg:flex-row-reverse sm:justify-end">
+        <main className="min-h-dvh w-full relative p-4 sm:p-12 flex flex-col gap-y-3 lg:flex-row-reverse sm:justify-end bg-gradient-to-br from-orange-50 to-orange-100 gap-7">
 
             {/* header */}
-            <header className="h-max w-full lg:w-1/2 shadow-lg p-5 bg-orange-50 lg:ml-14 rounded-md">
-                <nav>
-
+            <header className="h-max w-full lg:w-1/2">
+                <nav className="bg-white border border-gray-300 rounded-2xl p-5">
                     {/* header */}
                     <div className="space-y-3 mb-6 hidden lg:flex lg:flex-col">
-                        <h2 className="text-3xl">Hola {user && user.data.name}, Aqui puedes actualizar tus datos</h2>
+                        <h2 className="text-3xl"><span className="text-orange-600">Hola {user && user.data.name},</span> Aqui puedes actualizar tus datos</h2>
                         <p className="text-xl text-gray-600">
                             Actualiza tu datos personales, contraseñas y añade nuevas direcciones
                         </p>
                     </div>
 
                     {/* links list */}
-                    <ul className="w-full grid items-center grid-cols-2 sm:grid-cols-1 gap-2">
+                    <ul className="w-full flex flex-col gap-y-2">
                         {/* ${pathname === pathsname.index || pathname === pathsname.personalData */}
                         <li
-                            className={`${pathname === pathsname.index || pathname === pathsname.personalData ? "bg-orange-400 hover:bg-orange-500 text-white" : "text-orange-600 hover:bg-orange-500 hover:text-white"}
-                            px-4 py-2 rounded-md cursor-pointer text-sm sm:text-xl transition-colors
+                            className={`${pathname === pathsname.index || pathname === pathsname.personalData ? "bg-orange-400 hover:bg-orange-500 text-white border border-orange-700" : "text-orange-600 hover:bg-orange-500 hover:text-white"}
+                            px-4 py-2 rounded-md cursor-pointer text-base sm:text-xl transition-colors
                             `}
 
                             onClick={() => {
@@ -65,8 +64,8 @@ const CustomerProfile = () => {
                             </p>
                         </li>
                         <li
-                            className={`${pathname === pathsname.address ? "bg-orange-400 hover:bg-orange-500 text-white" : "text-orange-600 hover:bg-orange-500 hover:text-white"}
-                            px-4 py-2 rounded-md cursor-pointer text-sm sm:text-xl transition-colors
+                            className={`${pathname === pathsname.address ? "bg-orange-400 hover:bg-orange-500 text-white border border-orange-700" : "text-orange-600 hover:bg-orange-500 hover:text-white"}
+                            px-4 py-2 rounded-md cursor-pointer text-base sm:text-xl transition-colors"
                             `}
 
                             onClick={() => { navigate("/customer_profile/address") }}
@@ -76,8 +75,8 @@ const CustomerProfile = () => {
                             </p>
                         </li>
                         <li
-                            className={`${pathname === pathsname.updatePassword ? "bg-orange-400 hover:bg-orange-500 text-white" : "text-orange-600 hover:bg-orange-500 hover:text-white"}
-                            px-4 py-2 rounded-md cursor-pointer text-sm sm:text-xl transition-colors
+                            className={`${pathname === pathsname.updatePassword ? "bg-orange-400 hover:bg-orange-500 text-white border border-orange-700" : "text-orange-600 hover:bg-orange-500 hover:text-white"}
+                            px-4 py-2 rounded-md cursor-pointer text-base sm:text-xl transition-colors
                             `}
 
                             onClick={() => { navigate("/customer_profile/update_password") }}
@@ -86,24 +85,23 @@ const CustomerProfile = () => {
                                 Cambiar contraseña
                             </p>
                         </li>
-
-                        <li className="w-full lg:mt-auto ml-auto">
-                            <button
-                                className="flex items-center space-x-1 sm:space-x-2 hover:text-orange-600 px-2 sm:px-3 py-2 sm:py-2 rounded-md hover:bg-orange-50 hover:border-orange-500 transition-all duration-300 w-full"
-                                onClick={() => navigate("/")}
-
-                            >
-                                <LogOut className="size-4 sm:size-6 text-orange-600" />
-                                <span className="text-sm sm:text-xl font-medium">Volver al menú</span>
-                            </button>
-                        </li>
-
                     </ul>
                 </nav>
+
+                {/* return page */}
+                <div className="p-5">
+                    <button
+                        onClick={() => navigate("/")}
+                        className="w-full bg-gradient-to-r from-orange-500 to-orange-600 text-white px-5 py-3 rounded-xl font-semibold shadow hover:shadow-md transition disabled:opacity-60 sm:text-xl"
+                    >
+                        Volver al menú
+                    </button>
+
+                </div>
             </header>
 
             {/* container */}
-            <section className="h-max w-full sm:w-11/12 bg-orange-50 rounded-md shadow-md">
+            <section className="h-max w-full sm:w-11/12 bg-white border border-gray-300 rounded-2xl shadow-md">
                 {/* personal info */}
                 <Outlet />
             </section>
