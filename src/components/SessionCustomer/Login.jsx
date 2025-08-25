@@ -4,7 +4,7 @@ import { Phone, Lock, Eye, EyeOff, X } from "lucide-react";
 import { Controller, useForm } from "react-hook-form";
 import logInCustomers from "../../services/logInCustomers";
 
-const Login = ({ onClose, showPassword, setShowPassword, isLoading, setIsLoading, onOpenWelcome, session, setSession, setAddress, setAddressHeader }) => {
+const Login = ({ onClose, showPassword, setShowPassword, isLoading, setIsLoading, onOpenWelcome, session, setSession, setAddress }) => {
 
     //form data
     const {
@@ -32,7 +32,7 @@ const Login = ({ onClose, showPassword, setShowPassword, isLoading, setIsLoading
             onClose,
             onOpenWelcome,
             setAddress,
-            setAddressHeader
+
         );
     };
 

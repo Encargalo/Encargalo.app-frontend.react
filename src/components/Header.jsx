@@ -7,23 +7,31 @@ import { useNavigate } from "react-router-dom";
 import { getDecryptedItem } from "../utils/encryptionUtilities";
 //services
 import logOutCustomer from "../services/logOutCustomer";
+import getAddress from "../services/getAddress";
 
-const Header = ({ onLogin, addressHeader }) => {
+const Header = ({ onLogin }) => {
   const [userData, setUserData] = useState({})
+  const [address, setAddress] = useState(null);
 
   const navigate = useNavigate()
 
+  //get user data
   useEffect(() => {
-    const user_session = 'user_session';
+    const user_session = import.meta.env.VITE_USER_SESSION
     const user = getDecryptedItem(user_session)
     setUserData(user)
-
   }, [])
 
+
+  //get address
+  useEffect(() => {
+    getAddress(setAddress);
+  }, []);
+
+  //navigate customer profile
   const handleNavigate = () => {
     navigate("/customer_profile")
   }
-
 
   return (
     /* header */
@@ -38,19 +46,15 @@ const Header = ({ onLogin, addressHeader }) => {
 
           {/* address */}
           <div className="flex items-center space-x-4 sm:space-x-6">
-            {/* address info*/}
-            <div className="items-center hidden md:flex space-x-2">
-              {/* address icon */}
-              {
-                addressHeader &&
-                <>
-                  <MapPin className="w-4 sm:w-5 h-4 sm:h-5 text-orange-500" />
-                  <address className="text-xs sm:text-xl text-gray-700 font-medium text-clip">
-                    {addressHeader[0].address.split(' ').slice(0, 3).join(' ')}
-                  </address>
-                </>
-              }
-            </div>
+            {address && userData.session &&
+              <div div className="items-center hidden md:flex space-x-2">
+                <MapPin className="w-4 sm:w-5 h-4 sm:h-5 text-orange-500" />
+                <address className="text-xs sm:text-base text-gray-700 font-medium text-clip">
+                  {address}
+                </address>
+              </div>
+            }
+
 
             {/* Botones de autenticación */}
             {userData?.session ? (
@@ -80,7 +84,7 @@ const Header = ({ onLogin, addressHeader }) => {
               /* login */
               <button
                 onClick={onLogin}
-                className="bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white px-3 sm:px-6 py-1 sm:py-2 rounded-xl font-semibold transition-all duration-300 shadow-lg hover:shadow-xl text-xl sm:text-2xl"
+                className="bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white px-3 sm:px-6 py-1 sm:py-2 rounded-xl font-semibold transition-all duration-300 shadow-lg hover:shadow-xl sm:text-2xl"
               >
                 Iniciar Sesión
               </button>
@@ -88,7 +92,7 @@ const Header = ({ onLogin, addressHeader }) => {
           </div>
         </div>
       </section>
-    </header>
+    </header >
   );
 };
 

@@ -9,8 +9,7 @@ const logInCustomers = async (
   setError,
   onClose,
   onOpenWelcome,
-  setAddress,
-  setAddressHeader
+  setAddress
 ) => {
   setIsLoading(true);
   try {
@@ -19,7 +18,7 @@ const logInCustomers = async (
     /* session created success */
     if (response.status === 201) {
       getInformationCustomer();
-      getAddressCustomer(setAddress, setAddressHeader);
+      getAddressCustomer(setAddress);
       onOpenWelcome();
       onClose();
     }
