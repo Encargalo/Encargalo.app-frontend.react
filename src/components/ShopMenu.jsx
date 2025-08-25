@@ -10,6 +10,7 @@ import getShopDetails from "../services/getShopDetails";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
 import { getDecryptedItem } from "../utils/encryptionUtilities";
+import ShoppingCartIcon from "./ShoppingCartIcon";
 
 const ShopMenu = () => {
   // Estados
@@ -81,13 +82,19 @@ const ShopMenu = () => {
                 <h1 className="hidden sm:block text-2xl font-bold text-gray-900">{shop.name}</h1>
               </div>
 
-              {/* user */}
-              <div className="flex items-center space-x-2 bg-orange-50 px-3 py-1.5 rounded-xl border border-orange-200">
-                <User className="w-5 h-5 text-orange-600" />
-                <span className="text-base sm:text-xl font-medium text-gray-700">{
-                  userData.data?.name
-                }</span>
+              {/* shopping cart */}
+              <div className="flex gap-3 flex-nowrap">
+                <ShoppingCartIcon />
+
+                {/* user */}
+                <div className="flex items-center space-x-2 bg-orange-50 px-3 py-1.5 rounded-xl border border-orange-200">
+                  <User className="w-5 h-5 text-orange-600" />
+                  <span className="text-base sm:text-xl font-medium text-gray-700">{
+                    userData.data?.name
+                  }</span>
+                </div>
               </div>
+
             </div>
           </div>
         </header>

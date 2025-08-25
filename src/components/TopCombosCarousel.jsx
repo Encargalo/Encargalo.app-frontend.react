@@ -119,7 +119,7 @@ const TopCombosCarousel = () => {
                       </span>
                     </div>
 
-                    {/* add to cart */}
+                    {/* open modal */}
                     <div className="absolute bottom-2 sm:bottom-4 right-2 sm:right-4">
                       <button className="bg-orange-500 hover:bg-orange-600 text-white rounded-full p-1 sm:p-2 shadow-lg transition-all duration-300 hover:scale-110">
                         <Plus className="size-7 sm:size-6" />

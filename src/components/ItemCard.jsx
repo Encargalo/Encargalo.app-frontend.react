@@ -1,12 +1,8 @@
+//icons
 import { Star, Plus } from "lucide-react";
 
 // Tarjeta de artículo con imagen, nombre, descripción, precio y botón de agregar.
-const ItemCard = ({ item, onAddToCart, onItemClick }) => {
-  // Evita que al agregar al carrito se active el clic de la tarjeta.
-  const handleAddToCartClick = (e) => {
-    e.stopPropagation();
-    onAddToCart(item);
-  };
+const ItemCard = ({ item, onItemClick }) => {
 
   return (
     <article
@@ -30,11 +26,13 @@ const ItemCard = ({ item, onAddToCart, onItemClick }) => {
         </div>
       </header>
 
+
+
       <div className="flex flex-col justify-between px-4 pb-6 mt-4 sm:mt-5 gap-4">
         {/* details */}
         <figure className="mb-4">
           {/* name */}
-          <h3 className="text-2xl sm:text-2xl font-bold text-gray-900">
+          <h3 className="text-2xl font-bold text-gray-900">
             {item.name}
           </h3>
           {/* description */}
@@ -45,14 +43,11 @@ const ItemCard = ({ item, onAddToCart, onItemClick }) => {
 
         {/* footer */}
         <footer className="flex items-center justify-between">
-          {/* price */}
           <p className="text-xl sm:text-2xl font-bold text-orange-600">
             ${item.price.toLocaleString()}
           </p>
 
-          {/* add to cart */}
           <button
-            onClick={handleAddToCartClick}
             className="bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white px-4 sm:px-6 py-2 rounded-xl font-semibold transition-all duration-300 flex items-center justify-center space-x-2 shadow-lg hover:shadow-xl"
             aria-label={`Agregar ${item.name} al carrito`}
           >
