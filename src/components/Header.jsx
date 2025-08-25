@@ -9,6 +9,7 @@ import { getDecryptedItem } from "../utils/encryptionUtilities";
 import logOutCustomer from "../services/logOutCustomer";
 import getAddress from "../services/getAddress";
 import ShoppingCartIcon from "./ShoppingCartIcon";
+import UserMenu from "./UserMenu";
 
 const Header = ({ onLogin }) => {
   const [userData, setUserData] = useState(null)
@@ -41,8 +42,8 @@ const Header = ({ onLogin }) => {
       <section className="w-full px-4 sm:px-6 lg:px-8 py-4 sm:py-4">
         <div className="flex items-center justify-between">
           {/* title */}
-          <h1 className="text-xl sm:text-xl lg:text-2xl font-bold bg-gradient-to-r from-orange-500 to-orange-600 bg-clip-text text-transparent">
-            EncargaloApp
+          <h1 className="text-2xl sm:text-3xl lg:text-2xl font-bold bg-gradient-to-r from-orange-500 to-orange-600 bg-clip-text text-transparent">
+            Encargalo
           </h1>
 
           {/* address */}
@@ -62,28 +63,7 @@ const Header = ({ onLogin }) => {
 
             {/* Botones de autenticación */}
             {userData?.session ? (
-              /* user info */
-              <div className="flex items-center space-x-2 sm:space-x-3">
-                <figure className="flex items-center space-x-1 sm:space-x-2 bg-orange-50 px-3 sm:px-3 py-2 sm:py-2 rounded-xl border border-orange-200 group cursor-pointer"
-                  onClick={handleNavigate}
-                >
-                  <User className="size-4 sm:size-7 text-orange-600" />
-                  <p className="text-sm sm:text-xl font-medium text-gray-700">
-                    {userData.data.name}
-                  </p>
-                  <ChevronRight className="size-4 sm:size-6 text-orange-600 transition-transform duration-200 transform group-active:translate-x-2" />
-                </figure>
-
-                {/* logout */}
-                <button
-                  className="flex items-center space-x-1 sm:space-x-2 hover:text-orange-600 px-2 sm:px-3 py-2 sm:py-2 rounded-xl hover:bg-orange-50 hover:border-orange-500 transition-all duration-300"
-
-                  onClick={logOutCustomer}
-                >
-                  <LogOut className="size-4 sm:size-6 text-orange-600" />
-                  <span className="text-sm sm:text-xl font-medium">Salir</span>
-                </button>
-              </div>
+              <UserMenu userData={userData} handleNavigate={handleNavigate} />
             ) : (
               /* login */
               <button
