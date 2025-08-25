@@ -4,7 +4,6 @@ import { ilustrations } from "../assets/ilustrations";
 import { useNavigate } from "react-router-dom";
 
 const WelcomeCustomerModal = ({ show, onClose, address }) => {
-
     const navigate = useNavigate()
 
     const handleClose = (e) => {
@@ -35,7 +34,7 @@ const WelcomeCustomerModal = ({ show, onClose, address }) => {
                 {/* Contenido */}
                 <div className="px-6 pt-6 pb-4 text-center space-y-2 text-gray-700 text-xl sm:text-2xl font-medium">
                     {
-                        address.lenght > 0 ?
+                        address.length > 0 ?
                             <div>
                                 <p>
                                     Haz tus pedidos de comida rápida de forma fácil y rápida.
@@ -53,7 +52,7 @@ const WelcomeCustomerModal = ({ show, onClose, address }) => {
 
                     {/* Imagen / ilustración opcional */}
                     <img
-                        src={address.lenght > 0 ? ilustrations.fastFood1 : ilustrations.Map65}
+                        src={address.length > 0 ? ilustrations.fastFood1 : ilustrations.Map65}
                         alt="Welcome Illustration"
                         className="size-2/6 mx-auto"
                     />
@@ -63,7 +62,7 @@ const WelcomeCustomerModal = ({ show, onClose, address }) => {
                 <div className="px-6 pb-6">
 
                     {
-                        address.lenght > 0
+                        address.length > 0
                             ? <button
                                 onClick={handleClose}
                                 className="w-full bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white font-bold py-4 rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl text-xl sm:text-2xl"
