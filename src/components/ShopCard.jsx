@@ -25,7 +25,7 @@ const ShopCard = ({ shop, favorites, onToggleFavorite }) => {
           className="w-full h-50 sm:h-50 object-cover group-hover:scale-105 transition-transform duration-300"
         />
         {/* heart */}
-        <button
+        {/*  <button
           onClick={(e) => {
             e.stopPropagation();
             onToggleFavorite(shop.id);
@@ -38,7 +38,7 @@ const ShopCard = ({ shop, favorites, onToggleFavorite }) => {
               : "text-gray-600"
               }`}
           />
-        </button>
+        </button> */}
 
         {/* shop status */}
         {!shop.opened && (

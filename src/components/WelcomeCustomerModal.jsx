@@ -14,7 +14,7 @@ const WelcomeCustomerModal = ({ show, onClose, address }) => {
     }
 
     const handleNavigate = () => {
-        navigate("/customer_profile")
+        navigate("/customer_profile/address")
     }
 
     if (!show) return null;
@@ -35,7 +35,7 @@ const WelcomeCustomerModal = ({ show, onClose, address }) => {
                 {/* Contenido */}
                 <div className="px-6 pt-6 pb-4 text-center space-y-2 text-gray-700 text-xl sm:text-2xl font-medium">
                     {
-                        address ?
+                        address.lenght > 0 ?
                             <div>
                                 <p>
                                     Haz tus pedidos de comida rápida de forma fácil y rápida.
@@ -53,7 +53,7 @@ const WelcomeCustomerModal = ({ show, onClose, address }) => {
 
                     {/* Imagen / ilustración opcional */}
                     <img
-                        src={address ? ilustrations.fastFood1 : ilustrations.Map65}
+                        src={address.lenght > 0 ? ilustrations.fastFood1 : ilustrations.Map65}
                         alt="Welcome Illustration"
                         className="size-2/6 mx-auto"
                     />
@@ -63,7 +63,7 @@ const WelcomeCustomerModal = ({ show, onClose, address }) => {
                 <div className="px-6 pb-6">
 
                     {
-                        address
+                        address.lenght > 0
                             ? <button
                                 onClick={handleClose}
                                 className="w-full bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white font-bold py-4 rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl text-xl sm:text-2xl"
