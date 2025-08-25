@@ -1,5 +1,6 @@
 import api from '../lib/api';
 import { setEncryptedItem } from '../utils/encryptionUtilities';
+import useCartStore from '../store/cartStore';
 
 const logOutCustomer = async () => {
   try {
@@ -12,6 +13,7 @@ const logOutCustomer = async () => {
       };
 
       setEncryptedItem(user_session, userSession);
+      useCartStore.getState().clearCart();
       location.reload();
     }
   } catch {

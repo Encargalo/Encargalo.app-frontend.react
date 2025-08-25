@@ -8,6 +8,7 @@ import { getDecryptedItem } from "../utils/encryptionUtilities";
 //services
 import logOutCustomer from "../services/logOutCustomer";
 import getAddress from "../services/getAddress";
+import ShoppingCartIcon from "./ShoppingCartIcon";
 
 const Header = ({ onLogin }) => {
   const [userData, setUserData] = useState({})
@@ -54,6 +55,9 @@ const Header = ({ onLogin }) => {
                 </address>
               </div>
             }
+
+            {/* shopping cart */}
+            {userData?.session ? <ShoppingCartIcon /> : null}
 
 
             {/* Botones de autenticación */}

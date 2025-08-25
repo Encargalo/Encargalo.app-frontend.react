@@ -8,6 +8,8 @@ const Loader = lazy(() => import("./components/Loader.jsx"));
 const EncargaloApp = lazy(() => import("./EncargaloApp.jsx"));
 const ShopMenu = lazy(() => import("./components/ShopMenu.jsx"));
 const CustomerProfile = lazy(() => import("./components/CustomerProfile/CustomerProfile.jsx"));
+const ShoppingCart = lazy(() => import("./components/ShoppingCart.jsx"));
+const CheckoutShopping = lazy(() => import("./components/CheckoutShopping.jsx"));
 //customer
 import UpdatePersonalInfo from "./components/CustomerProfile/UpdatePersonalInfo";
 import AddAddress from "./components/CustomerProfile/AddAddress";
@@ -26,6 +28,8 @@ function WithLoader({ children }) {
 
 
 const RoutesSystem = createBrowserRouter([
+
+  /* main */
   {
     path: "/",
     element: (
@@ -36,6 +40,8 @@ const RoutesSystem = createBrowserRouter([
       </Suspense>
     ),
   },
+
+  /* shop */
   {
     path: "/:tag_shop",
     element: (
@@ -47,10 +53,13 @@ const RoutesSystem = createBrowserRouter([
 
     ),
   },
+
+  /* customer */
   {
     path: "/customer_profile/",
     element: <CustomerProfile />,
     children: [
+      /* personal data */
       {
         index: true,
         element: <UpdatePersonalInfo />
@@ -59,17 +68,26 @@ const RoutesSystem = createBrowserRouter([
         path: "personal_data",
         element: <UpdatePersonalInfo />
       }
+      /* address */
       ,
       {
         path: "address",
         element: <AddAddress />
       },
+      /* update password */
       {
         path: "update_password",
         element: <UpdatePassword />
       }
     ]
-  }
+  },
+
+  /* shopping cart */
+  {
+    path: "/shopping_cart",
+    element: <ShoppingCart />
+  },
+  { path: "/cart/checkout", element: <CheckoutShopping /> }
 
 ]);
 
