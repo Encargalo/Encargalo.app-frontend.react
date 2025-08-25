@@ -11,7 +11,7 @@ import getAddress from "../services/getAddress";
 import ShoppingCartIcon from "./ShoppingCartIcon";
 
 const Header = ({ onLogin }) => {
-  const [userData, setUserData] = useState({})
+  const [userData, setUserData] = useState(null)
   const [address, setAddress] = useState(null);
 
   const navigate = useNavigate()
@@ -47,7 +47,7 @@ const Header = ({ onLogin }) => {
 
           {/* address */}
           <div className="flex items-center space-x-4 sm:space-x-6">
-            {address && userData.session &&
+            {address && userData?.session &&
               <div div className="items-center hidden md:flex space-x-2">
                 <MapPin className="w-4 sm:w-5 h-4 sm:h-5 text-orange-500" />
                 <address className="text-xs sm:text-base text-gray-700 font-medium text-clip">
