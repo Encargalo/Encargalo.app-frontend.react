@@ -5,18 +5,20 @@ import { Controller, useForm } from 'react-hook-form';
 //components
 import InputCalendar from '../InputCalendar';
 import signupCustomer from '../../services/signupCustomer';
+import useOnLoginStore from '../../store/onLoginStore';
 
 const SignUp = ({
-    onClose,
     showPassword,
     setShowPassword,
     isLoading,
     setIsLoading,
-    onOpenWelcome,
     session,
     setSession,
-    setAddress
 }) => {
+
+    const { setAddress, openWelcomeModal, closeLoginModal } = useOnLoginStore()
+
+
     //form data
     const {
         control,
@@ -46,8 +48,8 @@ const SignUp = ({
             setIsLoading,
             setError,
             reset,
-            onClose,
-            onOpenWelcome,
+            closeLoginModal,
+            openWelcomeModal,
             setAddress
         );
     };
@@ -61,7 +63,7 @@ const SignUp = ({
                         Registrate
                     </h2>
                     <button
-                        onClick={onClose}
+                        onClick={closeLoginModal}
                         className="text-white hover:text-orange-200 p-2 rounded-full bg-orange-400"
                     >
                         <X />

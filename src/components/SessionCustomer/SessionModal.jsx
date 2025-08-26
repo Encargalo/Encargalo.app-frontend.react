@@ -3,14 +3,18 @@ import { useState } from "react";
 //components
 import Login from "./Login";
 import SignUp from "./SignUp";
-//services
+//store/hooks
+import useOnLoginStore from "../../store/onLoginStore";
 
-const SessionModal = ({ show, onClose, onOpenWelcome, setAddress }) => {
+const SessionModal = ({ onOpenWelcome, setAddress }) => {
     const [isLoading, setIsLoading] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
     const [session, setSession] = useState(true)
 
-    if (!show) return null;
+    const { isLoginModalOpen, closeLoginModal } = useOnLoginStore()
+
+
+    if (!isLoginModalOpen) return null;
 
     return (
         <dialog className="fixed inset-0 bg-transparent size-full backdrop-blur-sm flex items-center justify-center z-50 ">
@@ -24,7 +28,7 @@ const SessionModal = ({ show, onClose, onOpenWelcome, setAddress }) => {
                             className={`transition-transform duration-100 h-full flex items-center justify-center sm:px-24 px-4 w-screen`}
                         >
                             <Login
-                                onClose={onClose}
+                                onClose={closeLoginModal}
                                 showPassword={showPassword}
                                 setShowPassword={setShowPassword}
                                 isLoading={isLoading}
@@ -43,7 +47,7 @@ const SessionModal = ({ show, onClose, onOpenWelcome, setAddress }) => {
                             className={`transition-transform duration-100 h-full w-screen flex items-center justify-center sm:px-24 px-4 lg:w-10/12`}
                         >
                             <SignUp
-                                onClose={onClose}
+                                onClose={closeLoginModal}
                                 showPassword={showPassword}
                                 setShowPassword={setShowPassword}
                                 isLoading={isLoading}

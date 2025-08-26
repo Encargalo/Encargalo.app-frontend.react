@@ -44,7 +44,7 @@ const AddAddress = () => {
     return (
         <div className="py-6 px-5 sm:p-8">
             <header className="w-full flex flex-col items-center sm:flex-row sm:items-end sm:gap-x-4 gap-y-1">
-                <h1 className="text-gray-600 text-4xl sm:text-5xl">Ubicaciones</h1>
+                <h1 className="text-gray-600 text-3xl sm:text-5xl">Ubicaciones</h1>
                 {confirmAdd && <p className="text-sm sm:text-xl italic text-green-600">Se agrego la ubicación correctamente</p>}
             </header>
 
@@ -156,10 +156,10 @@ const AddAddress = () => {
                 {
                     address.length === addressEmpyt ?
                         <>
-                            <h1 className="text-4xl text-center">Tus ubicaciones se mostraran aquí</h1>
-                            <div className="flex justify-center items-center">
-                                <img src={ilustrations.Map167} alt={ilustrations.Map167} className="w-1/2 object-cover" />
-                                <h1 className="text-2xl text-center text-gray-600">Añade nuevas ubicaciones para poder llevar tus pedidos a la puerta de tu casa</h1>
+                            <h1 className="text-2xl sm:text-4xl text-center">Tus ubicaciones se mostraran aquí</h1>
+                            <div className="flex flex-col justify-center items-center">
+                                <img src={ilustrations.Map167} alt={ilustrations.Map167} className="w-2/3 sm:w-1/2 object-cover" />
+                                <p className="text-sm sm:text-2xl text-center text-gray-600">Añade nuevas ubicaciones para poder llevar tus pedidos a la puerta de tu casa</p>
                             </div>
                         </>
                         :

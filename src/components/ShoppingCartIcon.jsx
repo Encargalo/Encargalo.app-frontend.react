@@ -24,13 +24,13 @@ const ShoppingCartIcon = () => {
 
     return (
         <div onClick={() => navigate('/shopping_cart')} className="flex items-center gap-1 bg-orange-50 px-3 sm:px-4 py-2 sm:py-2 rounded-xl border border-orange-200 group cursor-pointer">
-            <ShoppingCart className="size-4 sm:size-7 text-orange-600" />
+            <ShoppingCart className="size-5 sm:size-7 text-orange-600" />
             {cartTotalItems !== cart_clenear ? (
-                <span className="text-base sm:text-xl text-gray-700 ml-1">
+                <span className="text-lg sm:text-xl text-gray-700 ml-1">
                     {cartTotalItems}
                 </span>
             ) : <span className="text-base sm:text-xl text-gray-700 font-medium text-clip ml-1">Carrito</span>}
-            <ChevronRight className="size-4 sm:size-6 text-orange-600 transition-transform duration-200 transform group-active:translate-x-2" />
+            <ChevronRight className="size-5 sm:size-6 text-orange-600 transition-transform duration-200 transform group-active:translate-x-2" />
         </div>
     )
 }

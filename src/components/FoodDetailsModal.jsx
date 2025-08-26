@@ -22,6 +22,14 @@ const FoodDetailsModal = ({ combo, onClose }) => {
     getAdditionals(setAdditionals, setLoaderAdditionals, combo.category_id);
   }, [combo.id]);
 
+  // bloquear scroll body cuando la modal está abierta
+  useEffect(() => {
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = "auto";
+    };
+  }, []);
+
   const unitPrice =
     combo.price + selectedAdditionals.reduce((sum, a) => sum + (a.price || 0), 0);
   const total = unitPrice * quantity;
@@ -42,18 +50,33 @@ const FoodDetailsModal = ({ combo, onClose }) => {
   const pathname = location.pathname
   const validateShopPath = pathname === "/"
 
+
   return (
     <dialog
-      className="fixed w-full h-full inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50"
+      className="fixed w-full h-full inset-0 bg-black bg-opacity-50 flex z-50 sm:flex sm:items-center sm:justify-center"
       onClick={onClose}
     >
       <aside
-        className="bg-white rounded-2xl shadow-2xl w-11/12 max-w-2xl mx-auto overflow-hidden"
+        className="bg-white w-full h-full flex flex-col sm:w-1/3 sm:h-max sm:rounded-xl"
         onClick={(e) => e.stopPropagation()}
       >
         {/* header */}
-        <header className="relative">
-          <img src={combo.image} alt={combo.name} className="w-full h-64 object-cover" />
+        <header className="relative shrink-0 ">
+          <img
+            src={combo.image}
+            alt={combo.name}
+            className="w-full h-64 object-cover sm:rounded-t-xl"
+          />
+
+          {/* logo */}
+          {
+            validateShopPath ?
+              <div className="absolute top-4 left-4" onClick={() => navigate(`/${combo.shop.tag}`)}>
+                <img src={combo.shop.logo_image} alt={combo.shop.logo_image} className="size-20 object-cover rounded-full border-2 border-orange-200 hover:border-orange-500 cursor-pointer transition-colors" />
+
+              </div>
+              : null
+          }
           <button
             onClick={onClose}
             className="absolute top-4 right-4 bg-white/80 hover:bg-white rounded-full p-2 transition-all duration-300"
@@ -63,7 +86,7 @@ const FoodDetailsModal = ({ combo, onClose }) => {
         </header>
 
         {/* details */}
-        <section className="p-6 overflow-y-auto">
+        <section className="flex-1 overflow-y-auto p-6">
           <div className="flex justify-between items-center flex-wrap mb-2">
             <h2 className="text-3xl font-bold text-gray-900 mb-2">{combo.name}</h2>
             <h4 className="text-3xl sm:text-4xl font-extrabold text-orange-600">
@@ -133,23 +156,11 @@ const FoodDetailsModal = ({ combo, onClose }) => {
           }
 
           {/* footer */}
-          <footer className="mt-6 flex w-full  sm:justify-center items-center flex-col sm:flex-row gap-3">
-
-            {
-              validateShopPath ?
-                <button
-                  className="bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 px-6 rounded-lg transition-colors w-1/2"
-                  onClick={() => navigate(`/${combo.shop.tag}`)}
-                >
-                  Ir a la tienda
-                </button>
-                : null
-            }
-
-            <div className="w-full flex justify-between sm:justify-end">
+          <footer className="shrink-0 flex flex-col items-center mt-5 gap-5">
+            <div className="flex justify-between w-full gap-2">
               <button
                 onClick={onClose}
-                className="bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-6 rounded-lg mr-4 transition-colors"
+                className="bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-6 rounded-lg transition-colors"
               >
                 Cerrar
               </button>

@@ -23,7 +23,7 @@ const SearchAndFilters = ({
           placeholder="Busca restaurantes..."
           value={searchTerm}
           onChange={(e) => onSearchChange(e.target.value)}
-          className="w-full pl-12 sm:pl-16 pr-4 sm:pr-6 py-3 sm:py-4 border-2 border-gray-200 rounded-xl sm:rounded-2xl focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 bg-slate-50 text-base sm:text-lg text-"
+          className="w-full pl-12 sm:pl-16 pr-4 sm:pr-6 py-3 sm:py-4 border-2 border-gray-300 rounded-xl sm:rounded-2xl focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 bg-slate-50 text-base sm:text-lg text-"
         />
       </search>
 
@@ -44,7 +44,7 @@ const SearchAndFilters = ({
         {/* filters options */}
         {showFilters && (
           <div>
-            <h4 className="font-semibold text-gray-700 hidden sm:block mb-2">
+            <h4 className="font-semibold text-gray-700 hidden sm:text-xl sm:block mb-2">
               Busca por filtros:
             </h4>
             {/* filter all */}
@@ -59,11 +59,11 @@ const SearchAndFilters = ({
                   onChange={(e) => {
                     onFilterChange(e.target.value);
                   }}
-                  className="sm:w-auto bg-transparent border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 font-medium p-2 cursor-pointer text-center"
+                  className="sm:w-auto bg-transparent border-2 border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 font-medium px-4 py-2 cursor-pointer text-center sm:text-lg"
                 >
                   <option value="all">Todos</option>
                   <option value="open">Abiertos</option>
-                  <option value="favorites">Favoritos</option>
+                  {/*  <option value="favorites">Favoritos</option> */}
                 </select>
               </div>
 
@@ -72,7 +72,7 @@ const SearchAndFilters = ({
                 <select
                   value={sortBy}
                   onChange={(e) => onSortChange(e.target.value)}
-                  className="sm:w-auto border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 font-medium p-2 text-center cursor-pointer "
+                  className="sm:w-auto border-2 border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 font-medium px-4 py-2 text-center cursor-pointer sm:text-lg"
                 >
                   <option value="score">Mejor calificado</option>
                   <option value="name">Nombre A-Z</option>

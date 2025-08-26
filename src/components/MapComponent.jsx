@@ -64,6 +64,10 @@ const MapComponent = ({ onAddressSelect }) => {
           mapContainerStyle={containerStyle}
           center={{ lat: markerPosition.lat, lng: markerPosition.long }}
           zoom={15}
+          options={{
+            streetViewControl: false,
+            mapTypeControl: false,    // opcional: quita selector de tipo de mapa
+          }}
         >
           <Marker
             position={{ lat: markerPosition.lat, lng: markerPosition.long }}

@@ -88,7 +88,7 @@ const ShoppingCart = () => {
                             Agrega productos de tus restaurantes favoritos.
                         </p>
                         <button
-                            onClick={() => navigate(-1)}
+                            onClick={() => navigate("/")}
                             className="bg-gradient-to-r from-orange-500 to-orange-600 text-white px-5 py-3 rounded-xl font-semibold shadow hover:shadow-md transition"
                         >
                             Seguir comprando

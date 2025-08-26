@@ -66,7 +66,7 @@ const UpdatePersonalInfo = () => {
   return (
     <div className="py-6 px-5 sm:p-8">
       <header className="w-full flex flex-col items-center sm:flex-row sm:items-end sm:gap-x-4 gap-y-1">
-        <h1 className="text-gray-600 text-4xl sm:text-5xl">Perfil</h1>
+        <h1 className="text-gray-600 text-3xl sm:text-5xl">Perfil</h1>
         {confirmUpdate && <p className="text-sm sm:text-xl italic text-green-600 w-full">Los datos se actualizaron correctamente</p>}
       </header>
 

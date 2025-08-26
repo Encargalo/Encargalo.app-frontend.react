@@ -31,7 +31,7 @@ const UpdatePassword = () => {
     return (
         <div className="p-8">
             <header className="w-full flex flex-col items-center sm:flex-row sm:items-end sm:gap-x-4 gap-y-1">
-                <h1 className="text-gray-600 text-4xl sm:text-5xl">Contraseña</h1>
+                <h1 className="text-gray-600 text-3xl sm:text-5xl">Contraseña</h1>
                 {confirmUpdate && <p className="text-sm sm:text-xl italic text-green-600">Se cambio la contraseña correctamente</p>}
             </header>
 
@@ -60,7 +60,7 @@ const UpdatePassword = () => {
                         <button
                             type="button"
                             onClick={() => setShowPassword(!showPassword)}
-                            className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-orange-500"
+                            className="absolute right-0 sm:right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-orange-500"
                         >
                             {showPassword ? (
                                 <EyeOff className="size-5" />
@@ -87,7 +87,7 @@ const UpdatePassword = () => {
                             name="confirm_password"
                             type={showPassword ? "text" : "password"}
                             placeholder="Confirma tu contraseña"
-                            className="w-full pl-10 pr-3 py-3 sm:py-4 border-2 text-lg sm:text-xl border-gray-200 rounded-xl focus:ring-2 focus:ring-orange-500"
+                            className="w-full pl-10 pr-10 py-3 sm:py-4 border-2 text-lg sm:text-xl border-gray-200 rounded-xl focus:ring-2 focus:ring-orange-500"
                             {...register("confirm_password", {
                                 required: "Confirma la contraseña",
                                 validate: (value) =>
@@ -97,7 +97,7 @@ const UpdatePassword = () => {
                         <button
                             type="button"
                             onClick={() => setShowPassword(!showPassword)}
-                            className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-orange-500"
+                            className="absolute right-0 sm:right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-orange-500"
                         >
                             {showPassword ? (
                                 <EyeOff className="size-5" />

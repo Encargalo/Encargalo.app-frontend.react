@@ -1,9 +1,10 @@
 import "./index.css";
 import { StrictMode, Suspense } from "react";
 import { createRoot } from "react-dom/client";
-import RoutesSystem from "./RoutesSytem.jsx";
 import { RouterProvider } from "react-router-dom";
+//components
 import Loader from "./components/Loader.jsx";
+import RoutesSystem from "./RoutesSytem.jsx";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>

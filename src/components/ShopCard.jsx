@@ -43,14 +43,14 @@ const ShopCard = ({ shop, favorites, onToggleFavorite }) => {
         {/* shop status */}
         {!shop.opened && (
           <div className="absolute inset-0 bg-black/60 flex items-center justify-center">
-            <span className="bg-red-500 text-white px-3 py-1 rounded-full text-base font-semibold">
+            <span className="bg-red-500 text-white px-3 py-1 rounded-full text-sm sm:text-lg font-semibold">
               Cerrado
             </span>
           </div>
         )}
         {shop.opened && (
           <div className="absolute bottom-3 left-3">
-            <span className="bg-green-500 text-white px-2 py-1 rounded-full text-xs font-medium">
+            <span className="bg-green-500 text-white px-2 py-1 rounded-full text-sm sm:text-lg font-medium">
               Abierto
             </span>
           </div>
@@ -61,27 +61,27 @@ const ShopCard = ({ shop, favorites, onToggleFavorite }) => {
       <div className="p-4">
         {/* shop name */}
         <figure className="flex items-center justify-between">
-          <h3 className="text-2xl  font-bold text-gray-900 group-hover:text-orange-600 transition-colors flex-1 mb-2">
+          <h3 className="text-xl sm:text-2xl font-bold text-gray-900 group-hover:text-orange-600 transition-colors flex-1">
             {shop.name}
           </h3>
           {/* shop score */}
           <div className="flex items-center bg-gradient-to-r from-orange-100 to-orange-50 px-2 sm:px-3 py-1 rounded-full border border-orange-200 ml-2">
-            <Star className="w-4 sm:w-4 h-4 sm:h-4 text-orange-500 fill-current mr-1" />
-            <span className="text-base sm:text-sm font-bold text-gray-900">
+            <Star className="size-4 sm:size-5 text-orange-500 fill-current mr-1" />
+            <span className="sm:text-xl font-bold text-gray-900">
               {shop.score}
             </span>
           </div>
         </figure>
 
         {/* shop type */}
-        <p className="text-xl text-gray-600 mb-2 sm:mb-3 capitalize font-medium">
+        <p className="text-lg sm:text-xl text-gray-600 mb-2 sm:mb-3 capitalize font-medium">
           {typeRestaurat[shop.type]}
         </p>
 
         {/* footer */}
         {/* shop address */}
-        <footer className="flex items-center text-xl sm:text-lg text-gray-500 mb-3">
-          <MapPin className="w-7 h-7 mr-1 sm:mr-2 text-orange-500" />
+        <footer className="flex items-center text-lg sm:text-xl text-gray-500 mb-3">
+          <MapPin className="size-6 sm:size-8 mr-1 sm:mr-2 text-orange-500" />
           <span className="truncate">{shop.address}</span>
         </footer>
       </div>

@@ -2,9 +2,15 @@
 import { Phone, Lock, Eye, EyeOff, X } from "lucide-react";
 //react
 import { Controller, useForm } from "react-hook-form";
+//services
 import logInCustomers from "../../services/logInCustomers";
+//stores/hooks
+import useOnLoginStore from "../../store/onLoginStore";
 
-const Login = ({ onClose, showPassword, setShowPassword, isLoading, setIsLoading, onOpenWelcome, session, setSession, setAddress }) => {
+const Login = ({ showPassword, setShowPassword, isLoading, setIsLoading, session, setSession }) => {
+
+    const { setAddress, openWelcomeModal, closeLoginModal } = useOnLoginStore()
+
 
     //form data
     const {
@@ -29,10 +35,9 @@ const Login = ({ onClose, showPassword, setShowPassword, isLoading, setIsLoading
             formattedData,
             setIsLoading,
             setError,
-            onClose,
-            onOpenWelcome,
+            closeLoginModal,
+            openWelcomeModal,
             setAddress,
-
         );
     };
 
@@ -43,7 +48,7 @@ const Login = ({ onClose, showPassword, setShowPassword, isLoading, setIsLoading
                 <figure className="flex items-center justify-between gap-2 sm:gap-20">
                     <h2 className="text-4xl sm:text-5xl font-bold text-white">Iniciar Sesión</h2>
                     <button
-                        onClick={onClose}
+                        onClick={closeLoginModal}
                         className="text-white hover:text-orange-200 p-2 rounded-full bg-orange-400"
                     >
                         <X />

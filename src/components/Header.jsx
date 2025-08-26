@@ -6,16 +6,18 @@ import { useNavigate } from "react-router-dom";
 //utils
 import { getDecryptedItem } from "../utils/encryptionUtilities";
 //services
-import logOutCustomer from "../services/logOutCustomer";
 import getAddress from "../services/getAddress";
-import ShoppingCartIcon from "./ShoppingCartIcon";
 import UserMenu from "./UserMenu";
+import useOnLoginStore from "../store/onLoginStore";
 
-const Header = ({ onLogin }) => {
+const Header = () => {
   const [userData, setUserData] = useState(null)
   const [address, setAddress] = useState(null);
 
   const navigate = useNavigate()
+
+  //onLogin
+  const { openLoginModal } = useOnLoginStore()
 
   //get user data
   useEffect(() => {
@@ -57,17 +59,13 @@ const Header = ({ onLogin }) => {
               </div>
             }
 
-            {/* shopping cart */}
-            {userData?.session ? <ShoppingCartIcon /> : null}
-
-
             {/* Botones de autenticación */}
             {userData?.session ? (
               <UserMenu userData={userData} handleNavigate={handleNavigate} />
             ) : (
               /* login */
               <button
-                onClick={onLogin}
+                onClick={openLoginModal}
                 className="bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white px-3 sm:px-6 py-1 sm:py-2 rounded-xl font-semibold transition-all duration-300 shadow-lg hover:shadow-xl sm:text-2xl"
               >
                 Iniciar Sesión

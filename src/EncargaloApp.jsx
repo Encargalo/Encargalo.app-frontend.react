@@ -1,26 +1,28 @@
+//icons
+import { ShoppingCartIcon } from "lucide-react"
 //react
 import { lazy, Suspense, useEffect, useState } from "react";
-
+import { useNavigate } from "react-router-dom";
 // components
 import Header from "./components/Header";
 const FoodDashboard = lazy(() => import('./components/FoodDashboard.jsx'))
 import Loader from "./components/Loader.jsx";
 import WelcomeCustomerModal from "./components/WelcomeCustomerModal.jsx";
+import SessionModal from "./components/SessionCustomer/SessionModal.jsx";
 //utils
 import useLoaderStore from "./store/loaderStore.js";
 //services
 import getInformationCustomer from "./services/getInformationCustomer.js";
-import SessionModal from "./components/SessionCustomer/SessionModal.jsx";
+import { getDecryptedItem } from "./utils/encryptionUtilities.js";
 
 const EncargaloApp = () => {
-  //show login
-  const [showLogin, setShowLogin] = useState(false);
-  //show welcome 
-  const [showWelcome, setShowWelcome] = useState(false)
   //favorites
   const [favorites, setFavorites] = useState(new Set());
-  //validate addresss
-  const [address, setAddress] = useState(false);
+  //cart
+  const [cart, setCart] = useState([]);
+  //navigate
+  const navigate = useNavigate()
+
 
   // Favoritos
   const toggleFavorite = (shopId) => {
@@ -33,6 +35,12 @@ const EncargaloApp = () => {
 
   useEffect(() => {
     getInformationCustomer()
+
+    const cart_key = import.meta.env.VITE_CART_STORAGE_KEY
+    const cartData = getDecryptedItem(cart_key)
+    if (cartData) {
+      setCart(cartData)
+    }
   }, []);
 
   const { isLoading } = useLoaderStore();
@@ -42,9 +50,8 @@ const EncargaloApp = () => {
       {isLoading && (
         <Loader />
       )}
-      <div className="min-h-screen w-full relative background">
+      <div className="min-h-dvh w-dvw relative background">
         <Header
-          onLogin={() => setShowLogin(true)}
         />
         <Suspense fallback={<Loader />}>
           <FoodDashboard
@@ -53,19 +60,16 @@ const EncargaloApp = () => {
           />
         </Suspense>
 
-        <SessionModal
-          show={showLogin}
-          onClose={() => setShowLogin(false)}
-          onOpenWelcome={() => setShowWelcome(true)}
-          setAddress={setAddress}
-        />
+        {/* modals */}
+        <SessionModal />
+        <WelcomeCustomerModal />
 
-        <WelcomeCustomerModal
-          show={showWelcome}
-          onClose={() => setShowWelcome(false)}
-          address={address}
-        />
-
+        <button className="fixed bottom-3 right-3 p-4 bg-orange-100 size-max rounded-md shadow-xl border border-orange-300 sm:hidden"
+          onClick={() => navigate("/shopping_cart")}
+        >
+          <ShoppingCartIcon className="text-orange-500" />
+          <span>{cart?.length}</span>
+        </button>
       </div>
     </div>)
 };

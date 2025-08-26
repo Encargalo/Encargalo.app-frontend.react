@@ -55,7 +55,7 @@
 }
 
 .background {
-  @apply bg-gradient-to-br from-orange-300 to-orange-500 w-full h-full rounded-lg;
+  @apply bg-gradient-to-br from-orange-300 to-orange-500 w-full h-full;
 }
 
 .aspect-ration-default {

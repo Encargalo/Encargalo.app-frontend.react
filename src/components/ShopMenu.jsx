@@ -1,16 +1,23 @@
-//lucide react
-import { User, Star, Clock, ChevronLeft, ChevronRight } from "lucide-react";
+//lucide react / icons
+import { User, Star, Clock, ChevronLeft, ChevronRight, Plus, ArrowLeftFromLine, ShoppingCartIcon } from "lucide-react";
+import { ilustrations } from "../assets/ilustrations";
 //components
 import ItemCard from "./ItemCard";
 import FoodDetailsModal from "./FoodDetailsModal";
-import Loader from "./Loader";
+import SessionModal from "./SessionCustomer/SessionModal";
+import WelcomeCustomerModal from "./WelcomeCustomerModal";
+import UserMenu from "./UserMenu";
+//store/hooks
+import useCartStore from "../store/cartStore";
+import useNumberFormat from "../hooks/useNumberFormat";
+import useOnLoginStore from "../store/onLoginStore";
 //services
 import getShopDetails from "../services/getShopDetails";
-//react
-import { useLocation, useNavigate } from "react-router-dom";
-import { useEffect, useRef, useState } from "react";
+//utils
 import { getDecryptedItem } from "../utils/encryptionUtilities";
-import ShoppingCartIcon from "./ShoppingCartIcon";
+//react
+import { useEffect, useRef, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const ShopMenu = () => {
   // Estados
@@ -20,6 +27,22 @@ const ShopMenu = () => {
   const carouselRef = useRef(null);
   const [userData, setUserData] = useState({})
 
+  //onLogin
+  const { openLoginModal } = useOnLoginStore()
+
+  /* prev cart items */
+  const { cart } = useCartStore();
+  const { formatNumber } = useNumberFormat();
+  const shopCartItems = cart.filter(item => item.shopInfo?.id === shop.id);
+  const shopTotal = shopCartItems.reduce(
+    (sum, item) => sum + item.price * item.quantity,
+    0
+  );
+
+  const totalItems = shopCartItems.reduce(
+    (sum, item) => sum + item.quantity,
+    0
+  );
 
   // Hooks de Navegación
   const location = useLocation();
@@ -66,40 +89,41 @@ const ShopMenu = () => {
 
   return (
     <div>
-      <section className="min-h-screen bg-white background">
+      <section className="min-h-dvh w-screen bg-white background">
         {/* header */}
         <header className="bg-white shadow-lg sticky top-0 z-40 border-b">
-          <div className="w-full px-4 sm:px-6 lg:px-8 py-3">
+          <div className="w-full px-3 sm:px-4 lg:px-7 py-3">
             <div className="flex items-center justify-between">
               {/* return */}
-              <div className="flex items-center space-x-4">
+              <div className="flex items-center"
+                onClick={() => navigate("/")}
+              >
                 <button
-                  onClick={() => navigate("/")}
-                  className="text-orange-500 hover:text-orange-600 font-semibold sm:text-2xl"
+                  className="text-orange-500 hover:text-orange-600 font-semibold text-lg sm:text-2xl py-2 flex items-center gap-2"
                 >
-                  ← Volver
+                  <ArrowLeftFromLine className="size-5" />
+                  Volver
                 </button>
-                <h1 className="hidden sm:block text-2xl font-bold text-gray-900">{shop.name}</h1>
               </div>
+              {
+                userData.session ?
+                  <UserMenu userData={userData} handleNavigate={navigate} />
+                  :
+                  /* login */
+                  <button
+                    onClick={openLoginModal}
+                    className="bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white px-3 sm:px-6 py-1 sm:py-2 rounded-xl font-semibold transition-all duration-300 shadow-lg hover:shadow-xl sm:text-2xl"
+                  >
+                    Iniciar Sesión
+                  </button>
+              }
 
-              {/* shopping cart */}
-              <div className="flex gap-3 flex-nowrap">
-                <ShoppingCartIcon />
-
-                {/* user */}
-                <div className="flex items-center space-x-2 bg-orange-50 px-3 py-1.5 rounded-xl border border-orange-200">
-                  <User className="w-5 h-5 text-orange-600" />
-                  <span className="text-base sm:text-xl font-medium text-gray-700">{
-                    userData.data?.name
-                  }</span>
-                </div>
-              </div>
 
             </div>
           </div>
         </header>
 
-        <main>
+        <main className="pb-14">
           {/* banner shop*/}
           <div className="relative sm:h-[40em] overflow-hidden">
             <img
@@ -112,25 +136,25 @@ const ShopMenu = () => {
               <div className="flex items-center space-x-4 mb-2">
                 {/* score */}
                 <div className="flex items-center bg-white/20 backdrop-blur-sm px-3 py-1 sm:px-4 sm:py-2 rounded-full">
-                  <Star className="w-4 h-4 sm:w-7 sm:h-7 text-yellow-400 fill-current mr-2" />
-                  <span className="font-bold sm:text-2xl">{shop.score}</span>
+                  <Star className="size-3 sm:size-7 text-yellow-400 fill-current mr-1" />
+                  <span className="font-bold text-xs sm:text-2xl">{shop.score}</span>
                 </div>
               </div>
               {/* address shop */}
-              <p className="text-white bg-white/20 sm:text-2xl backdrop-blur-sm px-3 py-1 rounded-full">
+              <p className="text-white bg-white/20 sm:text-2xl text-sm backdrop-blur-sm px-3 py-1 rounded-full">
                 {shop.address}
               </p>
             </div>
           </div>
 
           {/* filtering categories */}
-          <nav className="sm:px-6 lg:px-8 py-4 sticky top-[68px] bg-white z-30">
+          <nav className="sm:px-6 sm:pt-8 lg:px-8 py-4 sticky top-[68px] bg-white z-30">
             {/* button move carousel filtering */}
             <button
               onClick={() => scrollCarouselFiltering("left")}
-              className="bg-white hover:bg-orange-50 border-2 border-gray-200 hover:border-orange-300 rounded-full p-2 sm:p-3 transition-all duration-300 shadow-md hover:shadow-lg absolute left-2 z-30 bottom-4 sm:left-4"
+              className="bg-white hover:bg-orange-50 border-2 border-gray-200 hover:border-orange-300 rounded-full p-2 sm:p-3 transition-all duration-300 shadow-md hover:shadow-lg absolute left-2 z-30 top-4 sm:top-7 sm:left-4"
             >
-              <ChevronLeft className="size-7 sm:size-6 text-gray-600 hover:text-orange-600" />
+              <ChevronLeft className="size-5 text-gray-600 hover:text-orange-600" />
             </button>
 
             {/* buttons actions */}
@@ -139,7 +163,7 @@ const ShopMenu = () => {
               {/* button all categories */}
               <button
                 onClick={() => setSelectedCategory("all")}
-                className={`px-4 py-2 text-lg font-medium rounded-full transition-colors ${selectedCategory === "all"
+                className={`px-4 py-2 sm:text-xl font-medium rounded-full transition-colors ${selectedCategory === "all"
                   ? "bg-orange-500 text-white"
                   : "bg-gray-200 text-gray-700 hover:bg-gray-300"
                   }`}
@@ -152,7 +176,7 @@ const ShopMenu = () => {
                 <button
                   key={category.id}
                   onClick={() => setSelectedCategory(category.id)}
-                  className={`px-4 py-2 text-xl font-medium rounded-full transition-colors whitespace-nowrap ${selectedCategory === category.id
+                  className={`px-4 py-2 sm:text-xl font-medium rounded-full transition-colors whitespace-nowrap ${selectedCategory === category.id
                     ? "bg-orange-500 text-white"
                     : "bg-gray-200 text-gray-700 hover:bg-gray-300"
                     }`}
@@ -165,14 +189,14 @@ const ShopMenu = () => {
             {/* button move carousel filtering */}
             <button
               onClick={() => scrollCarouselFiltering("right")}
-              className="bg-white hover:bg-orange-50 border-2 border-gray-200 hover:border-orange-300 rounded-full p-2 sm:p-3 transition-all duration-300 shadow-md hover:shadow-lg absolute top-3 right-2 sm:right-4"
+              className="bg-white hover:bg-orange-50 border-2 border-gray-200 hover:border-orange-300 rounded-full p-2 sm:p-3 transition-all duration-300 shadow-md hover:shadow-lg absolute top-4 sm:top-7 right-2 sm:right-4"
             >
-              <ChevronRight className="size-7 sm:size-6 text-gray-600 hover:text-orange-600" />
+              <ChevronRight className="size-5 text-gray-600 hover:text-orange-600" />
             </button>
           </nav>
 
           {/* list categories*/}
-          <div className="w-full px-4 sm:px-6 lg:px-8 py-5">
+          <div className="w-full px-3 pb-12 sm:px-6 lg:px-8">
             {categories.map(
               (category) =>
                 // Muestra la categoría solo si está seleccionada o si se eligen "Todas"
@@ -186,23 +210,65 @@ const ShopMenu = () => {
 
                     {/* products */}
                     {category.items && category.items.length > 0 ? (
-                      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                        {category.items.map((item) => (
-                          <ItemCard
-                            key={item.id}
-                            item={item}
-                            onItemClick={handleComboClick}
-                          />
-                        ))}
-                      </div>
+                      <>
+                        {/* Vista en GRID → solo en sm en adelante */}
+                        <div className="hidden sm:grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                          {category.items.map((item) => (
+                            <ItemCard
+                              key={item.id}
+                              item={item}
+                              onItemClick={handleComboClick}
+                            />
+                          ))}
+                        </div>
+
+                        {/* Vista en LISTA → solo en móviles */}
+                        <ul className="flex flex-col gap-4 sm:hidden">
+                          {category.items.map((item) => (
+                            <li
+                              key={item.id}
+                              className="flex justify-between items-start gap-2 p-4 bg-white rounded-xl shadow"
+                              onClick={() => handleComboClick(item)}
+                            >
+                              {/* info */}
+                              <article className="flex-1 pr-2 flex flex-col gap-y-1">
+                                {/* name */}
+                                <h3 className="text-xl font-semibold">{item.name}</h3>
+                                {/* description */}
+                                <p className="text-sm text-gray-600">{item.description}</p>
+                                {/* price */}
+                                <p className="font-bold text-orange-600 text-lg">
+                                  ${formatNumber(item.price, "es-CO")}
+                                </p>
+                                {/* 
+                                <p className="flex items-center gap-1 text-sm text-gray-500">
+                                  ⭐ {item.score}
+                                </p> */}
+                              </article>
+
+                              {/* imagen */}
+                              <figure className="relative size-24">
+                                <img
+                                  src={item.image}
+                                  alt={item.name + " " + item.description}
+                                  className="size-full object-cover rounded-lg"
+                                />
+                                <button className="absolute bottom-2 right-2 bg-orange-500 text-white text-xl size-full px-3 py-1 w-8 h-8 rounded-full flex justify-center items-center">
+                                  <span><Plus className="size-5" /> </span>
+                                </button>
+                              </figure>
+                            </li>
+                          ))}
+                        </ul>
+                      </>
                     ) : (
                       // mmessage not products
-                      <div className="text-center py-16">
-                        <div className="text-gray-400 text-7xl sm:text-9xl mb-4">🍽️</div>
-                        <h3 className="text-2xl sm:text-4xl mb-3 font-medium text-gray-900">
+                      <div className="w-full flex flex-col items-center justify-center">
+                        <img src={ilustrations.fastFood6} alt={ilustrations.fastFood6} className="size-2/3" />
+                        <h3 className="text-xl sm:text-4xl mb-3 font-medium text-gray-900">
                           No hay productos disponibles
                         </h3>
-                        <p className="text-orange-950 text-xl sm:text-2xl">
+                        <p className="text-orange-950 sm:text-2xl text-center">
                           Esta categoría no tiene productos por el momento.
                         </p>
                       </div>
@@ -219,6 +285,38 @@ const ShopMenu = () => {
           />
         )}
       </section>
+
+      {shopCartItems.length > 0 && !selectedCombo && (
+        <footer className="fixed bottom-0 sm:right-5 w-full sm:size-max bg-white border-t border-gray-400 sm:border-gray-200 sm:rounded-md shadow-xl z-50">
+          <div className="max-w-6xl mx-auto flex items-center justify-between px-3 sm:px-4 sm:gap-x-6 py-3">
+            <div>
+              <h2 className="text-lg sm:text-xl">Monto Total:</h2>
+              <h3 className="text-orange-600 font-extrabold text-2xl sm:text-3xl">
+                ${formatNumber(shopTotal, "es-CO")}
+              </h3>
+            </div>
+            <button
+              onClick={() => navigate("/shopping_cart")}
+              className="bg-gradient-to-r from-orange-500 to-orange-600 text-white px-4 py-3 rounded-xl font-semibold shadow hover:shadow-md transition"
+            >
+              Ver carrito
+              <span className="size-full px-3 py-1 rounded-full ml-3 font-bold bg-white text-orange-950">
+                {totalItems}
+              </span>
+            </button>
+          </div>
+        </footer>
+      )}
+
+      {/* modals */}
+      <SessionModal />
+      <WelcomeCustomerModal />
+      <button className="fixed bottom-3 right-3 p-4 bg-orange-100 size-max rounded-md shadow-xl border border-orange-300 sm:hidden"
+        onClick={() => navigate("/shopping_cart")}
+      >
+        <ShoppingCartIcon className="text-orange-500" />
+        <span>{cart?.length || ''}</span>
+      </button>
     </div>
   );
 };
