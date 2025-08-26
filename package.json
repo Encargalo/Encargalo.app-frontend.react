@@ -7,7 +7,9 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "start": "serve dist -s -n -L -p $PORT",
+    "install:prod": "npm install --omit=dev"
   },
   "dependencies": {
     "@react-google-maps/api": "^2.20.7",
