@@ -16,7 +16,7 @@ const logOutCustomer = async () => {
       useCartStore.getState().clearCart();
       location.reload();
     }
-  } catch {
+  } finally {
     return false;
   }
 };

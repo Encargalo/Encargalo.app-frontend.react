@@ -12,8 +12,6 @@ const updatePersonalInfo = async (data, setConfirmUpdate, setIsLoading) => {
       setConfirmUpdate(true);
       getInformationCustomer();
     }
-  } catch (error) {
-    console.log(error);
   } finally {
     setIsLoading(false);
     setTimeout(() => {

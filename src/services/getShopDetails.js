@@ -1,9 +1,9 @@
-import api from "../lib/api";
-import useLoaderStore from "../store/loaderStore";
+import api from '../lib/api';
+import useLoaderStore from '../store/loaderStore';
 
 const getShopDetails = async (setShop, setCategories, tag_shop) => {
   const { showLoader, hideLoader } = useLoaderStore.getState();
-  showLoader()
+  showLoader();
   try {
     const response = await api.get(`/shops?tag=${tag_shop}`);
     if (response.status === 200) {
@@ -12,10 +12,8 @@ const getShopDetails = async (setShop, setCategories, tag_shop) => {
       setCategories(data.categories);
       return;
     }
-  } catch (error) {
-    console.log(error);
   } finally {
-    hideLoader()
+    hideLoader();
   }
 };
 

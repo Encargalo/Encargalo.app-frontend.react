@@ -31,7 +31,6 @@ const signupCustomer = async (
     }
   } catch (error) {
     const response = error.response;
-    console.log(error);
 
     if (response.status === 409) {
       setError('phone', {
