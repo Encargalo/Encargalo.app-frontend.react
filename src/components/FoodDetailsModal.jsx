@@ -72,14 +72,14 @@ const FoodDetailsModal = ({ combo, onClose }) => {
           {
             validateShopPath ?
               <div className="absolute top-4 left-4" onClick={() => navigate(`/${combo.shop.tag}`)}>
-                <img src={combo.shop.logo_image} alt={combo.shop.logo_image} className="size-20 object-cover rounded-full border-2 border-orange-200 hover:border-orange-500 cursor-pointer transition-colors" />
+                <img src={combo.shop.logo_image} alt={combo.shop.logo_image} className="size-16 object-cover rounded-full border-2 border-orange-200 hover:border-orange-500 cursor-pointer transition-colors" />
 
               </div>
               : null
           }
           <button
             onClick={onClose}
-            className="absolute top-4 right-4 bg-white/80 hover:bg-white rounded-full p-2 transition-all duration-300"
+            className="absolute top-4 right-4 bg-white/80 hover:bg-white rounded-full p-2 transition-all duration-300 hidden sm:inline-block"
           >
             <X className="w-6 h-6 text-gray-800" />
           </button>
@@ -157,10 +157,10 @@ const FoodDetailsModal = ({ combo, onClose }) => {
 
           {/* footer */}
           <footer className="shrink-0 flex flex-col items-center mt-5 gap-5">
-            <div className="flex justify-between w-full gap-2">
+            <div className="flex justify-between sm:justify-end w-full gap-2">
               <button
                 onClick={onClose}
-                className="bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-6 rounded-lg transition-colors"
+                className="bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-6 rounded-lg transition-colors inline-block sm:hidden"
               >
                 Cerrar
               </button>

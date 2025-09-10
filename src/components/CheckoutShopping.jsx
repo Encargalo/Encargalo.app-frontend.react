@@ -99,18 +99,11 @@ const CheckoutShopping = () => {
     const { placeOrder, clearPlaceOrder } = usePlaceOrderStore();
     const { removeShopItems } = useCartStore();
     const { formatNumber } = useNumberFormat();
-
-    // Redirige si no hay pedido activo
-    /*  useEffect(() => {
-         if (!placeOrder?.items?.length) navigate("/cart");
-     }, [placeOrder, navigate]); */
-
     const [addresses, setAddresses] = useState([]);
     const [selectedAddressId, setSelectedAddressId] = useState(null);
     const [showNewAddress, setShowNewAddress] = useState(false);
     const [note, setNote] = useState("");
     const [paymentAmount, setPaymentAmount] = useState("");
-    const [deliveryDriver, setDeliveryDriver] = useState({ name: "", phone: "" });
 
     // Carga direcciones guardadas
     const fetchAddresses = () => {
@@ -138,7 +131,7 @@ const CheckoutShopping = () => {
     // Datos del usuario (si manejas sesión encriptada como en Header)
     const user_session_key = import.meta.env.VITE_USER_SESSION;
     const userSession = getDecryptedItem(user_session_key);
-    const buyerName = userSession?.data?.name || "";
+    const buyerName = userSession?.data?.name + " " + userSession?.data?.sur_name || "";
     const buyerWhatsapp = userSession?.data?.phone || "";
 
     const selectedAddress = addresses.find((a) => a.id === selectedAddressId);
@@ -151,22 +144,24 @@ const CheckoutShopping = () => {
             neighborhood: selectedAddress?.alias || "",
             whatsapp: buyerWhatsapp,
             payment_amount: paymentAmount ? Number(paymentAmount) : undefined,
+            note: note || "",
         };
 
         const msg = buildWhatsAppMessage(
             processedItems,
-            placeOrder?.shopName || "",
+            placeOrder?.shopInfo.name || "",
             purchaseData,
             formatNumber
         );
 
-        const phone = import.meta.env.VITE_PHONE_DMO;
+        // const phone = placeOrder.shopInfo.phone;
+        const phone = "+584125740234"
         // Limpia solo productos de la tienda actual
         if (placeOrder?.shopId) removeShopItems(placeOrder.shopId);
 
         clearPlaceOrder();
         window.open(`https://wa.me/${phone}?text=${msg}`, "_blank");
-        navigate("/"); // vuelve a inicio
+        navigate("/");
     };
 
     return (
@@ -233,18 +228,18 @@ const CheckoutShopping = () => {
                                 </ul>
                             ) : (
                                 <p className="text-gray-600">
-                                    Aún no tienes direcciones guardadas.
+                                    Aún no tienes direcciones guardadas. <a href="/customer_profile/address" className="">Agregar nueva ubicación</a>
                                 </p>
                             )}
 
-                            <div className="mt-4">
+                            {/*  <div className="mt-4">
                                 <button
                                     onClick={() => setShowNewAddress((s) => !s)}
                                     className="w-full rounded-xl border border-orange-200 text-orange-700 bg-orange-50 hover:bg-orange-100 px-4 py-3 font-semibold transition"
                                 >
                                     {showNewAddress ? "Ocultar formulario" : "Usar otra dirección"}
                                 </button>
-                            </div>
+                            </div> */}
                         </div>
 
                         {showNewAddress && (

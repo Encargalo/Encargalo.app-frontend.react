@@ -39,6 +39,11 @@
   animation: fade-out-right 0.5s ease-in-out;
 }
 
+a {
+  text-decoration: underline;
+  color: #c64f0b;
+}
+
 .animate-fade-in-right {
   animation: fade-in-right 0.5s ease-in-out;
 }
@@ -86,20 +91,10 @@ select {
   position: relative;
 }
 
+a {
+}
+
 button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
-}
-
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
-  a:hover {
-    color: #747bff;
-  }
-  button {
-    background-color: #f9f9f9;
-  }
 }

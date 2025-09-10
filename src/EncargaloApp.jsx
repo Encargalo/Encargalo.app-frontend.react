@@ -13,16 +13,14 @@ import SessionModal from "./components/SessionCustomer/SessionModal.jsx";
 import useLoaderStore from "./store/loaderStore.js";
 //services
 import getInformationCustomer from "./services/getInformationCustomer.js";
-import { getDecryptedItem } from "./utils/encryptionUtilities.js";
+import useCartStore from "./store/cartStore.js";
 
 const EncargaloApp = () => {
   //favorites
   const [favorites, setFavorites] = useState(new Set());
-  //cart
-  const [cart, setCart] = useState([]);
   //navigate
   const navigate = useNavigate()
-
+  //
 
   // Favoritos
   const toggleFavorite = (shopId) => {
@@ -33,14 +31,12 @@ const EncargaloApp = () => {
     });
   };
 
+  //cart store
+  const { cart } = useCartStore()
+
   useEffect(() => {
     getInformationCustomer()
 
-    const cart_key = import.meta.env.VITE_CART_STORAGE_KEY
-    const cartData = getDecryptedItem(cart_key)
-    if (cartData) {
-      setCart(cartData)
-    }
   }, []);
 
   const { isLoading } = useLoaderStore();
@@ -64,12 +60,16 @@ const EncargaloApp = () => {
         <SessionModal />
         <WelcomeCustomerModal />
 
-        <button className="fixed bottom-3 right-3 p-4 bg-orange-100 size-max rounded-md shadow-xl border border-orange-300 sm:hidden"
+        {/* cart */}
+        <div className="fixed bottom-2 right-2 bg-orange-100 size-max rounded-md shadow-xl border border-orange-300 flex justify-center items-center p-3 w-max gap-x-3 sm:hidden"
           onClick={() => navigate("/shopping_cart")}
         >
-          <ShoppingCartIcon className="text-orange-500" />
-          <span>{cart?.length}</span>
-        </button>
+          <ShoppingCartIcon className="text-orange-500 size-7" />
+          {
+            cart.length > 0 &&
+            <span className="text-xl">{cart.length}</span>
+          }
+        </div>
       </div>
     </div>)
 };

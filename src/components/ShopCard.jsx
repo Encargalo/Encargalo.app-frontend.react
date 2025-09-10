@@ -68,7 +68,7 @@ const ShopCard = ({ shop, favorites, onToggleFavorite }) => {
           <div className="flex items-center bg-gradient-to-r from-orange-100 to-orange-50 px-2 sm:px-3 py-1 rounded-full border border-orange-200 ml-2">
             <Star className="size-4 sm:size-5 text-orange-500 fill-current mr-1" />
             <span className="sm:text-xl font-bold text-gray-900">
-              {shop.score}
+              {parseFloat(shop.score.toFixed(1))}
             </span>
           </div>
         </figure>
