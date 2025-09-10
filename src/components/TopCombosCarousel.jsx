@@ -44,37 +44,38 @@ const TopCombosCarousel = () => {
     <>
       <section className="mb-8 sm:mb-12">
         {/* header */}
-        <header className="flex sm:items-center justify-between mb-4 sm:mb-6">
-          <figure>
+        <header className="flex flex-col sm:items-center justify-between mb-4 sm:mb-6">
+          <figure className="w-full flex justify-between items-center mb-2">
             {/* title header */}
             <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-white mb-1 sm:mb-2">
               ¡Los mejores combos!
             </h2>
-            {/* subtitle header */}
-            <p className="text-orange-950 text-lg sm:text-base lg:text-lg w-full">
-              Los combos más populares y mejor valorados
-            </p>
+            <div className="flex space-x-1 sm:space-x-2 items-start h-full">
+              {/* scroll left */}
+              <button
+                onClick={() => scrollCarousel("left")}
+                className="bg-white hover:bg-orange-50 border-2 border-gray-200 hover:border-orange-300 rounded-full p-2 sm:p-3 transition-all duration-300 shadow-md hover:shadow-lg"
+              >
+                {/* scroll left icon */}
+                <ChevronLeft className="w-4 sm:w-5 h-4 sm:h-5 text-gray-600 hover:text-orange-600" />
+              </button>
+              {/* scroll right */}
+              <button
+                onClick={() => scrollCarousel("right")}
+                className="bg-white hover:bg-orange-50 border-2 border-gray-200 hover:border-orange-300 rounded-full p-2 sm:p-3 transition-all duration-300 shadow-md hover:shadow-lg"
+              >
+                {/* scroll right icon */}
+                <ChevronRight className="w-4 sm:w-5 h-4 sm:h-5 text-gray-600 hover:text-orange-600" />
+              </button>
+            </div>
           </figure>
 
+          {/* subtitle header */}
+          <p className="text-orange-950 text-lg sm:text-base lg:text-lg w-full">
+            Los combos más populares y mejor valorados
+          </p>
+
           {/* scroll carousel */}
-          <div className="flex space-x-1 sm:space-x-2 items-start h-full">
-            {/* scroll left */}
-            <button
-              onClick={() => scrollCarousel("left")}
-              className="bg-white hover:bg-orange-50 border-2 border-gray-200 hover:border-orange-300 rounded-full p-2 sm:p-3 transition-all duration-300 shadow-md hover:shadow-lg"
-            >
-              {/* scroll left icon */}
-              <ChevronLeft className="w-4 sm:w-5 h-4 sm:h-5 text-gray-600 hover:text-orange-600" />
-            </button>
-            {/* scroll right */}
-            <button
-              onClick={() => scrollCarousel("right")}
-              className="bg-white hover:bg-orange-50 border-2 border-gray-200 hover:border-orange-300 rounded-full p-2 sm:p-3 transition-all duration-300 shadow-md hover:shadow-lg"
-            >
-              {/* scroll right icon */}
-              <ChevronRight className="w-4 sm:w-5 h-4 sm:h-5 text-gray-600 hover:text-orange-600" />
-            </button>
-          </div>
         </header>
 
         {/* carousel */}

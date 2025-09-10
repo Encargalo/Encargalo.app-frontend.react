@@ -55,20 +55,18 @@ const SignUp = ({
     };
 
     return (
-        <section className="bg-white rounded-2xl shadow-2xl p-6 w-[60em] h-[40em] sm:h-max overflow-x-auto sm:overflow-hidden">
+        <section className="bg-white rounded-2xl shadow-2xl p-6 w-[60em] h-[40em] sm:h-max overflow-x-auto sm:overflow-hidden relative">
+            <button
+                onClick={closeLoginModal}
+                className="text-white hover:text-orange-200 p-2 rounded-full bg-orange-400 absolute top-4 right-4"
+            >
+                <X />
+            </button>
             {/* Header */}
             <header className="bg-gradient-to-r from-orange-500 to-orange-600 px-8 py-9 lg:py-12 lg:px-12 rounded-t-2xl -mx-6 -mt-6 mb-7">
-                <figure className="flex items-center justify-between gap-2 sm:gap-20">
-                    <h2 className="text-3xl sm:text-5xl font-bold text-white">
-                        Registrate
-                    </h2>
-                    <button
-                        onClick={closeLoginModal}
-                        className="text-white hover:text-orange-200 p-2 rounded-full bg-orange-400"
-                    >
-                        <X />
-                    </button>
-                </figure>
+                <h2 className="text-3xl sm:text-5xl font-bold text-white">
+                    Registrate
+                </h2>
                 <p className="text-orange-100 mt-1 text-base sm:text-xl">
                     Registrate para realizar tu primer pedido
                 </p>

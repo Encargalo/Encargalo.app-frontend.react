@@ -106,7 +106,7 @@ const ShopMenu = () => {
                 </button>
               </div>
               {
-                userData.session ?
+                userData?.session ?
                   <UserMenu userData={userData} handleNavigate={navigate} />
                   :
                   /* login */
@@ -311,12 +311,6 @@ const ShopMenu = () => {
       {/* modals */}
       <SessionModal />
       <WelcomeCustomerModal />
-      <button className="fixed bottom-3 right-3 p-4 bg-orange-100 size-max rounded-md shadow-xl border border-orange-300 sm:hidden"
-        onClick={() => navigate("/shopping_cart")}
-      >
-        <ShoppingCartIcon className="text-orange-500" />
-        <span>{cart?.length || ''}</span>
-      </button>
     </div>
   );
 };

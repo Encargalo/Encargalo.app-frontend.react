@@ -60,7 +60,7 @@ const AddAddress = () => {
                     <input
                         type="text"
                         autoComplete="off"
-                        placeholder="Mi casa"
+                        placeholder="p. ej: Mi casa"
                         className="w-full shadow-md px-5 py-3 sm:py-4 border-2 text-lg sm:text-xl border-gray-200 rounded-xl focus:ring-2 focus:ring-orange-500"
                         {...register("alias", {
                             required: "Escribe el nombre de la ubicación",
@@ -135,7 +135,7 @@ const AddAddress = () => {
                     <button
                         disabled={isLoading}
                         type="submit"
-                        className="w-full sm:w-2/4 bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 disabled:from-gray-300 disabled:to-gray-400 text-white font-bold py-3 rounded-xl text-xl mt-2 shadow-lg"
+                        className="bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white px-6 py-2 rounded-xl font-semibold transition-all duration-300 shadow-lg hover:shadow-xl sm:text-xl text-lg w-full"
                     >
                         {isLoading ? (
                             <div className="flex items-center justify-center space-x-2">
@@ -175,15 +175,15 @@ const AddAddress = () => {
                                             className="flex flex-col sm:flex-row items-start justify-between gap-y-3 sm:gap-0 w-full shadow-md px-6 py-5 border-2 border-gray-200 rounded-xl hover:shadow-lg transition"
                                         >
                                             {/* icon + info */}
-                                            <div className="flex items-start gap-4">
-                                                <Send className="text-orange-500 size-7 flex-shrink-0" />
-                                                <div className="space-y-1">
-                                                    <p className="text-xl sm:text-2xl font-semibold text-gray-700 uppercase">
+                                            <div className="flex flex-col gap-4 relative">
+                                                <Send className="text-orange-500 size-6 flex-shrink-0 absolute top-0 right-1" />
+                                                <div className="space-y-1 flex items-center gap-x-3">
+                                                    <p className="text-2xl sm:text-2xl font-semibold text-gray-700 uppercase">
                                                         {item.alias}
                                                     </p>
-                                                    <p className="sm:text-xl text-gray-600">{item.address}</p>
-                                                    <p className="sm:text-xl text-gray-600">{item.reference}</p>
                                                 </div>
+                                                <p className="sm:text-xl text-gray-600">{item.address}</p>
+                                                <p className="sm:text-xl text-gray-600">{item.reference}</p>
                                             </div>
 
                                             {/* acciones */}

@@ -2,6 +2,7 @@
 import { Phone, Lock, Eye, EyeOff, X } from "lucide-react";
 //react
 import { Controller, useForm } from "react-hook-form";
+import { useEffect } from "react";
 //services
 import logInCustomers from "../../services/logInCustomers";
 //stores/hooks
@@ -11,6 +12,12 @@ const Login = ({ showPassword, setShowPassword, isLoading, setIsLoading, session
 
     const { setAddress, openWelcomeModal, closeLoginModal } = useOnLoginStore()
 
+    useEffect(() => {
+        document.body.style.overflow = "hidden";
+        return () => {
+            document.body.style.overflow = "auto";
+        };
+    }, []);
 
     //form data
     const {
@@ -42,18 +49,16 @@ const Login = ({ showPassword, setShowPassword, isLoading, setIsLoading, session
     };
 
     return (
-        <section className="bg-white rounded-2xl shadow-2xl p-6 w-full lg:w-2/5">
+        <section className="bg-white rounded-2xl shadow-2xl p-6 w-full lg:w-2/5 relative">
+            <button
+                onClick={closeLoginModal}
+                className="text-white hover:text-orange-200 p-2 rounded-full bg-orange-400 absolute top-4 right-4"
+            >
+                <X />
+            </button>
             {/* Header */}
-            <header className="bg-gradient-to-r from-orange-500 to-orange-600 px-9 py-9 lg:py-12 lg:px-10 rounded-t-2xl -mx-6 -mt-6 mb-7">
-                <figure className="flex items-center justify-between gap-2 sm:gap-20">
-                    <h2 className="text-4xl sm:text-5xl font-bold text-white">Iniciar Sesión</h2>
-                    <button
-                        onClick={closeLoginModal}
-                        className="text-white hover:text-orange-200 p-2 rounded-full bg-orange-400"
-                    >
-                        <X />
-                    </button>
-                </figure>
+            <header className="bg-gradient-to-r from-orange-500 to-orange-600 px-7 py-9 lg:py-12 lg:px-10 rounded-t-2xl -mx-6 -mt-6 mb-7">
+                <h2 className="text-4xl sm:text-5xl font-bold text-white">Iniciar Sesión</h2>
                 <p className="text-orange-100 mt-1 text-base sm:text-xl">
                     Ingresa tu número y contraseña
                 </p>
@@ -99,6 +104,7 @@ const Login = ({ showPassword, setShowPassword, isLoading, setIsLoading, session
                                         {...field}
                                         onChange={handlePhoneChange}
                                         value={field.value}
+                                        type="tel"
                                         placeholder="+57 123456789"
                                         className="w-full pl-10 pr-3 py-3 sm:py-4 border-2 text-lg sm:text-xl border-gray-200 rounded-xl focus:ring-2 focus:ring-orange-500"
                                     />
@@ -122,6 +128,7 @@ const Login = ({ showPassword, setShowPassword, isLoading, setIsLoading, session
                         <Lock className="absolute left-3 top-4 sm:top-5 text-orange-500 size-5" />
                         <input
                             type={showPassword ? "text" : "password"}
+                            autoComplete="off"
                             placeholder="Ingresa tu contraseña"
                             className="w-full pl-10 pr-3 py-3 sm:py-4 border-2 text-lg sm:text-xl border-gray-200 rounded-xl focus:ring-2 focus:ring-orange-500"
                             {...register("password", {

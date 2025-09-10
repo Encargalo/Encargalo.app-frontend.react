@@ -1,5 +1,5 @@
 //react
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { ilustrations } from "../assets/ilustrations";
 //store/hooks
@@ -16,6 +16,10 @@ const ShoppingCart = () => {
     const { setPlaceOrder } = usePlaceOrderStore();
     const { formatNumber } = useNumberFormat();
 
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, []);
+
     const processed = useMemo(() => preprocessCartItems(cart), [cart]);
 
     const groupedByShop = useMemo(() => {
@@ -23,8 +27,7 @@ const ShoppingCart = () => {
             const shopId = item?.shopInfo?.id ?? "sin-tienda";
             if (!acc[shopId]) {
                 acc[shopId] = {
-                    shopId,
-                    shopName: item?.shopInfo?.name ?? "Sin tienda",
+                    shopInfo: item.shopInfo ?? { id: "sin-tienda", name: "Sin tienda" },
                     items: [],
                 };
             }
@@ -33,8 +36,8 @@ const ShoppingCart = () => {
         }, {});
     }, [processed]);
 
-    const handlePlaceOrder = (shopId, shopName, items) => {
-        setPlaceOrder({ shopId, shopName, items });
+    const handlePlaceOrder = (shopInfo, items) => {
+        setPlaceOrder({ shopInfo, items });
         navigate("/cart/checkout");
     };
 
@@ -128,11 +131,11 @@ const ShoppingCart = () => {
                                     </div>
 
                                     {/* Lista de productos */}
-                                    <ul className="divide-y divide-gray-200 px-3">
+                                    <ul className="divide-y divide-gray-200">
                                         {group.items.map((item, idx) => (
                                             <li
                                                 key={`${item.id}-${idx}`}
-                                                className="p-5 flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between"
+                                                className="py-5 px-4 flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between"
                                             >
                                                 {/* detalle */}
                                                 <div className="flex gap-4">
@@ -219,11 +222,7 @@ const ShoppingCart = () => {
                                         </div>
                                         <button
                                             onClick={() =>
-                                                handlePlaceOrder(
-                                                    group.shopId,
-                                                    group.shopName,
-                                                    group.items
-                                                )
+                                                handlePlaceOrder(group.shopInfo, group.items)
                                             }
                                             className="w-full sm:w-auto bg-gradient-to-r from-orange-500 to-orange-600 text-white px-5 py-3 rounded-xl font-semibold shadow hover:shadow-md transition"
                                         >
