@@ -90,7 +90,7 @@ const TopCombosCarousel = () => {
               WebkitScrollbar: { display: "none" },
             }}
           >
-            {items.map((item, index) => {
+            {items?.map((item, index) => {
               return (
                 /* carrusel items */
                 <div
