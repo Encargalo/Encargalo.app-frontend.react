@@ -8,7 +8,7 @@
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "start": "serve dist -s -n -L -p $PORT",
+    "start": "serve dist -s -n -L -p $PORT --host",
     "install:prod": "npm install --omit=dev"
   },
   "dependencies": {
