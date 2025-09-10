@@ -8,7 +8,7 @@
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "start": "serve dist -s -n -L -p $PORT",
+    "start": "serve -s dist -l $PORT",
     "install:prod": "bun install --omit=dev"
   },
   "dependencies": {
