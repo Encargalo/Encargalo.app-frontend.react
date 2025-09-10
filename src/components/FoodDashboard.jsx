@@ -1,18 +1,18 @@
 //react
-import { useState, useMemo, useRef, useEffect } from "react";
+import { useState, useMemo, useEffect } from "react";
 //components
 import getShops from "../services/getShops";
 import SearchAndFilters from "./SearchAndFilters";
 import ShopCard from "./ShopCard";
 import TopCombosCarousel from "./TopCombosCarousel";
-
 const FoodDashboard = ({ favorites, toggleFavorite }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedFilter, setSelectedFilter] = useState("all");
   const [sortBy, setSortBy] = useState("score");
   const [showFilters, setShowFilters] = useState(true);
-  const carouselRef = useRef(null);
   const [shops, setShops] = useState([]);
+
+  //loader
 
   //Get shops
   useEffect(() => {
@@ -53,7 +53,7 @@ const FoodDashboard = ({ favorites, toggleFavorite }) => {
   }, [shops, searchTerm, selectedFilter, sortBy, favorites]);
 
   return (
-    <section className="w-full px-4 sm:px-6 lg:px-8 py-4 sm:py-6 lg:py-8">
+    <section className='w-full $ px-4 sm:px-6 lg:px-8 py-4 sm:py-6 lg:py-8'>
       {/* Search and filters */}
       <SearchAndFilters
         searchTerm={searchTerm}
@@ -67,21 +67,18 @@ const FoodDashboard = ({ favorites, toggleFavorite }) => {
       />
 
       {/* Top combos carousel */}
-      {!searchTerm && <TopCombosCarousel carouselRef={carouselRef} />}
+      {!searchTerm && <TopCombosCarousel />}
       {/* Restaurantes filtrados */}
       <aside className="mb-6 sm:mb-8">
         {/* title */}
-        <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold text-white mb-2 sm:mb-3">
+        <h2 className="text-2xl sm:text-4xl lg:text-3xl font-bold text-white mb-2 sm:mb-3">
           {searchTerm
             ? `Resultados para "${searchTerm}"`
             : "Restaurantes disponibles"}
         </h2>
         {/* subtitle */}
-        <p className="text-orange-950 text-sm sm:text-base lg:text-lg">
-          {filteredShops.length}{" "}
-          {filteredShops.length === 1
-            ? "restaurante encontrado"
-            : "restaurantes encontrados"}
+        <p className="text-orange-950 text-lg sm:text-base lg:text-lg">
+          Encuentra tu proxima comida favorita
         </p>
       </aside>
 

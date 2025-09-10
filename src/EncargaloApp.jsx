@@ -1,47 +1,26 @@
+//icons
+import { ShoppingCartIcon } from "lucide-react"
 //react
-import { useState } from "react";
-
+import { lazy, Suspense, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 // components
 import Header from "./components/Header";
-import LoginModal from "./components/LoginModal";
-import FoodDashboard from "./components/FoodDashboard.jsx";
+const FoodDashboard = lazy(() => import('./components/FoodDashboard.jsx'))
+import Loader from "./components/Loader.jsx";
+import WelcomeCustomerModal from "./components/WelcomeCustomerModal.jsx";
+import SessionModal from "./components/SessionCustomer/SessionModal.jsx";
+//utils
+import useLoaderStore from "./store/loaderStore.js";
+//services
+import getInformationCustomer from "./services/getInformationCustomer.js";
+import useCartStore from "./store/cartStore.js";
 
 const EncargaloApp = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [user, setUser] = useState(null);
-  const [showLogin, setShowLogin] = useState(false);
-  const [isLoggingIn, setIsLoggingIn] = useState(false);
+  //favorites
   const [favorites, setFavorites] = useState(new Set());
-  const [cart, setCart] = useState([]);
-
-  // Login simulado
-  const handleLogin = async (loginData) => {
-    setIsLoggingIn(true);
-    try {
-      await new Promise((r) => setTimeout(r, 1500));
-      const phoneValid = loginData.phone.trim().length > 0;
-      const passwordValid = loginData.password
-        ? loginData.password.length >= 4
-        : true;
-      if (phoneValid && passwordValid) {
-        setUser({ id: "1", name: "Usuario Demo", phone: loginData.phone });
-        setIsLoggedIn(true);
-        setShowLogin(false);
-      } else {
-        alert("Verifica teléfono y contraseña");
-      }
-    } catch {
-      alert("Error al iniciar sesión");
-    } finally {
-      setIsLoggingIn(false);
-    }
-  };
-
-  const handleLogout = () => {
-    setIsLoggedIn(false);
-    setUser(null);
-    setCart([]);
-  };
+  //navigate
+  const navigate = useNavigate()
+  //
 
   // Favoritos
   const toggleFavorite = (shopId) => {
@@ -52,47 +31,47 @@ const EncargaloApp = () => {
     });
   };
 
-  // Carrito
-  const addToCart = (item) => {
-    setCart((prev) => {
-      const existing = prev.find((i) => i.id === item.id);
-      if (existing) {
-        return prev.map((i) =>
-          i.id === item.id ? { ...i, quantity: i.quantity + 1 } : i
-        );
-      }
-      return [...prev, { ...item, quantity: 1 }];
-    });
-  };
+  //cart store
+  const { cart } = useCartStore()
 
-  const cartTotal = cart.reduce(
-    (total, item) => total + item.price * item.quantity,
-    0
-  );
+  useEffect(() => {
+    getInformationCustomer()
+
+  }, []);
+
+  const { isLoading } = useLoaderStore();
 
   return (
-    <div className="min-h-screen w-sreen relative background">
-      <Header
-        isLoggedIn={isLoggedIn}
-        user={user}
-        onLogin={() => setShowLogin(true)}
-        onLogout={handleLogout}
-        cartTotal={cartTotal}
-        cart={cart}
-      />
-      <FoodDashboard
-        favorites={favorites}
-        toggleFavorite={toggleFavorite}
-        addToCart={addToCart}
-      />
-      <LoginModal
-        show={showLogin}
-        onClose={() => setShowLogin(false)}
-        onLogin={handleLogin}
-        isLoading={isLoggingIn}
-      />
-    </div>
-  );
+    <div>
+      {isLoading && (
+        <Loader />
+      )}
+      <div className="min-h-dvh w-dvw relative background">
+        <Header
+        />
+        <Suspense fallback={<Loader />}>
+          <FoodDashboard
+            favorites={favorites}
+            toggleFavorite={toggleFavorite}
+          />
+        </Suspense>
+
+        {/* modals */}
+        <SessionModal />
+        <WelcomeCustomerModal />
+
+        {/* cart */}
+        <div className="fixed bottom-2 right-2 bg-orange-100 size-max rounded-md shadow-xl border border-orange-300 flex justify-center items-center p-3 w-max gap-x-3 sm:hidden"
+          onClick={() => navigate("/shopping_cart")}
+        >
+          <ShoppingCartIcon className="text-orange-500 size-7" />
+          {
+            cart.length > 0 &&
+            <span className="text-xl">{cart.length}</span>
+          }
+        </div>
+      </div>
+    </div>)
 };
 
 export default EncargaloApp;

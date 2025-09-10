@@ -20,10 +20,10 @@ const SearchAndFilters = ({
         <Search className="absolute left-4 sm:left-6 top-1/2 transform -translate-y-1/2 text-orange-400 w-5 sm:w-6 h-5 sm:h-6 " />
         <input
           type="text"
-          placeholder="Busca restaurantes o comida..."
+          placeholder="Busca restaurantes..."
           value={searchTerm}
           onChange={(e) => onSearchChange(e.target.value)}
-          className="w-full pl-12 sm:pl-16 pr-4 sm:pr-6 py-3 sm:py-4 border-2 border-gray-200 rounded-xl sm:rounded-2xl focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 bg-slate-50 text-base sm:text-lg text-"
+          className="w-full pl-12 sm:pl-16 pr-4 sm:pr-6 py-3 sm:py-4 border-2 border-gray-300 rounded-xl sm:rounded-2xl focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 bg-slate-50 text-base sm:text-lg text-"
         />
       </search>
 
@@ -36,51 +36,49 @@ const SearchAndFilters = ({
           <Filter className="w-4 sm:w-5 h-4 sm:h-5 text-orange-500" />
           <span className="font-semibold text-gray-700">Filtros</span>
           <ChevronDown
-            className={`w-4 h-4 transition-transform ${
-              showFilters ? "rotate-180" : ""
-            }`}
+            className={`w-4 h-4 transition-transform ${showFilters ? "rotate-180" : ""
+              }`}
           />
         </button>
 
         {/* filters options */}
         {showFilters && (
           <div>
-            <h4 className="font-semibold text-gray-700 hidden sm:block mb-2">Busca por filtros:</h4>
+            <h4 className="font-semibold text-gray-700 hidden sm:text-xl sm:block mb-2">
+              Busca por filtros:
+            </h4>
             {/* filter all */}
 
-          <div className="flex gap-3 items-center w-full sm:w-auto">
-            <div
-              className="relative w-full sm:w-auto"
-              onClick={() => setFilterChevron(!filterChevron)}
-            >
-              <select
-                value={selectedFilter}
-                onChange={(e) => {
-                  onFilterChange(e.target.value);
-                }}
-                className="w-full sm:w-auto bg-transparent border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 font-medium p-2 cursor-pointer text-center"
+            <div className="flex gap-3 items-center w-full sm:w-auto">
+              <div
+                className="relative w-full sm:w-auto"
+                onClick={() => setFilterChevron(!filterChevron)}
               >
-                <option value="all">Todos</option>
-                <option value="open">Abiertos</option>
-                <option value="favorites">Favoritos</option>
-              </select>
-            </div>
+                <select
+                  value={selectedFilter}
+                  onChange={(e) => {
+                    onFilterChange(e.target.value);
+                  }}
+                  className="sm:w-auto bg-transparent border-2 border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 font-medium px-4 py-2 cursor-pointer text-center sm:text-lg"
+                >
+                  <option value="all">Todos</option>
+                  <option value="open">Abiertos</option>
+                  {/*  <option value="favorites">Favoritos</option> */}
+                </select>
+              </div>
 
-            {/* most calified */}
-            <div
-              className="relative w-full sm:w-auto"
-            >
-              <select
-                value={sortBy}
-                onChange={(e) => onSortChange(e.target.value)}
-                className="w-full sm:w-auto border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 font-medium p-2 text-center cursor-pointer "
-              >
-                <option value="score">Mejor calificado</option>
-                <option value="name">Nombre A-Z</option>
-              </select>
+              {/* most calified */}
+              <div className="relative w-full sm:w-auto">
+                <select
+                  value={sortBy}
+                  onChange={(e) => onSortChange(e.target.value)}
+                  className="sm:w-auto border-2 border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 font-medium px-4 py-2 text-center cursor-pointer sm:text-lg"
+                >
+                  <option value="score">Mejor calificado</option>
+                  <option value="name">Nombre A-Z</option>
+                </select>
+              </div>
             </div>
-
-          </div>
           </div>
         )}
       </section>

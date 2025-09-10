@@ -3,6 +3,52 @@
 @tailwind utilities;
 
 @layer utilities {
+  .no-scrollbar::-webkit-scrollbar {
+    display: none; /* Chrome, Safari y Opera */
+  }
+
+  .no-scrollbar {
+    -ms-overflow-style: none; /* IE y Edge */
+    scrollbar-width: none; /* Firefox */
+  }
+}
+
+@keyframes fade-out-right {
+  from {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+}
+
+@keyframes fade-in-right {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.animate-fade-out-right {
+  animation: fade-out-right 0.5s ease-in-out;
+}
+
+a {
+  text-decoration: underline;
+  color: #c64f0b;
+}
+
+.animate-fade-in-right {
+  animation: fade-in-right 0.5s ease-in-out;
+}
+
+@layer utilities {
   .bg-gradient-modern-orange {
     background-image: linear-gradient(
       to bottom right,
@@ -14,16 +60,11 @@
 }
 
 .background {
-  @apply bg-gradient-to-br from-orange-300 to-orange-500 w-full h-full rounded-lg ;
+  @apply bg-gradient-to-br from-orange-300 to-orange-500 w-full h-full;
 }
 
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
-}
-a:hover {
-  color: #535bf2;
+.aspect-ration-default {
+  aspect-ratio: 16 / 9;
 }
 
 h1 {
@@ -50,20 +91,10 @@ select {
   position: relative;
 }
 
+a {
+}
+
 button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
-}
-
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
-  a:hover {
-    color: #747bff;
-  }
-  button {
-    background-color: #f9f9f9;
-  }
 }
