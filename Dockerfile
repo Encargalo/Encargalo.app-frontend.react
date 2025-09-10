@@ -1,5 +1,5 @@
 # Etapa 1: Build
-FROM node:20 AS builder
+FROM node:latest AS builder
 
 # Establecer directorio de trabajo
 WORKDIR /app
