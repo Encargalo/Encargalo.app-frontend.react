@@ -8,8 +8,8 @@
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "start": "serve dist -s -n -L -p $PORT --host",
-    "install:prod": "npm install --omit=dev"
+    "start": "serve dist -s -n -L -p $PORT",
+    "install:prod": "bun install --omit=dev"
   },
   "dependencies": {
     "@react-google-maps/api": "2.20.7",
@@ -21,7 +21,7 @@
     "react-dom": "19.1.1",
     "react-hook-form": "7.62.0",
     "react-router-dom": "7.8.1",
-    "serve": "^14.2.5",
+    "serve": "14.2.5",
     "zustand": "5.0.8"
   },
   "devDependencies": {
