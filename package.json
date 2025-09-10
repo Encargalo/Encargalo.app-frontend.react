@@ -7,7 +7,7 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
-    "preview": "vite preview",
+    "preview": "vite preview --port $PORT --host",
     "start": "serve -s dist -l $PORT",
     "install:prod": "bun install --omit=dev"
   },
