@@ -26,18 +26,15 @@ export function buildWhatsAppMessage(items, shopName, purchaseData, formatNumber
         const subtotal = totalUnitPrice + totalAdditionals;
         total += subtotal;
 
-        // Producto y detalles en negrita
         message += `*Producto:* ${item.name}\n\n`;
         message += ` Cantidad: ${quantity}\n`;
         message += ` Precio unitario: ${formatNumber(unitPrice, 'es-CO')}\n`;
         message += ` Precio total: ${formatNumber(totalUnitPrice, 'es-CO')}\n\n`;
 
-        // Observaciones (si existen)
         if (item.observation && item.observation.trim() !== '') {
             message += `Observaciones: ${item.observation}\n\n`;
         }
 
-        // Adicionales (si existen)
         if (additionals.length > 0) {
             message += `*Adicionales por unidad:*\n`;
             additionals.forEach((a) => {
@@ -49,7 +46,6 @@ export function buildWhatsAppMessage(items, shopName, purchaseData, formatNumber
 
         message += `Subtotal:  ${formatNumber(subtotal, 'es-CO')}\n`;
 
-        // Separador visual entre productos
         if (items.length > 1 && idx < items.length - 1) {
             message += '-------------------------\n\n';
         } else {
@@ -62,10 +58,21 @@ export function buildWhatsAppMessage(items, shopName, purchaseData, formatNumber
     message += `*Datos del comprador*\n`;
     if (purchaseData.full_name) message += `*Nombre:* ${purchaseData.full_name}\n`;
     if (purchaseData.direction) message += `*Dirección:* ${purchaseData.direction}\n`;
-    if (purchaseData.reference) message += `Punto de Referencia: ${purchaseData.reference}\n`;
+    if (purchaseData.reference) message += `Referencia: ${purchaseData.reference}\n`;
     if (purchaseData.payment_amount) message += `*Pago con:* ${formatNumber(purchaseData.payment_amount, 'es-CO')}\n`;
     if (purchaseData.note && purchaseData.note.trim() !== "") message += `*Nota para el repartidor:* ${purchaseData.note}\n`;
 
-    // Codifica todo el mensaje para WhatsApp
+    // Construir el link de ubicación y ponerlo al final, en bold y con dos saltos de línea antes
+    let locationLink = "";
+    if (purchaseData.coords && purchaseData.coords.lat && purchaseData.coords.lng) {
+        locationLink = `https://www.google.com/maps/search/?api=1&query=${purchaseData.coords.lat},${purchaseData.coords.long}`
+    } else if (purchaseData.direction) {
+        locationLink = `https://www.google.com/maps/search/?api=1&query=${purchaseData.coords.lat},${purchaseData.coords.long}`
+    }
+
+    if (locationLink) {
+        message += `\n\n*Abrir ubicación:* ${locationLink}\n`;
+    }
+
     return encodeURIComponent(message);
 }

@@ -6,6 +6,7 @@ const containerStyle = {
   width: "100%",
   height: "400px",
   position: "relative",
+  borderRadius: "10px",
 };
 
 const MapComponent = ({ onAddressSelect }) => {
@@ -14,7 +15,7 @@ const MapComponent = ({ onAddressSelect }) => {
     googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAPS_API_KEY,
   });
 
-  const [center, setCenter] = useState(null);
+  const [center, setCenter] = useState(null); // null hasta obtener ubicación
   const mapRef = useRef(null);
 
   // Obtener ubicación inicial
@@ -23,23 +24,19 @@ const MapComponent = ({ onAddressSelect }) => {
       (position) => {
         const coords = {
           lat: position.coords.latitude,
-          long: position.coords.longitude,
+          lng: position.coords.longitude, // Google Maps usa lng, no long
         };
-        setCenter(coords); // ahora sí usamos setCenter
+        setCenter(coords);
         fetchAddress(coords);
       },
-      (error) => {
-        console.error("Error obteniendo ubicación", error);
-        // opcional: asignar un centro por defecto si falla la geolocalización
-        // setCenter({ lat: 0, long: 0 });
-      },
+      (error) => console.error("Error obteniendo ubicación", error),
       { enableHighAccuracy: true }
     );
   }, []);
 
   const fetchAddress = async (coords) => {
     const apiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
-    const geocodeURL = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${coords.lat},${coords.long}&key=${apiKey}`;
+    const geocodeURL = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${coords.lat},${coords.lng}&key=${apiKey}`;
 
     try {
       const response = await fetch(geocodeURL);
@@ -55,13 +52,8 @@ const MapComponent = ({ onAddressSelect }) => {
 
   const handleIdle = () => {
     if (mapRef.current) {
-      const idleCenter = mapRef.current.getCenter();
-      const coords = {
-        lat: idleCenter.lat(),
-        long: idleCenter.lng(),
-      };
-      fetchAddress(coords);
-      setCenter(coords); // actualizar el estado mientras se mueve el mapa
+      const coords = mapRef.current.getCenter();
+      fetchAddress({ lat: coords.lat(), lng: coords.lng() });
     }
   };
 
@@ -71,9 +63,9 @@ const MapComponent = ({ onAddressSelect }) => {
         (position) => {
           const coords = {
             lat: position.coords.latitude,
-            long: position.coords.longitude,
+            lng: position.coords.longitude,
           };
-          mapRef.current.panTo({ lat: coords.lat, lng: coords.long });
+          mapRef.current.panTo(coords);
           fetchAddress(coords);
           setCenter(coords);
         },
@@ -83,37 +75,39 @@ const MapComponent = ({ onAddressSelect }) => {
     }
   };
 
-  // Solo renderiza el mapa cuando la geolocalización ya esté lista
+  // ⚠️ Renderizamos solo cuando isLoaded y center ya tienen valor
+  if (!isLoaded || !center) return (
+    <div className="flex justify-center items-center h-64">
+      <div className="w-12 h-12 border-4 border-white border-b-orange-600 rounded-full animate-spin"></div>
+    </div>
+  );
+
   return (
-    <>
-      {isLoaded && center && (
-        <div style={containerStyle}>
-          <GoogleMap
-            mapContainerStyle={{ width: "100%", height: "100%" }}
-            defaultCenter={{ lat: center.lat, lng: center.long }} // SOLO al cargar
-            zoom={15}
-            onLoad={(map) => (mapRef.current = map)}
-            onIdle={handleIdle}
-            options={{
-              streetViewControl: false,
-              mapTypeControl: false,
-              gestureHandling: "greedy",
-            }}
-          />
-          {/* Marker fijo al centro */}
-          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-full text-3xl">
-            <MapPin className="size-9 text-orange-800" />
-          </div>
-          {/* Botón buscar ubicación */}
-          <div
-            className="absolute top-3 left-3 bg-white rounded-md p-3 shadow-md cursor-pointer flex items-center justify-center z-10"
-            onClick={goToCurrentLocation}
-          >
-            <p className="text-sm">Buscar mi ubicación</p>
-          </div>
-        </div>
-      )}
-    </>
+    <div style={containerStyle}>
+      <GoogleMap
+        mapContainerStyle={{ width: "100%", height: "100%" }}
+        center={center} // ahora usamos center directamente
+        zoom={15}
+        onLoad={(map) => (mapRef.current = map)}
+        onIdle={handleIdle}
+        options={{
+          streetViewControl: false,
+          mapTypeControl: false,
+          gestureHandling: "greedy",
+        }}
+      />
+      {/* Marker fijo al centro */}
+      <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-full text-3xl">
+        <MapPin className="size-9 text-orange-800" />
+      </div>
+      {/* Botón buscar ubicación */}
+      <div
+        className="absolute top-3 left-3 bg-white rounded-md p-3 shadow-md cursor-pointer flex items-center justify-center z-10"
+        onClick={goToCurrentLocation}
+      >
+        <p className="text-sm">Buscar mi ubicación</p>
+      </div>
+    </div>
   );
 };
 

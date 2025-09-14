@@ -9,6 +9,7 @@ import useNumberFormat from "../hooks/useNumberFormat";
 //lib
 import { preprocessCartItems } from "../lib/cartUtils";
 //assets (opcional: si tienes ilustraciones)
+import { removeItem } from "../utils/encryptionUtilities";
 
 const ShoppingCart = () => {
     const navigate = useNavigate();
@@ -18,6 +19,8 @@ const ShoppingCart = () => {
 
     useEffect(() => {
         window.scrollTo(0, 0);
+        // Borra el resumen del pedido encriptado al entrar al carrito
+        removeItem("encargalo_checkout_order");
     }, []);
 
     const processed = useMemo(() => preprocessCartItems(cart), [cart]);
@@ -38,7 +41,7 @@ const ShoppingCart = () => {
 
     const handlePlaceOrder = (shopInfo, items) => {
         setPlaceOrder({ shopInfo, items });
-        navigate("/cart/checkout");
+        navigate("/shopping_cart/checkout");
     };
 
     const isEmpty = cart.length === 0;
@@ -114,7 +117,7 @@ const ShoppingCart = () => {
                                     <div className="flex items-center justify-between px-5 pt-5 border-b border-gray-100">
                                         <div>
                                             <h3 className="text-2xl sm:text-3xl font-bold text-gray-800">
-                                                {group.shopName}
+                                                {group.shopInfo.name}
                                             </h3>
                                             <p className="sm:text-xl text-gray-500">
                                                 {group.items.length} producto
@@ -218,7 +221,7 @@ const ShoppingCart = () => {
                                     <div className="p-5 border-t border-gray-100 flex flex-col sm:flex-row items-center justify-between gap-3">
                                         <div className="text-gray-600">
                                             ¿Listo para pedir en{" "}
-                                            <span className="font-semibold sm:text-lg">{group.shopName}</span>?
+                                            <span className="font-semibold sm:text-lg">{group.shopInfo.name}</span>?
                                         </div>
                                         <button
                                             onClick={() =>

@@ -7,6 +7,7 @@ import deleteAddress from "../../services/deleteAddress";
 import getAddressCustomer from "../../services/getAddressCustomer";
 //compentns
 import MapComponent from "../MapComponent";
+import RequestLocationModal from "../RequestLocationModal";
 //icons
 import { DeleteIcon, Send } from "lucide-react";
 import { ilustrations } from "../../assets/ilustrations";
@@ -28,7 +29,15 @@ const AddAddress = () => {
 
     //update address
     const onUpdateAddress = (data) => {
-        addAddress(data, setAddress, setConfirmAdd, setIsLoading, reset)
+        // Transformar coords.lng a coords.long si existe coords
+        let newData = { ...data };
+        if (newData.coords && typeof newData.coords.lng !== "undefined") {
+            newData.coords = {
+                lat: newData.coords.lat,
+                long: newData.coords.lng,
+            };
+        }
+        addAddress(newData, setAddress, setConfirmAdd, setIsLoading, reset)
     }
 
     //delete address
@@ -99,12 +108,14 @@ const AddAddress = () => {
                 </div>
 
                 {/* Mapa interactivo */}
-                <MapComponent
-                    onAddressSelect={({ address, coords }) => {
-                        setValue("address", address, { shouldValidate: true });
-                        setValue("coords", coords); // ojo: usa siempre "coords"
-                    }}
-                />
+                <div className="bg-slate-400 w-full h-[400px] rounded-lg">
+                    <MapComponent
+                        onAddressSelect={({ address, coords }) => {
+                            setValue("address", address, { shouldValidate: true });
+                            setValue("coords", coords); // ojo: usa siempre "coords"
+                        }}
+                    />
+                </div>
 
                 {/* Referencia */}
                 <div>
@@ -203,6 +214,10 @@ const AddAddress = () => {
 
 
             </footer>
+
+            {/* modals */}
+            <RequestLocationModal />
+
         </div>
     )
 }

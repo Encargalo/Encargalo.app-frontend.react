@@ -14,6 +14,7 @@ import useLoaderStore from "./store/loaderStore.js";
 //services
 import getInformationCustomer from "./services/getInformationCustomer.js";
 import useCartStore from "./store/cartStore.js";
+import RequestLocationModal from "./components/RequestLocationModal.jsx";
 
 const EncargaloApp = () => {
   //favorites
@@ -59,6 +60,7 @@ const EncargaloApp = () => {
         {/* modals */}
         <SessionModal />
         <WelcomeCustomerModal />
+        <RequestLocationModal />
 
         {/* cart */}
         <div className="fixed bottom-2 right-2 bg-orange-100 size-max rounded-md shadow-xl border border-orange-300 flex justify-center items-center p-3 w-max gap-x-3 sm:hidden"

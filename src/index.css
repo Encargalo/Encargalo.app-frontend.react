@@ -35,6 +35,21 @@
   }
 }
 
+@keyframes slide-in-top {
+  0% {
+    transform: translateY(10px) translateX(5px);
+  }
+  50% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(10px) translateX(5px);
+  }
+}
+.animate-slide-in-top-infinite {
+  animation: slide-in-top 1.2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
 .animate-fade-out-right {
   animation: fade-out-right 0.5s ease-in-out;
 }
@@ -73,9 +88,7 @@ h1 {
 }
 
 button {
-  border-radius: 8px;
   border: 1px solid transparent;
-  padding: 0.6em 1.2em;
   font-size: 1em;
   font-weight: 500;
   font-family: inherit;

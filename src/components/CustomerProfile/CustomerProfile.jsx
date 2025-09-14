@@ -5,20 +5,18 @@ import getInformationCustomer from "../../services/getInformationCustomer"
 import { LogOut } from "lucide-react"
 
 const CustomerProfile = () => {
-    const [user, setUser] = useState(null)
     const navigate = useNavigate()
     const location = useLocation()
+    const user_session = import.meta.env.VITE_USER_SESSION;
+    const user_data = getDecryptedItem(user_session)
 
     useEffect(() => {
         getInformationCustomer()
-        const user_session = import.meta.env.VITE_USER_SESSION;
-        const data = getDecryptedItem(user_session)
 
-        if (!data?.session) {
+        if (!user_data?.session) {
             navigate("/")
             return;
         }
-        setUser(data)
     }, [navigate])
 
     const { pathname } = location;
@@ -30,7 +28,7 @@ const CustomerProfile = () => {
         updatePassword: "/customer_profile/update_password"
     }
 
-    if (!user?.session) return
+    if (!user_data?.session) return
 
     return (
         <main className="min-h-dvh w-full relative p-4 sm:p-12 flex flex-col gap-y-3 lg:flex-row-reverse sm:justify-end bg-gradient-to-br from-orange-50 to-orange-100 gap-7">
@@ -40,7 +38,7 @@ const CustomerProfile = () => {
                 <nav className="bg-white border border-gray-300 rounded-2xl p-5">
                     {/* header */}
                     <div className="space-y-3 mb-6 hidden lg:flex lg:flex-col">
-                        <h2 className="text-3xl"><span className="text-orange-600">Hola {user && user.data.name},</span> Aqui puedes actualizar tus datos</h2>
+                        <h2 className="text-3xl"><span className="text-orange-600">Hola {user_data && user_data?.data.name},</span> Aqui puedes actualizar tus datos</h2>
                         <p className="text-xl text-gray-600">
                             Actualiza tu datos personales, contraseñas y añade nuevas direcciones
                         </p>

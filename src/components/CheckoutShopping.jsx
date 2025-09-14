@@ -5,14 +5,16 @@ import { useNavigate } from "react-router-dom";
 import usePlaceOrderStore from "../store/placeOrderStore";
 import useCartStore from "../store/cartStore";
 import useNumberFormat from "../hooks/useNumberFormat";
+import useOnLoginStore from "../store/onLoginStore";
 //services
 import getAddressCustomer from "../services/getAddressCustomer";
 //components
 import MapComponent from "./MapComponent";
 //utils/lib
 import { buildWhatsAppMessage, preprocessCartItems } from "../lib/cartUtils";
-import { getDecryptedItem } from "../utils/encryptionUtilities";
-//session
+import { getDecryptedItem, setEncryptedItem, removeItem } from "../utils/encryptionUtilities";
+import SessionModal from "./SessionCustomer/SessionModal";
+import WelcomeCustomerModal from "./WelcomeCustomerModal";
 
 const InlineNewAddress = ({ onAdded }) => {
     const [isSaving, setIsSaving] = useState(false);
@@ -96,8 +98,8 @@ const InlineNewAddress = ({ onAdded }) => {
 
 const CheckoutShopping = () => {
     const navigate = useNavigate();
-    const { placeOrder, clearPlaceOrder } = usePlaceOrderStore();
-    const { removeShopItems } = useCartStore();
+    const { placeOrder, clearPlaceOrder, setPlaceOrder } = usePlaceOrderStore();
+    const { removeShopItems, clearCart } = useCartStore();
     const { formatNumber } = useNumberFormat();
     const [addresses, setAddresses] = useState([]);
     const [selectedAddressId, setSelectedAddressId] = useState(null);
@@ -105,11 +107,37 @@ const CheckoutShopping = () => {
     const [note, setNote] = useState("");
     const [paymentAmount, setPaymentAmount] = useState("");
 
+    const CHECKOUT_ORDER_KEY = import.meta.env.VITE_CHECKOUT_ORDER_KEY;
+    const checkAddress = addresses?.length > 0
+
+    // Sincroniza el pedido con localStorage ENCRIPTADO
+    useEffect(() => {
+        if (placeOrder && placeOrder.items && placeOrder.items.length > 0) {
+            setEncryptedItem(CHECKOUT_ORDER_KEY, placeOrder);
+        }
+    }, [placeOrder]);
+
+    // Al montar, si no hay pedido en el store, intenta cargarlo del localStorage ENCRIPTADO
+    useEffect(() => {
+        if (!placeOrder || !placeOrder.items || placeOrder.items.length === 0) {
+            const saved = getDecryptedItem(CHECKOUT_ORDER_KEY);
+            if (saved && saved.items && saved.items.length > 0) {
+                if (typeof setPlaceOrder === "function") setPlaceOrder(saved);
+            }
+        }
+        // eslint-disable-next-line
+    }, []);
+
     // Carga direcciones guardadas
     const fetchAddresses = () => {
         getAddressCustomer(setAddresses);
     };
     useEffect(fetchAddresses, []);
+
+    //Up scroll
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, []);
 
     // Seleccionar la primera por defecto
     useEffect(() => {
@@ -141,7 +169,8 @@ const CheckoutShopping = () => {
         const purchaseData = {
             full_name: buyerName,
             direction: selectedAddress?.address || "",
-            neighborhood: selectedAddress?.alias || "",
+            reference: selectedAddress?.reference || "",
+            coords: selectedAddress?.coords || null,
             whatsapp: buyerWhatsapp,
             payment_amount: paymentAmount ? Number(paymentAmount) : undefined,
             note: note || "",
@@ -154,15 +183,23 @@ const CheckoutShopping = () => {
             formatNumber
         );
 
-        // const phone = placeOrder.shopInfo.phone;
-        const phone = "+584125740234"
+        const phone = placeOrder.shopInfo.phone;
         // Limpia solo productos de la tienda actual
         if (placeOrder?.shopId) removeShopItems(placeOrder.shopId);
 
         clearPlaceOrder();
-        window.open(`https://wa.me/${phone}?text=${msg}`, "_blank");
+        clearCart()
         navigate("/");
+        window.open(`https://wa.me/${phone}?text=${msg}`, "_blank");
     };
+
+    //user data
+    const user_session = userSession?.session;
+    const session_create = true
+
+    //onLogin
+    const { openLoginModal } = useOnLoginStore()
+
 
     return (
         <main className="min-h-screen w-full bg-gradient-to-br from-orange-50 to-orange-100">
@@ -188,12 +225,12 @@ const CheckoutShopping = () => {
                     {/* Direcciones */}
                     <section className="lg:col-span-3 space-y-4">
                         <div className="bg-white border border-gray-300 rounded-2xl p-5">
-                            <h2 className="text-xl sm:text-2xl font-bold text-gray-800 mb-4">
+                            <h2 className="text-xl sm:text-2xl font-bold text-gray-800 mb-2">
                                 Tus direcciones
                             </h2>
 
                             {addresses?.length > 0 ? (
-                                <ul className="space-y-3">
+                                <ul className="space-y-3 mt-3">
                                     {addresses.map((a) => (
                                         <li
                                             key={a.id}
@@ -226,11 +263,22 @@ const CheckoutShopping = () => {
                                         </li>
                                     ))}
                                 </ul>
-                            ) : (
-                                <p className="text-gray-600">
-                                    Aún no tienes direcciones guardadas. <a href="/customer_profile/address" className="">Agregar nueva ubicación</a>
-                                </p>
+                            ) : user_session === session_create ? (
+                                <div className="text-gray-600 flex flex-col sm:flex-row sm:items-center h-full space-x-4 space-y-4 sm:space-y-0">
+                                    <span>Debes agregar una dirección</span>
+                                    <button onClick={() => navigate("/customer_profile/address")} className="bg-gradient-to-r from-orange-500 to-orange-600 text-white px-5 py-2 rounded-xl font-semibold shadow hover:shadow-md transition disabled:opacity-60">Agregar nueva ubicación</button>
+                                </div>) : (
+                                <div className="space-y-3">
+                                    <p>Debes iniciar sessión para poder realizar el pedido</p>
+                                    <button
+                                        onClick={openLoginModal}
+                                        className="bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white px-6 py-2 rounded-xl font-semibold transition-all duration-300 shadow-lg hover:shadow-xl sm:text-xl text-lg"
+                                    >
+                                        Iniciar Sesión
+                                    </button>
+                                </div>
                             )}
+
 
                             {/*  <div className="mt-4">
                                 <button
@@ -280,7 +328,7 @@ const CheckoutShopping = () => {
                                         value={note}
                                         onChange={(e) => setNote(e.target.value)}
                                         className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-orange-500"
-                                        placeholder="Portón negro, dejar en recepción..."
+                                        placeholder="¡Cuidado con el perro!"
                                     />
                                 </div>
                             </div>
@@ -338,7 +386,7 @@ const CheckoutShopping = () => {
                         </div>
 
                         <button
-                            disabled={!selectedAddress && !showNewAddress}
+                            disabled={!user_session && !selectedAddressId || !checkAddress}
                             onClick={handleSend}
                             className="w-full bg-gradient-to-r from-orange-500 to-orange-600 text-white px-5 py-3 rounded-xl font-semibold shadow hover:shadow-md transition disabled:opacity-60"
                         >
@@ -346,7 +394,7 @@ const CheckoutShopping = () => {
                         </button>
 
                         <button
-                            onClick={() => navigate("/")}
+                            onClick={() => navigate(-1)}
                             className="w-full rounded-xl border border-gray-300 px-5 py-3 font-semibold hover:bg-gray-50 transition"
                         >
                             Volver al carrito
@@ -354,6 +402,8 @@ const CheckoutShopping = () => {
                     </aside>
                 </div>
             </section>
+            <SessionModal />
+            <WelcomeCustomerModal />
         </main>
     );
 };

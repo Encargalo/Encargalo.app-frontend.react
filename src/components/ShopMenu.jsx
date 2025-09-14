@@ -287,7 +287,7 @@ const ShopMenu = () => {
       </section>
 
       {shopCartItems.length > 0 && !selectedCombo && (
-        <footer className="fixed bottom-0 sm:right-5 w-full sm:size-max bg-white border-t border-gray-400 sm:border-gray-200 sm:rounded-md shadow-xl z-50">
+        <footer className="fixed bottom-0 sm:right-5 w-full bg-white sm:size-m sm:border-2 sm:border-gray-600 sm:rounded-md shadow-2xl z-50">
           <div className="max-w-6xl mx-auto flex items-center justify-between px-3 sm:px-4 sm:gap-x-6 py-3">
             <div>
               <h2 className="text-lg sm:text-xl">Monto Total:</h2>

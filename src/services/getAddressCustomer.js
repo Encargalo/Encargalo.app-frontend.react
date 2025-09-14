@@ -5,17 +5,22 @@ const getAddressCustomer = async (setAddress) => {
     const response = await api.get('/customers/address');
 
     if (response.status === 200) {
-      if (response.data === null) {
+      const data = response.data;
+
+      if (!data) {
         setAddress([]);
         return;
       }
 
-      setAddress(response.data);
+      // 🔑 aseguramos que siempre sea array
+      setAddress(Array.isArray(data) ? data : []);
     }
   } catch (error) {
     const response = error.response;
-    if (response.status === 401) {
-      setAddress(false);
+    if (response?.status === 401) {
+      setAddress([]);
+    } else {
+      setAddress([]);
     }
   }
 };

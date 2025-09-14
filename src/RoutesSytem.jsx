@@ -87,7 +87,7 @@ const RoutesSystem = createBrowserRouter([
     path: "/shopping_cart",
     element: <ShoppingCart />
   },
-  { path: "/cart/checkout", element: <CheckoutShopping /> }
+  { path: "/shopping_cart/checkout", element: <CheckoutShopping /> }
 
 ]);
 
