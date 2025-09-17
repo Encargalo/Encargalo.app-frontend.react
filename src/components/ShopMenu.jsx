@@ -1,6 +1,5 @@
 //lucide react / icons
 import { Star, ChevronLeft, ChevronRight, Plus, ArrowLeft } from "lucide-react";
-import { ilustrations } from "../assets/ilustrations";
 //components
 import ItemCard from "./ItemCard";
 import FoodDetailsModal from "./FoodDetailsModal";
@@ -87,6 +86,11 @@ const ShopMenu = () => {
     setUserData(user_data)
   }, [])
 
+  // Filtrar categorías que sí tienen productos
+  const validCategories = categories.filter(
+    (category) => Array.isArray(category.items) && category.items.length > 0
+  );
+
   return (
     <div>
       <section className="min-h-dvh w-screen bg-white background">
@@ -148,56 +152,57 @@ const ShopMenu = () => {
           </div>
 
           {/* filtering categories */}
-          <nav className="sm:px-6 sm:pt-8 lg:px-8 py-4 sticky top-[68px] bg-white z-30">
-            {/* button move carousel filtering */}
-            <button
-              onClick={() => scrollCarouselFiltering("left")}
-              className="bg-white hover:bg-orange-50 border-2 border-gray-200 hover:border-orange-300 rounded-full p-2 sm:p-3 transition-all duration-300 shadow-md hover:shadow-lg absolute left-2 z-30 top-4 sm:top-7 sm:left-4"
-            >
-              <ChevronLeft className="size-5 text-gray-600 hover:text-orange-600" />
-            </button>
-
-            {/* buttons actions */}
-            <div className="relative flex space-x-2 overflow-x-auto px-12 no-scrollbar"
-              ref={carouselRef}>
-              {/* button all categories */}
+          {validCategories.length > 0 && (
+            <nav className="sm:px-6 sm:pt-8 lg:px-8 py-4 sticky top-[68px] bg-white z-30">
+              {/* button move carousel filtering */}
               <button
-                onClick={() => setSelectedCategory("all")}
-                className={`px-4 py-2 sm:text-xl font-medium rounded-full transition-colors ${selectedCategory === "all"
-                  ? "bg-orange-500 text-white"
-                  : "bg-gray-200 text-gray-700 hover:bg-gray-300"
-                  }`}
+                onClick={() => scrollCarouselFiltering("left")}
+                className="bg-white hover:bg-orange-50 border-2 border-gray-200 hover:border-orange-300 rounded-full p-2 sm:p-3 transition-all duration-300 shadow-md hover:shadow-lg absolute left-2 z-30 top-4 sm:top-7 sm:left-4"
               >
-                Todas
+                <ChevronLeft className="size-5 text-gray-600 hover:text-orange-600" />
               </button>
 
-              {/* map buttons categories */}
-              {categories.map((category) => (
+              {/* buttons actions */}
+              <div className="relative flex space-x-2 overflow-x-auto px-12 no-scrollbar"
+                ref={carouselRef}>
+                {/* button all categories */}
                 <button
-                  key={category.id}
-                  onClick={() => setSelectedCategory(category.id)}
-                  className={`px-4 py-2 sm:text-xl font-medium rounded-full transition-colors whitespace-nowrap ${selectedCategory === category.id
+                  onClick={() => setSelectedCategory("all")}
+                  className={`px-4 py-2 sm:text-xl font-medium rounded-full transition-colors ${selectedCategory === "all"
                     ? "bg-orange-500 text-white"
                     : "bg-gray-200 text-gray-700 hover:bg-gray-300"
                     }`}
                 >
-                  {category.name}
+                  Todas
                 </button>
-              ))}
 
-            </div>
-            {/* button move carousel filtering */}
-            <button
-              onClick={() => scrollCarouselFiltering("right")}
-              className="bg-white hover:bg-orange-50 border-2 border-gray-200 hover:border-orange-300 rounded-full p-2 sm:p-3 transition-all duration-300 shadow-md hover:shadow-lg absolute top-4 sm:top-7 right-2 sm:right-4"
-            >
-              <ChevronRight className="size-5 text-gray-600 hover:text-orange-600" />
-            </button>
-          </nav>
+                {/* map buttons categories */}
+                {validCategories.map((category) => (
+                  <button
+                    key={category.id}
+                    onClick={() => setSelectedCategory(category.id)}
+                    className={`px-4 py-2 sm:text-xl font-medium rounded-full transition-colors whitespace-nowrap ${selectedCategory === category.id
+                      ? "bg-orange-500 text-white"
+                      : "bg-gray-200 text-gray-700 hover:bg-gray-300"
+                      }`}
+                  >
+                    {category.name}
+                  </button>
+                ))}
+              </div>
+              {/* button move carousel filtering */}
+              <button
+                onClick={() => scrollCarouselFiltering("right")}
+                className="bg-white hover:bg-orange-50 border-2 border-gray-200 hover:border-orange-300 rounded-full p-2 sm:p-3 transition-all duration-300 shadow-md hover:shadow-lg absolute top-4 sm:top-7 right-2 sm:right-4"
+              >
+                <ChevronRight className="size-5 text-gray-600 hover:text-orange-600" />
+              </button>
+            </nav>
+          )}
 
           {/* list categories*/}
           <div className="w-full px-3 pb-12 sm:px-6 lg:px-8">
-            {categories.map(
+            {validCategories.map(
               (category) =>
                 // Muestra la categoría solo si está seleccionada o si se eligen "Todas"
                 (selectedCategory === "all" ||
