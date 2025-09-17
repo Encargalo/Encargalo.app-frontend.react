@@ -75,7 +75,14 @@ a {
 }
 
 .background {
-  @apply bg-gradient-to-br from-orange-300 to-orange-500 w-full h-full;
+  width: 100%;
+  height: 100%;
+  background: #fdba74;
+  background: linear-gradient(
+    178deg,
+    rgba(253, 186, 116, 1) 0%,
+    rgba(249, 115, 22, 1) 100%
+  );
 }
 
 .aspect-ration-default {
@@ -102,9 +109,6 @@ button:hover {
 select {
   appearance: none;
   position: relative;
-}
-
-a {
 }
 
 button:focus,

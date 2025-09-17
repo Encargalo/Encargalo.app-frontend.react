@@ -30,6 +30,29 @@ const FoodDetailsModal = ({ combo, onClose }) => {
     };
   }, []);
 
+  // Cerrar modal en móvil al retroceder y en PC al presionar Escape
+  useEffect(() => {
+    // Handler para Escape
+    const handleKeyDown = (e) => {
+      if (e.key === "Escape") {
+        onClose();
+      }
+    };
+
+    // Handler para retroceder en móvil
+    const handlePopState = () => {
+      onClose();
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    window.addEventListener("popstate", handlePopState);
+
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+      window.removeEventListener("popstate", handlePopState);
+    };
+  }, [onClose]);
+
   const unitPrice =
     combo.price + selectedAdditionals.reduce((sum, a) => sum + (a.price || 0), 0);
   const total = unitPrice * quantity;
@@ -152,7 +175,7 @@ const FoodDetailsModal = ({ combo, onClose }) => {
                 </div>
               </div>
             )
-              : loaderAddtionals ? <h2 className="text-xl mt-3 italic text-orange-500">Cargando Adicionales</h2> : <h2 className="text-xl mt-3 italic text-orange-500">Esta producto no tiene adicionales</h2>
+              : null
           }
 
           {/* footer */}

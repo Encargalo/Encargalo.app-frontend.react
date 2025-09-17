@@ -2,22 +2,17 @@
 import { Phone, Lock, Eye, EyeOff, X } from "lucide-react";
 //react
 import { Controller, useForm } from "react-hook-form";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 //services
 import logInCustomers from "../../services/logInCustomers";
 //stores/hooks
 import useOnLoginStore from "../../store/onLoginStore";
 
 const Login = ({ showPassword, setShowPassword, isLoading, setIsLoading, session, setSession }) => {
+    const { setAddress, openWelcomeModal, closeLoginModal } = useOnLoginStore();
 
-    const { setAddress, openWelcomeModal, closeLoginModal } = useOnLoginStore()
-
-    useEffect(() => {
-        document.body.style.overflow = "hidden";
-        return () => {
-            document.body.style.overflow = "auto";
-        };
-    }, []);
+    // Referencia para el input de teléfono
+    const phoneInputRef = useRef(null);
 
     //form data
     const {
@@ -28,10 +23,24 @@ const Login = ({ showPassword, setShowPassword, isLoading, setIsLoading, session
         setError,
     } = useForm({
         defaultValues: {
-            phone_number: "+57",
+            phone_number: "+57 ",
             password: "",
         },
     });
+
+    useEffect(() => {
+        document.body.style.overflow = "hidden";
+        return () => {
+            document.body.style.overflow = "auto";
+        };
+    }, []);
+
+    // Enfocar el input de teléfono si hay error en phone_number
+    useEffect(() => {
+        if (errors?.phone_number) {
+            phoneInputRef.current?.focus();
+        }
+    }, [errors?.phone_number]);
 
     const onLogin = (data) => {
         const formattedData = {
@@ -90,19 +99,33 @@ const Login = ({ showPassword, setShowPassword, isLoading, setIsLoading, session
                                 const handlePhoneChange = (e) => {
                                     const prefix = "+57 ";
                                     const { value } = e.target;
+
                                     if (!value.startsWith(prefix)) {
-                                        field.onChange(prefix);
+                                        // Mantiene el prefijo y conserva lo que el usuario intentó escribir como dígitos
+                                        const attempted = value.replace(/^\+?57\s?/, '');
+                                        const numericPart = attempted.replace(/\D/g, '');
+                                        field.onChange(`${prefix}${numericPart}`);
                                     } else {
-                                        const numericPart = value
-                                            .slice(prefix.length)
-                                            .replace(/[^0-9]/g, "");
+                                        const numericPart = value.slice(prefix.length).replace(/\D/g, "");
                                         field.onChange(`${prefix}${numericPart}`);
                                     }
+                                };
+
+                                const handleFocus = (e) => {
+                                    const prefixLength = "+57 ".length;
+                                    // Para asegurar que el cursor no se posicione dentro del prefijo
+                                    setTimeout(() => {
+                                        if (e.target.selectionStart < prefixLength) {
+                                            e.target.selectionStart = e.target.selectionEnd = prefixLength;
+                                        }
+                                    }, 0);
                                 };
                                 return (
                                     <input
                                         {...field}
+                                        ref={phoneInputRef}
                                         onChange={handlePhoneChange}
+                                        onFocus={handleFocus}
                                         value={field.value}
                                         type="tel"
                                         placeholder="+57 123456789"

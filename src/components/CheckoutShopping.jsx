@@ -105,7 +105,11 @@ const CheckoutShopping = () => {
     const [selectedAddressId, setSelectedAddressId] = useState(null);
     const [showNewAddress, setShowNewAddress] = useState(false);
     const [note, setNote] = useState("");
-    const [paymentAmount, setPaymentAmount] = useState("");
+    const PAYMENT_METHOD_KEY = "encargalo_payment_method";
+    const [paymentMethod, setPaymentMethod] = useState(() => {
+        // Recupera el método de pago guardado en localStorage al cargar
+        return localStorage.getItem(PAYMENT_METHOD_KEY) || "";
+    });
 
     const CHECKOUT_ORDER_KEY = import.meta.env.VITE_CHECKOUT_ORDER_KEY;
     const checkAddress = addresses?.length > 0
@@ -164,6 +168,13 @@ const CheckoutShopping = () => {
 
     const selectedAddress = addresses.find((a) => a.id === selectedAddressId);
 
+    // Guarda el método de pago en localStorage cada vez que cambie
+    useEffect(() => {
+        if (paymentMethod) {
+            localStorage.setItem(PAYMENT_METHOD_KEY, paymentMethod);
+        }
+    }, [paymentMethod]);
+
     const handleSend = () => {
         // Construye datos de compra para el mensaje
         const purchaseData = {
@@ -172,7 +183,7 @@ const CheckoutShopping = () => {
             reference: selectedAddress?.reference || "",
             coords: selectedAddress?.coords || null,
             whatsapp: buyerWhatsapp,
-            payment_amount: paymentAmount ? Number(paymentAmount) : undefined,
+            payment_method: paymentMethod, // Cambiado aquí
             note: note || "",
         };
 
@@ -191,11 +202,18 @@ const CheckoutShopping = () => {
         clearCart()
         navigate("/");
         window.open(`https://wa.me/${phone}?text=${msg}`, "_blank");
+
+        // Elimina el método de pago guardado al enviar el pedido
+        localStorage.removeItem(PAYMENT_METHOD_KEY);
     };
 
     //user data
     const user_session = userSession?.session;
     const session_create = true
+
+    //validate select payment_metod
+    const validate_paymentMethod = paymentMethod !== ""
+
 
     //onLogin
     const { openLoginModal } = useOnLoginStore()
@@ -213,12 +231,6 @@ const CheckoutShopping = () => {
                             Selecciona tu dirección y revisa el resumen antes de enviar.
                         </p>
                     </div>
-                    <button
-                        onClick={() => navigate(-1)}
-                        className="sm:text-lg rounded-xl border border-gray-200 px-4 py-2 font-semibold hover:bg-gray-50"
-                    >
-                        Volver
-                    </button>
                 </header>
 
                 <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
@@ -265,17 +277,11 @@ const CheckoutShopping = () => {
                                 </ul>
                             ) : user_session === session_create ? (
                                 <div className="text-gray-600 flex flex-col sm:flex-row sm:items-center h-full space-x-4 space-y-4 sm:space-y-0">
-                                    <span>Debes agregar una dirección</span>
-                                    <button onClick={() => navigate("/customer_profile/address")} className="bg-gradient-to-r from-orange-500 to-orange-600 text-white px-5 py-2 rounded-xl font-semibold shadow hover:shadow-md transition disabled:opacity-60">Agregar nueva ubicación</button>
+                                    <span>Debes agregar una dirección para realizar el pedido</span>
+                                    <button onClick={() => navigate("/customer_profile/address")} className="bg-gradient-to-r from-orange-500 to-orange-600 text-white px-5 py-2 rounded-xl font-semibold shadow hover:shadow-md transition disabled:opacity-60">Agregar nueva dirreción</button>
                                 </div>) : (
-                                <div className="space-y-3">
-                                    <p>Debes iniciar sessión para poder realizar el pedido</p>
-                                    <button
-                                        onClick={openLoginModal}
-                                        className="bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white px-6 py-2 rounded-xl font-semibold transition-all duration-300 shadow-lg hover:shadow-xl sm:text-xl text-lg"
-                                    >
-                                        Iniciar Sesión
-                                    </button>
+                                <div className="space-y-3 text-lg">
+                                    <p>Inicia sessión para poder agregar tus direcciones</p>
                                 </div>
                             )}
 
@@ -306,19 +312,34 @@ const CheckoutShopping = () => {
                             </h3>
                             <div className="flex flex-col gap-6">
                                 <div>
-                                    <label className="block text-lg sm:text-xl font-semibold text-gray-700 mb-1">
-                                        Monto con el que pagas (opcional)
+                                    <label className="block text-lg sm:text-xl font-semibold text-gray-700 mb-3">
+                                        Método de pago
                                     </label>
-                                    <input
-                                        type="number"
-                                        min="0"
-                                        value={paymentAmount}
-                                        onChange={(e) => setPaymentAmount(e.target.value)}
-                                        className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-orange-500"
-                                        placeholder="Ej.: 50000"
-                                    />
+                                    <div className="grid grid-cols-2 gap-4">
+                                        <button
+                                            type="button"
+                                            onClick={() => setPaymentMethod("Efectivo")}
+                                            className={`w-full px-4 py-3 rounded-xl font-semibold shadow transition
+                                            ${paymentMethod === "Efectivo"
+                                                    ? "bg-green-500 text-white border-2 border-green-600"
+                                                    : "bg-green-50 text-green-700 border-2 border-green-200 hover:bg-green-100"}
+                                                `}
+                                        >
+                                            Efectivo
+                                        </button>
+                                        <button
+                                            type="button"
+                                            onClick={() => setPaymentMethod("Nequi")}
+                                            className={`w-full px-4 py-3 rounded-xl font-semibold shadow transition
+            ${paymentMethod === "Nequi"
+                                                    ? "bg-[#FB0889] text-white"
+                                                    : "bg-pink-50 text-pink-700 border-2 border-pink-200 hover:bg-pink-100"}
+        `}
+                                        >
+                                            Nequi
+                                        </button>
+                                    </div>
                                 </div>
-
                                 <div className="sm:col-span-2">
                                     <label className="block text-lg sm:text-xl font-semibold text-gray-700 mb-1">
                                         Nota para el repartidor (opcional)
@@ -385,13 +406,29 @@ const CheckoutShopping = () => {
                             </div>
                         </div>
 
-                        <button
-                            disabled={!user_session && !selectedAddressId || !checkAddress}
-                            onClick={handleSend}
-                            className="w-full bg-gradient-to-r from-orange-500 to-orange-600 text-white px-5 py-3 rounded-xl font-semibold shadow hover:shadow-md transition disabled:opacity-60"
-                        >
-                            Enviar pedido por WhatsApp
-                        </button>
+                        {
+                            user_session === session_create ?
+                                <button
+                                    disabled={!validate_paymentMethod || !selectedAddressId || !checkAddress}
+                                    onClick={handleSend}
+                                    className="w-full bg-gradient-to-r from-orange-500 to-orange-600 text-white px-5 py-3 rounded-xl font-semibold shadow hover:shadow-md transition disabled:opacity-60"
+                                >
+                                    Enviar pedido por WhatsApp
+                                </button> :
+
+                                <div className="w-full text-lg font-medium">
+                                    <h5 className="py-2 my-3 italic text-orange-800 rounded-lg">Inicia sessión o Registrate para poder enviar el pedido</h5>
+                                    <button
+                                        onClick={openLoginModal}
+                                        className="w-full bg-gradient-to-r from-orange-500 to-orange-600 text-white px-5 py-3 rounded-xl font-semibold shadow hover:shadow-md transition disabled:opacity-60"
+                                    >
+                                        Iniciar Sesión
+                                    </button>
+
+                                </div>
+
+                        }
+
 
                         <button
                             onClick={() => navigate(-1)}

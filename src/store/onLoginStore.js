@@ -5,7 +5,7 @@ const useOnLoginStore = create((set) => ({
   openLoginModal: () => set({ isLoginModalOpen: true }),
   closeLoginModal: () => set({ isLoginModalOpen: false }),
 
-  isAddress: {},
+  isAddress: null,
   setAddress: (address) => set({ isAddress: address }),
 
   isWelcomeModalOpen: false,

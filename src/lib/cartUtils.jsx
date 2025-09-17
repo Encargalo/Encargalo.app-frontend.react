@@ -58,8 +58,9 @@ export function buildWhatsAppMessage(items, shopName, purchaseData, formatNumber
     message += `*Datos del comprador*\n`;
     if (purchaseData.full_name) message += `*Nombre:* ${purchaseData.full_name}\n`;
     if (purchaseData.direction) message += `*Dirección:* ${purchaseData.direction}\n`;
-    if (purchaseData.reference) message += `Referencia: ${purchaseData.reference}\n`;
+    if (purchaseData.reference) message += `*Referencia:* ${purchaseData.reference}\n`;
     if (purchaseData.payment_amount) message += `*Pago con:* ${formatNumber(purchaseData.payment_amount, 'es-CO')}\n`;
+    if (purchaseData.payment_method) message += `*Método de pago:* ${purchaseData.payment_method}\n`;
     if (purchaseData.note && purchaseData.note.trim() !== "") message += `*Nota para el repartidor:* ${purchaseData.note}\n`;
 
     // Construir el link de ubicación y ponerlo al final, en bold y con dos saltos de línea antes

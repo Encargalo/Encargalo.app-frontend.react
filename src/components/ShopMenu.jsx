@@ -1,5 +1,5 @@
 //lucide react / icons
-import { User, Star, Clock, ChevronLeft, ChevronRight, Plus, ArrowLeftFromLine, ShoppingCartIcon } from "lucide-react";
+import { Star, ChevronLeft, ChevronRight, Plus, ArrowLeft } from "lucide-react";
 import { ilustrations } from "../assets/ilustrations";
 //components
 import ItemCard from "./ItemCard";
@@ -99,9 +99,9 @@ const ShopMenu = () => {
                 onClick={() => navigate("/")}
               >
                 <button
-                  className="text-orange-500 hover:text-orange-600 font-semibold text-lg sm:text-2xl py-2 flex items-center gap-2"
+                  className="text-orange-500 hover:text-orange-600 font-semibold text-lg sm:text-2xl py-2 px-4 flex items-center gap-2 rounded-lg"
                 >
-                  <ArrowLeftFromLine className="size-5" />
+                  <ArrowLeft className="size-5" />
                   Volver
                 </button>
               </div>
@@ -127,7 +127,7 @@ const ShopMenu = () => {
           {/* banner shop*/}
           <div className="relative sm:h-[40em] overflow-hidden">
             <img
-              src={shop.logo_image}
+              src={shop.banner}
               alt={`Logo de ${shop.name}`}
               className="w-full h-full object-cover"
             />
@@ -204,7 +204,7 @@ const ShopMenu = () => {
                   selectedCategory === category.id) && (
                   <section key={category.id} className="mb-8">
                     {/* name category */}
-                    <h2 className="text-3xl font-bold text-gray-900 mb-5 mt-10">
+                    <h2 className="text-2xl font-bold text-gray-900 mb-5 mt-10">
                       {category.name}
                     </h2>
 
@@ -254,7 +254,7 @@ const ShopMenu = () => {
                                   className="size-full object-cover rounded-lg"
                                 />
                                 <button className="absolute bottom-2 right-2 bg-orange-500 text-white text-xl size-full px-3 py-1 w-8 h-8 rounded-full flex justify-center items-center">
-                                  <span><Plus className="size-5" /> </span>
+                                  <span><Plus className="size-5" /></span>
                                 </button>
                               </figure>
                             </li>
@@ -264,8 +264,8 @@ const ShopMenu = () => {
                     ) : (
                       // mmessage not products
                       <div className="w-full flex flex-col items-center justify-center">
-                        <img src={ilustrations.fastFood6} alt={ilustrations.fastFood6} className="size-2/3" />
-                        <h3 className="text-xl sm:text-4xl mb-3 font-medium text-gray-900">
+                        <img src={ilustrations.fastFood6} alt={ilustrations.fastFood6} className="size-2/4" />
+                        <h3 className="text-xl sm:text-4xl font-medium text-gray-900">
                           No hay productos disponibles
                         </h3>
                         <p className="text-orange-950 sm:text-2xl text-center">

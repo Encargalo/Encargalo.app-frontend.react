@@ -19,11 +19,16 @@ const ShopCard = ({ shop, favorites, onToggleFavorite }) => {
       {/* header */}
       <header className="relative">
         {/* img */}
-        <img
-          src={shop.logo}
-          alt={shop.name}
-          className="w-full h-50 sm:h-50 object-cover group-hover:scale-105 transition-transform duration-300"
-        />
+
+        <div className="w-full h-[180px] flex justify-center overflow-hidden">
+          <img
+            src={shop.logo}
+            alt={shop.name}
+            className="w-full h-[300px] object-cover  group-hover:scale-105 transition-transform duration-300"
+          />
+
+        </div>
+
         {/* heart */}
         {/*  <button
           onClick={(e) => {

@@ -13,7 +13,7 @@ import { removeItem } from "../utils/encryptionUtilities";
 
 const ShoppingCart = () => {
     const navigate = useNavigate();
-    const { cart = [], addItem, removeItemQuantity, clearCart } = useCartStore();
+    const { cart = [], addItem, removeItemQuantity, clearCart, removeShopItems } = useCartStore();
     const { setPlaceOrder } = usePlaceOrderStore();
     const { formatNumber } = useNumberFormat();
 
@@ -64,41 +64,27 @@ const ShoppingCart = () => {
                         <button className="w-full sm:w-auto bg-gradient-to-r from-orange-500 to-orange-600 text-white px-5 py-3 rounded-xl font-semibold shadow hover:shadow-md transition" onClick={() => navigate(-1)}>
                             Volver al menú
                         </button>
-                        {!isEmpty && (
-                            <button
-                                onClick={clearCart}
-                                className="rounded-xl border border-red-200 text-red-600 hover:bg-red-50 px-4 py-2 font-semibold transition w-full sm:w-auto"
-                            >
-                                Vaciar carrito
-                            </button>
-                        )}
+
                     </div>
 
                 </header>
 
                 {isEmpty ? (
                     <div className="bg-white border border-gray-200 rounded-2xl shadow-md p-8 sm:p-12 text-center">
-                        {ilustrations.fastFood1 ? (
+                        {ilustrations.fastFood1 && (
                             <img
                                 src={ilustrations.fastFood1}
                                 alt="Carrito vacío"
                                 className="mx-auto w-48 sm:w-60 mb-6"
                             />
-                        ) : (
-                            <div className="text-6xl mb-4">🛒</div>
                         )}
                         <h2 className="text-2xl font-bold text-gray-800 mb-2">
                             Tu carrito está vacío
                         </h2>
-                        <p className="text-gray-600 mb-6">
-                            Agrega productos de tus restaurantes favoritos.
+                        <p className="text-gray-600">
+                            Aquí estaran todos tus pedidos.
                         </p>
-                        <button
-                            onClick={() => navigate("/")}
-                            className="bg-gradient-to-r from-orange-500 to-orange-600 text-white px-5 py-3 rounded-xl font-semibold shadow hover:shadow-md transition"
-                        >
-                            Seguir comprando
-                        </button>
+                        <p>¿Qué esperas para pedir?</p>
                     </div>
                 ) : (
                     <div className="space-y-8">
@@ -110,11 +96,11 @@ const ShoppingCart = () => {
 
                             return (
                                 <article
-                                    key={group.shopId}
+                                    key={group.shopInfo.id}
                                     className="bg-white border border-gray-200 rounded-2xl shadow-sm"
                                 >
                                     {/* Header tienda */}
-                                    <div className="flex items-center justify-between px-5 pt-5 border-b border-gray-100">
+                                    <div className="flex items-center justify-between px-5 pt-5 pb-2 border-b border-gray-100">
                                         <div>
                                             <h3 className="text-2xl sm:text-3xl font-bold text-gray-800">
                                                 {group.shopInfo.name}
@@ -196,7 +182,7 @@ const ShoppingCart = () => {
                                                             onClick={() =>
                                                                 removeItemQuantity(item)
                                                             }
-                                                            className="px-3 py-2 sm:px-4 sm:py-3 rounded-xl border border-gray-300 hover:bg-gray-50 font-semibold"
+                                                            className="px-4 py-2 sm:px-4 sm:py-3 rounded-xl border border-gray-300 hover:bg-gray-50 font-semibold"
                                                         >
                                                             −
                                                         </button>
@@ -207,7 +193,7 @@ const ShoppingCart = () => {
                                                             onClick={() =>
                                                                 addItem({ ...item, quantity: 1 })
                                                             }
-                                                            className="px-3 py-2 sm:px-4 sm:py-3 rounded-xl bg-orange-50 text-orange-700 border border-orange-300 hover:bg-orange-100 font-semibold"
+                                                            className="px-4 py-2 sm:px-4 sm:py-3 rounded-xl bg-orange-50 text-orange-700 border border-orange-300 hover:bg-orange-100 font-semibold"
                                                         >
                                                             +
                                                         </button>
@@ -223,20 +209,40 @@ const ShoppingCart = () => {
                                             ¿Listo para pedir en{" "}
                                             <span className="font-semibold sm:text-lg">{group.shopInfo.name}</span>?
                                         </div>
-                                        <button
-                                            onClick={() =>
-                                                handlePlaceOrder(group.shopInfo, group.items)
-                                            }
-                                            className="w-full sm:w-auto bg-gradient-to-r from-orange-500 to-orange-600 text-white px-5 py-3 rounded-xl font-semibold shadow hover:shadow-md transition"
-                                        >
-                                            Hacer pedido
-                                        </button>
+
+                                        <div className="flex justify-between w-full sm:w-auto gap-3">
+                                            <button
+                                                onClick={() => removeShopItems(group.shopInfo.id)}
+                                                className="sm:w-auto rounded-xl border border-red-200 text-red-600 hover:bg-red-50 px-5 py-3 font-semibold shadow hover:shadow-md transition"
+                                            >
+                                                Botar
+                                            </button>
+                                            <button
+                                                onClick={() =>
+                                                    handlePlaceOrder(group.shopInfo, group.items)
+                                                }
+                                                className="w-full sm:w-auto bg-gradient-to-r from-orange-500 to-orange-600 text-white px-5 py-3 rounded-xl font-semibold shadow hover:shadow-md transition"
+                                            >
+                                                Hacer pedido
+                                            </button>
+                                        </div>
                                     </div>
                                 </article>
                             );
                         })}
                     </div>
                 )}
+
+                <footer className="py-5">
+                    {!isEmpty && (
+                        <button
+                            onClick={clearCart}
+                            className="rounded-xl border border-red-200 text-red-600 hover:bg-red-50 px-4 py-3 font-semibold transition w-full sm:w-auto"
+                        >
+                            Vaciar carrito
+                        </button>
+                    )}
+                </footer>
             </section>
         </main>
     );
