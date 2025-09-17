@@ -261,18 +261,7 @@ const ShopMenu = () => {
                           ))}
                         </ul>
                       </>
-                    ) : (
-                      // mmessage not products
-                      <div className="w-full flex flex-col items-center justify-center">
-                        <img src={ilustrations.fastFood6} alt={ilustrations.fastFood6} className="size-2/4" />
-                        <h3 className="text-xl sm:text-4xl font-medium text-gray-900">
-                          No hay productos disponibles
-                        </h3>
-                        <p className="text-orange-950 sm:text-2xl text-center">
-                          Esta categoría no tiene productos por el momento.
-                        </p>
-                      </div>
-                    )}
+                    ) : null}
                   </section>
                 )
             )}
