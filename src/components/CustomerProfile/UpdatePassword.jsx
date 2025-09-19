@@ -31,8 +31,8 @@ const UpdatePassword = () => {
     return (
         <div className="p-8">
             <header className="w-full flex flex-col items-center sm:flex-row sm:items-end sm:gap-x-4 gap-y-1">
-                <h1 className="text-gray-600 text-3xl sm:text-5xl">Contraseña</h1>
-                {confirmUpdate && <p className="text-sm sm:text-xl italic text-green-600">Se cambio la contraseña correctamente</p>}
+                <h1 className="text-gray-600 text-3xl sm:text-4xl">Contraseña</h1>
+                {confirmUpdate && <p className="text-sm sm:text-lg italic text-green-600">Se cambio la contraseña correctamente</p>}
             </header>
 
 
@@ -43,7 +43,7 @@ const UpdatePassword = () => {
 
                 {/* passsword */}
                 <div>
-                    <label className="block text-base sm:text-xl font-semibold text-gray-700 mb-2">
+                    <label className="block text-base sm:text-lg font-semibold text-gray-700 mb-2">
                         Nueva contraseña
                     </label>
                     <div className="relative">
@@ -52,7 +52,7 @@ const UpdatePassword = () => {
                             name="password"
                             type={showPassword ? "text" : "password"}
                             placeholder="Ingresa tu contraseña"
-                            className="w-full pl-10 pr-3 py-3 sm:py-4 border-2 text-lg sm:text-xl border-gray-200 rounded-xl focus:ring-2 focus:ring-orange-500"
+                            className="w-full pl-10 pr-3 py-3 sm:py-4 border-2 text-lg sm:text-lg border-gray-200 rounded-xl focus:ring-2 focus:ring-orange-500"
                             {...register("password", {
                                 required: "Escribe tu contraseña"
                             })}
@@ -78,7 +78,7 @@ const UpdatePassword = () => {
 
                 {/* update passoword */}
                 <div>
-                    <label className="block text-base sm:text-xl font-semibold text-gray-700 mb-2">
+                    <label className="block text-base sm:text-lg font-semibold text-gray-700 mb-2">
                         Confirmar contraseña
                     </label>
                     <div className="relative">
@@ -87,7 +87,7 @@ const UpdatePassword = () => {
                             name="confirm_password"
                             type={showPassword ? "text" : "password"}
                             placeholder="Confirma tu contraseña"
-                            className="w-full pl-10 pr-10 py-3 sm:py-4 border-2 text-lg sm:text-xl border-gray-200 rounded-xl focus:ring-2 focus:ring-orange-500"
+                            className="w-full pl-10 pr-10 py-3 sm:py-4 border-2 text-lg sm:text-lg border-gray-200 rounded-xl focus:ring-2 focus:ring-orange-500"
                             {...register("confirm_password", {
                                 required: "Confirma la contraseña",
                                 validate: (value) =>
@@ -118,7 +118,7 @@ const UpdatePassword = () => {
                     <button
                         disabled={isLoading}
                         type="submit"
-                        className="bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white px-6 py-2 rounded-xl font-semibold transition-all duration-300 shadow-lg hover:shadow-xl sm:text-xl text-lg w-full"
+                        className="bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white px-6 py-2 rounded-xl font-semibold transition-all duration-300 shadow-lg hover:shadow-xl sm:text-lg text-lg w-full"
                     >
                         {isLoading ? (
                             <div className="flex items-center justify-center space-x-2">

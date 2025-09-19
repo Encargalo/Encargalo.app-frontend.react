@@ -110,40 +110,35 @@ const CustomerProfile = () => {
                 </div>
             </header>
 
-            <main className="w-full relative p-4 lg:p-12 flex flex-col lg:flex-row-reverse sm:justify-end gap-y-3 lg:gap-7">
-                {/* Desktop Sidebar */}
-                <header className="h-max w-full lg:w-1/2 hidden sm:block">
-                    <nav className="bg-white border border-gray-300 rounded-2xl p-5">
-                        <div className="space-y-3 mb-6 hidden lg:flex lg:flex-col">
-                            <h2 className="text-3xl"><span className="text-orange-600">Hola {user_data?.data.name},</span> Aqui puedes actualizar tus datos</h2>
-                            <p className="text-xl text-gray-600">
-                                Actualiza tu datos personales, contraseñas y añade nuevas direcciones
-                            </p>
-                        </div>
-                        <ul className="w-full flex flex-col gap-y-2">
-                            {navItems.map(item => (
-                                <li
-                                    key={item.path}
-                                    className={`${item.activePaths.includes(pathname) ? "bg-orange-400 hover:bg-orange-500 text-white border border-orange-700" : "text-orange-600 hover:bg-orange-500 hover:text-white"} px-4 py-2 rounded-md cursor-pointer text-base sm:text-xl transition-colors`}
-                                    onClick={() => handleNavigate(item.path)}
-                                >
-                                    <p>{item.label}</p>
-                                </li>
-                            ))}
-                        </ul>
-                    </nav>
-                    <div className="p-5">
-                        <button
-                            onClick={() => navigate(-1)}
-                            className="w-full bg-gradient-to-r from-orange-500 to-orange-600 text-white px-5 py-3 rounded-xl font-semibold shadow hover:shadow-md transition disabled:opacity-60 sm:text-xl"
-                        >
-                            Volver
-                        </button>
-                    </div>
-                </header>
+            {/* Desktop Header */}
+            <header className="hidden sm:flex sticky top-0 bg-white shadow-md z-20 p-3 items-center justify-between">
+                <button onClick={() => navigate(-1)} className="flex items-center gap-2 text-orange-600 font-semibold p-2 rounded-lg hover:bg-orange-50 text-lg">
+                    <ArrowLeft className="size-5" />
+                    <span>Volver</span>
+                </button>
 
+                <nav>
+                    <ul className="flex items-center gap-x-2">
+                        {navItems.map((item) => (
+                            <li
+                                key={item.path}
+                                onClick={() => handleNavigate(item.path)}
+                                className={`flex items-center gap-x-2 px-4 py-2 rounded-lg cursor-pointer font-medium transition-colors text-lg ${item.activePaths.includes(pathname)
+                                    ? "bg-orange-100 text-orange-700"
+                                    : "text-gray-700 hover:bg-orange-50"
+                                    }`}
+                            >
+                                <item.icon className="size-5 text-orange-600" />
+                                <span>{item.label}</span>
+                            </li>
+                        ))}
+                    </ul>
+                </nav>
+            </header>
+
+            <main className="w-full relative p-4 sm:p-8">
                 {/* Outlet Section */}
-                <section className="h-max w-full sm:w-11/12 bg-white border border-gray-300 rounded-2xl shadow-md">
+                <section className="h-max w-full max-w-4xl mx-auto bg-white border border-gray-200 rounded-2xl shadow-md">
                     <Outlet />
                 </section>
             </main>

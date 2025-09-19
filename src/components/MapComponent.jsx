@@ -77,8 +77,8 @@ const MapComponent = ({ onAddressSelect }) => {
 
   // ⚠️ Renderizamos solo cuando isLoaded y center ya tienen valor
   if (!isLoaded || !center) return (
-    <div className="flex justify-center items-center h-64">
-      <div className="w-12 h-12 border-4 border-white border-b-orange-600 rounded-full animate-spin"></div>
+    <div className="h-64 w-full relative">
+      <div className="w-12 h-12 border-4 border-white border-b-orange-600 rounded-full animate-spin absolute top-2/3 left-[130px] sm:left-[360px]"></div>
     </div>
   );
 
@@ -105,7 +105,7 @@ const MapComponent = ({ onAddressSelect }) => {
         className="absolute top-3 left-3 bg-white rounded-md p-3 shadow-md cursor-pointer flex items-center justify-center z-10"
         onClick={goToCurrentLocation}
       >
-        <p className="text-sm">Buscar mi ubicación</p>
+        <p className="">Buscar mi ubicación</p>
       </div>
     </div>
   );

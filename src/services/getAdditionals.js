@@ -1,11 +1,6 @@
 import api from '../lib/api';
 
-const getAdditionals = async (
-  setAdditionals,
-  setLoaderAdditionals,
-  category_id
-) => {
-  setLoaderAdditionals(true);
+const getAdditionals = async (setAdditionals, category_id) => {
   try {
     const response = await api.get(
       `/products/adiciones?category_id=${category_id}`
@@ -13,15 +8,11 @@ const getAdditionals = async (
 
     if (response.status === 200) {
       const additionals = response.data;
-      setLoaderAdditionals(false);
       setAdditionals(additionals);
-
       return;
     }
-  } catch (error) {
-    if (error.response.status === 404) {
-      setLoaderAdditionals(false);
-    }
+  } finally {
+    return;
   }
 };
 

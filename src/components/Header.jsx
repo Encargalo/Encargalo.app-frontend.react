@@ -45,7 +45,7 @@ const Header = () => {
       <section className="w-full px-4 sm:px-6 lg:px-8 py-4 sm:py-4">
         <div className="flex items-center justify-between">
           {/* title */}
-          <h1 className="text-2xl sm:text-3xl lg:text-2xl font-bold bg-gradient-to-r from-orange-500 to-orange-600 bg-clip-text text-transparent">
+          <h1 className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-orange-500 to-orange-600 bg-clip-text text-transparent">
             Encargalo
           </h1>
 
@@ -53,7 +53,7 @@ const Header = () => {
           <div className="flex items-center space-x-4 sm:space-x-6">
             {address && userData?.session &&
               <div div className="items-center hidden md:flex space-x-2">
-                <MapPin className="w-4 sm:w-5 h-4 sm:h-5 text-orange-500" />
+                <MapPin className="w-4 sm:w-4 h-4 sm:h-4 text-orange-500" />
                 <address className="text-xs sm:text-base text-gray-700 font-medium text-clip">
                   {address}
                 </address>

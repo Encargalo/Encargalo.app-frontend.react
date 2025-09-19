@@ -51,10 +51,10 @@ const ShoppingCart = () => {
             <section className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-10">
                 <header className="flex flex-col sm:flex-row sm:items-end justify-between mb-6">
                     <div className="mb-3 sm:mb-0">
-                        <h1 className="text-3xl sm:text-4xl font-extrabold bg-gradient-to-r from-orange-500 to-orange-600 bg-clip-text text-transparent">
+                        <h1 className="text-3xl sm:text-5xl font-extrabold bg-gradient-to-r from-orange-500 to-orange-600 bg-clip-text text-transparent">
                             Tu carrito
                         </h1>
-                        <p className="text-gray-600 mt-1">
+                        <p className="text-gray-600 mt-1 sm:text-lg">
                             Revisa tus productos por tienda y confirma tu pedido.
                         </p>
                     </div>
@@ -102,10 +102,10 @@ const ShoppingCart = () => {
                                     {/* Header tienda */}
                                     <div className="flex items-center justify-between px-5 pt-5 pb-2 border-b border-gray-100">
                                         <div>
-                                            <h3 className="text-2xl sm:text-3xl font-bold text-gray-800">
+                                            <h3 className="text-2xl sm:text-2xl font-bold text-gray-800">
                                                 {group.shopInfo.name}
                                             </h3>
-                                            <p className="sm:text-xl text-gray-500">
+                                            <p className="sm:text-lg text-gray-500">
                                                 {group.items.length} producto
                                                 {group.items.length > 1 ? "s" : ""}
                                             </p>
@@ -133,17 +133,17 @@ const ShoppingCart = () => {
                                                         alt={item.name}
                                                         className="size-20 sm:size-24 rounded-xl object-cover border border-gray-200"
                                                     />
-                                                    <div className="space-y-1">
-                                                        <h4 className="text-lg sm:text-2xl font-semibold text-gray-800">
+                                                    <div className="space-y-2 sm:space-y-1">
+                                                        <h4 className="text-xl sm:text-2xl font-semibold text-gray-800">
                                                             {item.name}
                                                         </h4>
                                                         {item.description && (
-                                                            <p className="sm:text-xl text-gray-600">
+                                                            <p className="sm:text-lg text-gray-600">
                                                                 {item.description}
                                                             </p>
                                                         )}
                                                         {item.additionals?.length > 0 && (
-                                                            <div className="text-sm sm:text-lg text-gray-700">
+                                                            <div className="text-gray-700">
                                                                 <span className="font-semibold">
                                                                     Adicionales:
                                                                 </span>{" "}
@@ -153,31 +153,31 @@ const ShoppingCart = () => {
                                                             </div>
                                                         )}
                                                         {item.observation && (
-                                                            <p className="text-sm sm:text-lg text-gray-600 italic">
-                                                                Obs.: {item.observation}
+                                                            <p className="text-gray-600 italic">
+                                                                <span className="font-semibold">Obs.:</span> {item.observation}
                                                             </p>
                                                         )}
                                                     </div>
                                                 </div>
 
                                                 {/* precio / cantidad / acciones */}
-                                                <div className="flex items-center justify-between sm:justify-end w-full sm:w-auto gap-6">
+                                                <div className="flex items-center justify-between sm:justify-end w-full sm:w-auto gap-8">
                                                     <div className="text-right">
-                                                        <p className="sm:text-base text-gray-500">
+                                                        <p className="sm:text-lg text-gray-500">
                                                             Unitario
                                                         </p>
                                                         <p className="font-semibold text-xl">
                                                             ${formatNumber(item.price, "es-CO")}
                                                         </p>
-                                                        <p className="sm:text-base text-gray-500 mt-1">
+                                                        <p className="text-gray-500 mt-1">
                                                             Subtotal
                                                         </p>
-                                                        <p className="sm:text-base font-extrabold text-gray-900">
+                                                        <p className="font-extrabold text-gray-900">
                                                             ${formatNumber(item.subtotal, "es-CO")}
                                                         </p>
                                                     </div>
 
-                                                    <div className="flex items-center gap-2">
+                                                    <div className="flex items-center gap-3">
                                                         <button
                                                             onClick={() =>
                                                                 removeItemQuantity(item)
@@ -210,13 +210,7 @@ const ShoppingCart = () => {
                                             <span className="font-semibold sm:text-lg">{group.shopInfo.name}</span>?
                                         </div>
 
-                                        <div className="flex justify-between w-full sm:w-auto gap-3">
-                                            <button
-                                                onClick={() => removeShopItems(group.shopInfo.id)}
-                                                className="sm:w-auto rounded-xl border border-red-200 text-red-600 hover:bg-red-50 px-5 py-3 font-semibold shadow hover:shadow-md transition"
-                                            >
-                                                Botar
-                                            </button>
+                                        <div className="flex justify-between items-center flex-col sm:flex-row w-full sm:w-auto gap-3">
                                             <button
                                                 onClick={() =>
                                                     handlePlaceOrder(group.shopInfo, group.items)
@@ -224,6 +218,12 @@ const ShoppingCart = () => {
                                                 className="w-full sm:w-auto bg-gradient-to-r from-orange-500 to-orange-600 text-white px-5 py-3 rounded-xl font-semibold shadow hover:shadow-md transition"
                                             >
                                                 Hacer pedido
+                                            </button>
+                                            <button
+                                                onClick={() => removeShopItems(group.shopInfo.id)}
+                                                className="w-full sm:w-auto rounded-xl border border-red-200 text-red-600 hover:bg-red-50 px-5 py-3 font-semibold shadow hover:shadow-md transition"
+                                            >
+                                                Botar pedido
                                             </button>
                                         </div>
                                     </div>
