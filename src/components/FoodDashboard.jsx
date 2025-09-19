@@ -67,11 +67,14 @@ const FoodDashboard = ({ favorites, toggleFavorite }) => {
       />
 
       {/* Top combos carousel */}
-      {!searchTerm && <TopCombosCarousel />}
+      {/*  {!searchTerm && <TopCombosCarousel />} */}
+
+      {/* Top mas vendidos */}
+
       {/* Restaurantes filtrados */}
       <aside className="mb-6 sm:mb-8">
         {/* title */}
-        <h2 className="text-2xl sm:text-4xl lg:text-3xl font-bold text-white mb-2 sm:mb-3">
+        <h2 className="text-2xl sm:text-3xl font-bold text-white mb-1">
           {searchTerm
             ? `Resultados para "${searchTerm}"`
             : "Restaurantes disponibles"}
@@ -84,7 +87,7 @@ const FoodDashboard = ({ favorites, toggleFavorite }) => {
 
       {/* Restaurantes filtrados */}
       {filteredShops.length > 0 ? (
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-4 gap-4 sm:gap-6">
           {filteredShops.map((shop) => (
             /* Card restaurant*/
             <ShopCard

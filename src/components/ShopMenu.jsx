@@ -103,7 +103,7 @@ const ShopMenu = () => {
                 onClick={() => navigate("/")}
               >
                 <button
-                  className="text-orange-500 hover:text-orange-600 font-semibold text-lg sm:text-2xl py-2 px-4 flex items-center gap-2 rounded-lg"
+                  className="text-orange-500 hover:text-orange-600 font-semibold text-lg sm:text-xl py-2 px-4 flex items-center gap-2 rounded-lg"
                 >
                   <ArrowLeft className="size-5" />
                   Volver
@@ -139,13 +139,13 @@ const ShopMenu = () => {
             <div className="absolute bottom-6 left-3 sm:left-6 text-white px-2">
               <div className="flex items-center space-x-4 mb-2">
                 {/* score */}
-                <div className="flex items-center bg-white/20 backdrop-blur-sm px-3 py-1 sm:px-4 sm:py-2 rounded-full">
-                  <Star className="size-3 sm:size-7 text-yellow-400 fill-current mr-1" />
-                  <span className="font-bold text-xs sm:text-2xl">{shop.score}</span>
+                <div className="flex items-center bg-white/20 backdrop-blur-sm px-3 py-1 rounded-full">
+                  <Star className="size-3 sm:size-5 text-yellow-400 fill-current mr-1" />
+                  <span className="font-bold text-xs sm:text-xl">{shop.score}</span>
                 </div>
               </div>
               {/* address shop */}
-              <p className="text-white bg-white/20 sm:text-2xl text-sm backdrop-blur-sm px-3 py-1 rounded-full">
+              <p className="text-white bg-white/20 sm:text-xl text-sm backdrop-blur-sm px-3 py-1 rounded-full">
                 {shop.address}
               </p>
             </div>
@@ -153,22 +153,22 @@ const ShopMenu = () => {
 
           {/* filtering categories */}
           {validCategories.length > 0 && (
-            <nav className="sm:px-6 sm:pt-8 lg:px-8 py-4 sticky top-[68px] bg-white z-30">
+            <nav className="py-4 sticky top-[68px] bg-white z-30">
               {/* button move carousel filtering */}
               <button
                 onClick={() => scrollCarouselFiltering("left")}
-                className="bg-white hover:bg-orange-50 border-2 border-gray-200 hover:border-orange-300 rounded-full p-2 sm:p-3 transition-all duration-300 shadow-md hover:shadow-lg absolute left-2 z-30 top-4 sm:top-7 sm:left-4"
+                className="bg-white hover:bg-orange-50 border-2 border-gray-200 hover:border-orange-300 rounded-full p-2 sm:p-3 transition-all duration-300 shadow-md hover:shadow-lg absolute left-2 z-30 top-4 sm:left-3"
               >
                 <ChevronLeft className="size-5 text-gray-600 hover:text-orange-600" />
               </button>
 
               {/* buttons actions */}
-              <div className="relative flex space-x-2 overflow-x-auto px-12 no-scrollbar"
+              <div className="relative flex space-x-2 overflow-x-auto px-12 sm:px-16 no-scrollbar"
                 ref={carouselRef}>
                 {/* button all categories */}
                 <button
                   onClick={() => setSelectedCategory("all")}
-                  className={`px-4 py-2 sm:text-xl font-medium rounded-full transition-colors ${selectedCategory === "all"
+                  className={`px-4 py-2 sm:text-lg font-medium rounded-full transition-colors ${selectedCategory === "all"
                     ? "bg-orange-500 text-white"
                     : "bg-gray-200 text-gray-700 hover:bg-gray-300"
                     }`}
@@ -181,7 +181,7 @@ const ShopMenu = () => {
                   <button
                     key={category.id}
                     onClick={() => setSelectedCategory(category.id)}
-                    className={`px-4 py-2 sm:text-xl font-medium rounded-full transition-colors whitespace-nowrap ${selectedCategory === category.id
+                    className={`px-4 py-2 sm:text-lg font-medium rounded-full transition-colors whitespace-nowrap ${selectedCategory === category.id
                       ? "bg-orange-500 text-white"
                       : "bg-gray-200 text-gray-700 hover:bg-gray-300"
                       }`}
@@ -193,7 +193,7 @@ const ShopMenu = () => {
               {/* button move carousel filtering */}
               <button
                 onClick={() => scrollCarouselFiltering("right")}
-                className="bg-white hover:bg-orange-50 border-2 border-gray-200 hover:border-orange-300 rounded-full p-2 sm:p-3 transition-all duration-300 shadow-md hover:shadow-lg absolute top-4 sm:top-7 right-2 sm:right-4"
+                className="bg-white hover:bg-orange-50 border-2 border-gray-200 hover:border-orange-300 rounded-full p-2 sm:p-3 transition-all duration-300 shadow-md hover:shadow-lg absolute top-4 right-2 sm:right-4"
               >
                 <ChevronRight className="size-5 text-gray-600 hover:text-orange-600" />
               </button>
@@ -209,7 +209,7 @@ const ShopMenu = () => {
                   selectedCategory === category.id) && (
                   <section key={category.id} className="mb-8">
                     {/* name category */}
-                    <h2 className="text-2xl font-bold text-gray-900 mb-5 mt-10">
+                    <h2 className="text-3xl font-bold text-orange-950 mb-4 mt-10">
                       {category.name}
                     </h2>
 
@@ -281,7 +281,7 @@ const ShopMenu = () => {
       </section>
 
       {shopCartItems.length > 0 && !selectedCombo && (
-        <footer className="fixed bottom-0 sm:right-5 w-full bg-white sm:size-m sm:border-2 sm:border-gray-600 sm:rounded-md shadow-2xl z-50">
+        <footer className="fixed bottom-0 sm:right-5 w-full sm:w-auto bg-white sm:size-m sm:rounded-md shadow-orange-700 shadow-2xl z-50">
           <div className="max-w-6xl mx-auto flex items-center justify-between px-3 sm:px-4 sm:gap-x-6 py-3">
             <div>
               <h2 className="text-lg sm:text-xl">Monto Total:</h2>

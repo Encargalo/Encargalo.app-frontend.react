@@ -43,19 +43,20 @@ const UserMenu = () => {
                     className="flex items-center space-x-1 sm:space-x-2 bg-orange-50 px-3 sm:px-3 py-2 sm:py-2 rounded-xl border border-orange-300 group cursor-pointer"
                     onClick={() => navigate("/customer_profile")}
                 >
-                    <User className="size-4 sm:size-7 text-orange-600" />
-                    <p className="text-sm sm:text-xl font-medium text-gray-700">
+                    <User className="size-4 sm:size-6 text-orange-600" />
+                    <p className="text-sm sm:text-base font-medium text-gray-700">
                         {userData?.data?.name}
                     </p>
-                    <ChevronRight className="size-4 sm:size-6 text-orange-600 transition-transform duration-200 transform group-active:translate-x-2" />
+                    <ChevronRight className="size-4 sm:size-5 text-orange-600 transition-transform duration-200 transform group-active:translate-x-2" />
                 </figure>
 
+                {/* logout */}
                 <button
-                    className="flex items-center space-x-1 sm:space-x-2 hover:text-orange-600 px-2 sm:px-3 py-2 sm:py-2 rounded-xl hover:bg-orange-50 hover:border-orange-500 transition-all duration-300"
+                    className="flex items-center space-x-1 sm:space-x-2 hover:text-orange-600 px-2 sm:px-3 py-2 rounded-xl hover:bg-orange-50 hover:border-orange-500 transition-all duration-300"
                     onClick={logOutCustomer}
                 >
-                    <LogOut className="size-4 sm:size-6 text-orange-600" />
-                    <span className="text-sm sm:text-xl font-medium">Salir</span>
+                    <LogOut className="size-4 sm:size-5 text-orange-600" />
+                    <span className="text-sm sm:text-lg font-medium">Salir</span>
                 </button>
             </div>
 
