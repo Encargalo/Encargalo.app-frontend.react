@@ -13,13 +13,12 @@ const FoodDetailsModal = ({ combo, onClose }) => {
   const [selectedAdditionals, setSelectedAdditionals] = useState([]);
   const [observation, setObservation] = useState("");
   const [quantity, setQuantity] = useState(1);
-  const [loaderAddtionals, setLoaderAdditionals] = useState(false)
 
   const { addItem } = useCartStore();
   const navigate = useNavigate();
 
   useEffect(() => {
-    getAdditionals(setAdditionals, setLoaderAdditionals, combo.category_id);
+    getAdditionals(setAdditionals, combo.category_id);
   }, [combo.id]);
 
   // bloquear scroll body cuando la modal está abierta

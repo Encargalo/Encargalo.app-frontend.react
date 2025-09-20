@@ -66,8 +66,12 @@ const UpdatePersonalInfo = () => {
   return (
     <div className="py-6 px-5 sm:p-8">
       <header className="w-full flex flex-col items-center sm:flex-row sm:items-end sm:gap-x-4 gap-y-1">
-        <h1 className="text-gray-600 text-3xl sm:text-5xl">Perfil</h1>
-        {confirmUpdate && <p className="text-sm sm:text-xl italic text-green-600 w-full">Los datos se actualizaron correctamente</p>}
+
+        <div>
+          <h1 className="text-gray-600 text-3xl sm:text-4xl">Perfil</h1>
+          <p></p>
+        </div>
+        {confirmUpdate && <p className="text-sm sm:text-lg italic text-green-600 w-full">Los datos se actualizaron correctamente</p>}
       </header>
 
 
@@ -77,7 +81,7 @@ const UpdatePersonalInfo = () => {
       >
         {/* name */}
         <div>
-          <label className="block text-base sm:text-xl font-semibold text-gray-700 mb-2">
+          <label className="block text-base sm:text-lg font-semibold text-gray-700 mb-2">
             Nombre
           </label>
           <div className="relative">
@@ -87,7 +91,7 @@ const UpdatePersonalInfo = () => {
               name="name"
               type="text"
               placeholder="Escribe tu nombre"
-              className="w-full shadow-md pl-10 pr-3 py-3 sm:py-4 border-2 text-lg sm:text-xl border-gray-200 rounded-xl focus:ring-2 focus:ring-orange-500"
+              className="w-full shadow-md pl-10 pr-3 py-3 sm:py-4 border-2 text-lg sm:text-lg border-gray-200 rounded-xl focus:ring-2 focus:ring-orange-500"
               {...register('name', {
                 required: 'Escribe tu nombre',
                 pattern: {
@@ -107,7 +111,7 @@ const UpdatePersonalInfo = () => {
 
         {/* surn_name */}
         <div>
-          <label className="block text-base sm:text-xl font-semibold text-gray-700 mb-2">
+          <label className="block text-base sm:text-lg font-semibold text-gray-700 mb-2">
             Apellido
           </label>
           <div className="relative">
@@ -117,7 +121,7 @@ const UpdatePersonalInfo = () => {
               name="sur_name"
               type="text"
               placeholder="Escribe tu Apellido"
-              className="w-full shadow-md pl-10 pr-3 py-3 sm:py-4 border-2 text-lg sm:text-xl border-gray-200 rounded-xl focus:ring-2 focus:ring-orange-500"
+              className="w-full shadow-md pl-10 pr-3 py-3 sm:py-4 border-2 text-lg sm:text-lg border-gray-200 rounded-xl focus:ring-2 focus:ring-orange-500"
               {...register('sur_name', {
                 required: 'Escribe tu apellido',
                 pattern: {
@@ -137,7 +141,7 @@ const UpdatePersonalInfo = () => {
 
         {/* phone */}
         <div>
-          <label className="block text-base sm:text-xl font-semibold text-gray-700 mb-2">
+          <label className="block text-base sm:text-lg font-semibold text-gray-700 mb-2">
             Número de teléfono
           </label>
           <div className="relative">
@@ -211,7 +215,7 @@ const UpdatePersonalInfo = () => {
                     value={field.value}
                     type="tel"
                     placeholder="+57 1234567890"
-                    className="w-full shadow-md pl-10 pr-3 py-3 sm:py-4 border-2 text-lg sm:text-xl border-gray-200 rounded-xl focus:ring-2 focus:ring-orange-500"
+                    className="w-full shadow-md pl-10 pr-3 py-3 sm:py-4 border-2 text-lg sm:text-lg border-gray-200 rounded-xl focus:ring-2 focus:ring-orange-500"
                   />
                 );
               }}
@@ -226,7 +230,7 @@ const UpdatePersonalInfo = () => {
 
         {/* email */}
         <div>
-          <label className="block text-base sm:text-xl font-semibold text-gray-700 mb-2">
+          <label className="block text-base sm:text-lg font-semibold text-gray-700 mb-2">
             Email (Opcional)
           </label>
           <div className="relative">
@@ -236,7 +240,7 @@ const UpdatePersonalInfo = () => {
               name="email"
               type="text"
               placeholder="Escribe tu Email"
-              className="w-full shadow-md pl-10 pr-3 py-3 sm:py-4 border-2 text-lg sm:text-xl border-gray-200 rounded-xl focus:ring-2 focus:ring-orange-500"
+              className="w-full shadow-md pl-10 pr-3 py-3 sm:py-4 border-2 text-lg sm:text-lg border-gray-200 rounded-xl focus:ring-2 focus:ring-orange-500"
               {...register('email', {
                 pattern: {
                   value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
@@ -257,7 +261,7 @@ const UpdatePersonalInfo = () => {
           <button
             disabled={isLoading}
             type="submit"
-            className="bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white px-6 py-2 rounded-xl font-semibold transition-all duration-300 shadow-lg hover:shadow-xl sm:text-xl text-lg w-full"
+            className="bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white px-6 py-2 rounded-xl font-semibold transition-all duration-300 shadow-lg hover:shadow-xl sm:text-lg text-lg w-full"
           >
             {isLoading ? (
               <div className="flex items-center justify-center space-x-2">
