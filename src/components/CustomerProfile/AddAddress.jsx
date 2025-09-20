@@ -51,7 +51,7 @@ const AddAddress = () => {
     }, [])
 
     return (
-        <div className="py-6 px-5 sm:p-8">
+        <div className="py-6 sm:p-8">
             <header className="w-full flex flex-col items-center sm:flex-row sm:items-end sm:gap-x-4 gap-y-1">
                 <h1 className="text-gray-600 text-3xl sm:text-4xl">Ubicaciones</h1>
                 {confirmAdd && <p className="text-sm sm:text-lg italic text-green-600">Se agrego la ubicación correctamente</p>}
@@ -88,7 +88,7 @@ const AddAddress = () => {
 
                 {/* Dirección (read only, actualizada desde el mapa) */}
                 <div>
-                    <label className="block text-base sm:text-lg font-semibold text-gray-700 mb-2">
+                    <label className="block text-base sm:text-lg font-semibold text-gray-700">
                         Ubicación actual
                     </label>
                     <input
@@ -108,11 +108,11 @@ const AddAddress = () => {
                 </div>
 
                 {/* Mapa interactivo */}
-                <div className="bg-slate-400 w-full h-[400px] rounded-lg">
+                <div className="w-full h-[380px] rounded-lg">
                     <MapComponent
                         onAddressSelect={({ address, coords }) => {
                             setValue("address", address, { shouldValidate: true });
-                            setValue("coords", coords); // ojo: usa siempre "coords"
+                            setValue("coords", coords);
                         }}
                     />
                 </div>
@@ -124,7 +124,7 @@ const AddAddress = () => {
                     </label>
                     <input
                         type="text"
-                        placeholder="Edif. 3, apto. 3, Calle #2, Mi urbanización, al lado del local azul"
+                        placeholder="Al lado de la tienda azul"
                         className="w-full shadow-md px-5 py-3 sm:py-4 border-2 text-lg sm:text-lg border-gray-200 rounded-xl focus:ring-2 focus:ring-orange-500"
                         {...register("reference", {
                             required: "Escribe una referencia",
@@ -181,7 +181,7 @@ const AddAddress = () => {
                                     address.map((item, index) => (
                                         <li
                                             key={index + item.alias}
-                                            className="flex flex-col sm:flex-row items-start justify-between gap-y-3 sm:gap-0 w-full shadow-md px-6 py-5 border-2 border-gray-200 rounded-xl hover:shadow-lg transition"
+                                            className="flex flex-col sm:flex-row items-start justify-between gap-y-3 sm:gap-0 w-full shadow-md px-6 py-5 border-2 border-gray-200 rounded-xl hover:shadow-lg transition bg-white"
                                         >
                                             {/* icon + info */}
                                             <div className="flex flex-col gap-2">
@@ -211,13 +211,9 @@ const AddAddress = () => {
                             </ul>
                         </>
                 }
-
-
             </footer>
-
             {/* modals */}
             <RequestLocationModal />
-
         </div>
     )
 }

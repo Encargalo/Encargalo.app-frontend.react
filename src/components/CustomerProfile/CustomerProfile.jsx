@@ -136,9 +136,9 @@ const CustomerProfile = () => {
                 </nav>
             </header>
 
-            <main className="w-full relative p-4 sm:p-8">
+            <main className="w-full relative py-4 px-5 sm:p-8">
                 {/* Outlet Section */}
-                <section className="h-max w-full max-w-4xl mx-auto bg-white border border-gray-200 rounded-2xl shadow-md">
+                <section className="h-max w-full max-w-4xl mx-auto sm:bg-white sm:border sm:border-gray-200 sm:rounded-2xl sm:shadow-md">
                     <Outlet />
                 </section>
             </main>

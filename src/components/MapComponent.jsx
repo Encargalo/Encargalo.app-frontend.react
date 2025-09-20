@@ -7,6 +7,10 @@ const containerStyle = {
   height: "400px",
   position: "relative",
   borderRadius: "10px",
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+  marginTop: "10px",
 };
 
 const MapComponent = ({ onAddressSelect }) => {
@@ -77,16 +81,16 @@ const MapComponent = ({ onAddressSelect }) => {
 
   // ⚠️ Renderizamos solo cuando isLoaded y center ya tienen valor
   if (!isLoaded || !center) return (
-    <div className="h-64 w-full relative">
-      <div className="w-12 h-12 border-4 border-white border-b-orange-600 rounded-full animate-spin absolute top-2/3 left-[130px] sm:left-[360px]"></div>
+    <div className="h-2/3 w-full relative">
+      <div className="w-12 h-12 border-4 border-orange-950 border-b-orange-600 rounded-full animate-spin absolute top-2/3 left-[150px] sm:left-[370px]"></div>
     </div>
   );
 
   return (
     <div style={containerStyle}>
       <GoogleMap
-        mapContainerStyle={{ width: "100%", height: "100%" }}
-        center={center} // ahora usamos center directamente
+        mapContainerStyle={{ width: "80%", height: "70%", borderRadius: "10px" }}
+        center={center}
         zoom={15}
         onLoad={(map) => (mapRef.current = map)}
         onIdle={handleIdle}
@@ -96,13 +100,11 @@ const MapComponent = ({ onAddressSelect }) => {
           gestureHandling: "greedy",
         }}
       />
-      {/* Marker fijo al centro */}
       <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-full text-3xl">
         <MapPin className="size-9 text-orange-800" />
       </div>
-      {/* Botón buscar ubicación */}
       <div
-        className="absolute top-3 left-3 bg-white rounded-md p-3 shadow-md cursor-pointer flex items-center justify-center z-10"
+        className="absolute w-full top-0 left-0 bg-white rounded-md p-3 shadow-md border border-gra cursor-pointer flex items-center justify-center z-10"
         onClick={goToCurrentLocation}
       >
         <p className="">Buscar mi ubicación</p>
