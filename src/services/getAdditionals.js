@@ -3,7 +3,7 @@ import api from '../lib/api';
 const getAdditionals = async (setAdditionals, category_id) => {
   try {
     const response = await api.get(
-      `/products/adiciones?category_id=${category_id}`
+      `/api/products/adiciones?category_id=${category_id}`
     );
 
     if (response.status === 200) {
