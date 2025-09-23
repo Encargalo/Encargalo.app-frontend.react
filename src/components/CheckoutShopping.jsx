@@ -15,6 +15,8 @@ import { buildWhatsAppMessage, preprocessCartItems } from "../lib/cartUtils";
 import { getDecryptedItem, setEncryptedItem, removeItem } from "../utils/encryptionUtilities";
 import SessionModal from "./SessionCustomer/SessionModal";
 import WelcomeCustomerModal from "./WelcomeCustomerModal";
+import generateUUIDv4 from "../utils/generateUUIDv4";
+import sendOrders from "../services/sendOrders";
 
 const InlineNewAddress = ({ onAdded }) => {
     const [isSaving, setIsSaving] = useState(false);
@@ -175,6 +177,32 @@ const CheckoutShopping = () => {
         }
     }, [paymentMethod]);
 
+
+    //Send order server
+    const Orders = {
+        id: generateUUIDv4(),
+        shop_id: placeOrder?.shopInfo.id || "",
+        method_payment: paymentMethod,
+        address: {
+            address: selectedAddress?.address,
+            latitude: selectedAddress?.coords?.lat,
+            longitude: selectedAddress?.coords?.long,
+        },
+
+        items: processedItems.map(item => {
+            const orderItem = {
+                item_id: item.id,
+                amount: item.quantity,
+                observation: item.observation || ""
+            };
+
+            if (item.additionals && item.additionals.length > 0) {
+                orderItem.additions = item.additionals.map(add => ({ addition_id: add.id }));
+            }
+            return orderItem;
+        })
+    }
+
     const handleSend = () => {
         // Construye datos de compra para el mensaje
         const purchaseData = {
@@ -198,10 +226,11 @@ const CheckoutShopping = () => {
         // Limpia solo productos de la tienda actual
         if (placeOrder?.shopId) removeShopItems(placeOrder.shopId);
 
-        clearPlaceOrder();
+        sendOrders(Orders)
+        /* clearPlaceOrder();
         clearCart()
         navigate("/");
-        window.open(`https://wa.me/${phone}?text=${msg}`, "_blank");
+        window.open(`https://wa.me/${phone}?text=${msg}`, "_blank"); */
 
         // Elimina el método de pago guardado al enviar el pedido
         localStorage.removeItem(PAYMENT_METHOD_KEY);
@@ -315,6 +344,8 @@ const CheckoutShopping = () => {
                                     <label className="block text-lg sm:text-xl font-semibold text-gray-700 mb-3">
                                         Método de pago
                                     </label>
+
+                                    {paymentMethod === "" ? <p className="text-red-700 italic mb-2">Escoje un metodo de pago</p> : null}
                                     <div className="grid grid-cols-2 gap-4">
                                         <button
                                             type="button"

@@ -11,7 +11,7 @@ const addAddress = async (
 ) => {
   setIsLoading(true);
   try {
-    const response = await api.post('/customers/address', data);
+    const response = await api.post('/api/customers/address', data);
 
     if (response.status === 201) {
       getAddressCustomer(setAddress);

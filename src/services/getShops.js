@@ -7,7 +7,7 @@ const getAllShops = async (setShops) => {
   showLoader();
   try {
     //requests
-    const response = await api.get('/shops/all');
+    const response = await api.get('/api/shops/all');
     //add shops
     if (response.status === 200) {
       const shops = response.data;

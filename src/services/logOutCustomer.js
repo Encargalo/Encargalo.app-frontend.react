@@ -4,7 +4,7 @@ import useCartStore from '../store/cartStore';
 
 const logOutCustomer = async () => {
   try {
-    const response = await api.delete('sessions');
+    const response = await api.delete('/api/sessions');
     if (response.status === 200) {
       const user_session = import.meta.env.VITE_USER_SESSION;
       const userSession = {

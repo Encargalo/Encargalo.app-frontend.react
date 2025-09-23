@@ -18,8 +18,8 @@ const FoodDetailsModal = ({ combo, onClose }) => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    getAdditionals(setAdditionals, combo.category_id);
-  }, [combo.id]);
+    getAdditionals(setAdditionals, combo.shop.id);
+  }, [combo.shop.id]);
 
   // bloquear scroll body cuando la modal está abierta
   useEffect(() => {
