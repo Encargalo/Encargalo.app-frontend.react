@@ -2,7 +2,7 @@ import api from '../lib/api';
 
 const sendOrders = async (data) => {
   try {
-    await api.post(data);
+    await api.post('/orders', data);
   } finally {
     return;
   }

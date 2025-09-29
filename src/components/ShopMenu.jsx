@@ -55,14 +55,14 @@ const ShopMenu = () => {
     getShopDetails(setShop, setCategories, tag_shop);
   }, [tag_shop]);
 
-  const [selectedCombo, setSelectedCombo] = useState(null);
+  const [selectedFood, setSelectedFood] = useState(null);
 
-  const handleComboClick = (item) => {
-    setSelectedCombo(item);
+  const handleFoodClick = (item) => {
+    setSelectedFood(item);
   };
 
   const handleCloseModal = () => {
-    setSelectedCombo(null);
+    setSelectedFood(null);
   };
 
   //Carousel filtering
@@ -222,7 +222,7 @@ const ShopMenu = () => {
                             <ItemCard
                               key={item.id}
                               item={item}
-                              onItemClick={handleComboClick}
+                              onItemClick={handleFoodClick}
                             />
                           ))}
                         </div>
@@ -233,7 +233,7 @@ const ShopMenu = () => {
                             <li
                               key={item.id}
                               className="flex justify-between items-start gap-2 p-4 bg-white rounded-xl shadow"
-                              onClick={() => handleComboClick(item)}
+                              onClick={() => handleFoodClick(item)}
                             >
                               {/* info */}
                               <article className="flex-1 pr-2 flex flex-col gap-y-1">
@@ -272,15 +272,15 @@ const ShopMenu = () => {
             )}
           </div>
         </main>
-        {selectedCombo && (
+        {selectedFood && (
           <FoodDetailsModal
-            combo={{ ...selectedCombo, shop: shop }}
+            food={{ ...selectedFood, shop: shop }}
             onClose={handleCloseModal}
           />
         )}
       </section>
 
-      {shopCartItems.length > 0 && !selectedCombo && (
+      {shopCartItems.length > 0 && !selectedFood && (
         <footer className="fixed bottom-0 sm:right-5 w-full sm:w-auto bg-white sm:size-m sm:rounded-md shadow-orange-700 shadow-2xl z-50">
           <div className="max-w-6xl mx-auto flex items-center justify-between px-3 sm:px-4 sm:gap-x-6 py-3">
             <div>

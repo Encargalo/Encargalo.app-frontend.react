@@ -222,15 +222,15 @@ const CheckoutShopping = () => {
             formatNumber
         );
 
-        const phone = placeOrder.shopInfo.phone;
+        const phone = placeOrder.shopInfo.home_phone;
         // Limpia solo productos de la tienda actual
         if (placeOrder?.shopId) removeShopItems(placeOrder.shopId);
 
         sendOrders(Orders)
-        /* clearPlaceOrder();
+        clearPlaceOrder();
         clearCart()
         navigate("/");
-        window.open(`https://wa.me/${phone}?text=${msg}`, "_blank"); */
+        window.open(`https://wa.me/${phone}?text=${msg}`, "_blank");
 
         // Elimina el método de pago guardado al enviar el pedido
         localStorage.removeItem(PAYMENT_METHOD_KEY);
