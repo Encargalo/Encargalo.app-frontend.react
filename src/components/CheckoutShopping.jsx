@@ -416,6 +416,14 @@ const CheckoutShopping = () => {
                                                     {item.additionals.map((a) => a.name).join(", ")}
                                                 </p>
                                             )}
+                                            {item.flavors?.length > 0 && (
+                                                <p className="text-gray-600">
+                                                    <span className="font-medium">Sabores:</span>{" "}
+                                                    {item.flavors
+                                                        .map((f) => f.name)
+                                                        .join(" / ")}
+                                                </p>
+                                            )}
                                             {item.observation && (
                                                 <p className="text-gray-500 italic">
                                                     Obs.: {item.observation}

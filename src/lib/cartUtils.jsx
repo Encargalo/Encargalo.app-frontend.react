@@ -27,12 +27,17 @@ export function buildWhatsAppMessage(items, shopName, purchaseData, formatNumber
         total += subtotal;
 
         message += `*Producto:* ${item.name}\n\n`;
-        message += ` Cantidad: ${quantity}\n`;
+
+        if (item.flavors && item.flavors.length > 0) {
+            message += `*Sabores:* ${item.flavors.map(f => f.name).join(' / ')}\n\n`;
+        }
+
+        message += ` *Cantidad:* ${quantity}\n`;
         message += ` Precio unitario: ${formatNumber(unitPrice, 'es-CO')}\n`;
         message += ` Precio total: ${formatNumber(totalUnitPrice, 'es-CO')}\n\n`;
 
         if (item.observation && item.observation.trim() !== '') {
-            message += `Observaciones: ${item.observation}\n\n`;
+            message += `*Observaciones:* ${item.observation}\n\n`;
         }
 
         if (additionals.length > 0) {
@@ -44,7 +49,7 @@ export function buildWhatsAppMessage(items, shopName, purchaseData, formatNumber
             message += `\nPrecio total de los adicionales: ${formatNumber(totalAdditionals, 'es-CO')}\n\n`;
         }
 
-        message += `Subtotal:  ${formatNumber(subtotal, 'es-CO')}\n`;
+        message += `*Subtotal:*  ${formatNumber(subtotal, 'es-CO')}\n`;
 
         if (items.length > 1 && idx < items.length - 1) {
             message += '-------------------------\n\n';
@@ -55,13 +60,12 @@ export function buildWhatsAppMessage(items, shopName, purchaseData, formatNumber
 
     message += `---------------------------------------\n\n`;
     message += `*Total a pagar:* ${formatNumber(total, 'es-CO')}\n\n`;
-    message += `*Datos del comprador*\n`;
-    if (purchaseData.full_name) message += `*Nombre:* ${purchaseData.full_name}\n`;
-    if (purchaseData.direction) message += `*Dirección:* ${purchaseData.direction}\n`;
-    if (purchaseData.reference) message += `*Referencia:* ${purchaseData.reference}\n`;
-    if (purchaseData.payment_amount) message += `*Pago con:* ${formatNumber(purchaseData.payment_amount, 'es-CO')}\n`;
-    if (purchaseData.payment_method) message += `*Método de pago:* ${purchaseData.payment_method}\n`;
-    if (purchaseData.note && purchaseData.note.trim() !== "") message += `*Nota para el repartidor:* ${purchaseData.note}\n`;
+    message += `*Datos del comprador:*\n\n`;
+    if (purchaseData.full_name) message += `*Nombre:* ${purchaseData.full_name}\n\n`;
+    if (purchaseData.direction) message += `*Dirección:* ${purchaseData.direction}\n\n`;
+    if (purchaseData.reference) message += `*Referencia:* ${purchaseData.reference}\n\n`;
+    if (purchaseData.payment_method) message += `*Método de pago:* ${purchaseData.payment_method}\n\n`;
+    if (purchaseData.note && purchaseData.note.trim() !== "") message += `*Nota para el repartidor:* ${purchaseData.note}\n\n`;
 
     // Construir el link de ubicación y ponerlo al final, en bold y con dos saltos de línea antes
     let locationLink = "";
@@ -72,7 +76,7 @@ export function buildWhatsAppMessage(items, shopName, purchaseData, formatNumber
     }
 
     if (locationLink) {
-        message += `\n\n*Abrir ubicación:* ${locationLink}\n`;
+        message += `*Abrir ubicación:* ${locationLink}\n`;
     }
 
     return encodeURIComponent(message);
