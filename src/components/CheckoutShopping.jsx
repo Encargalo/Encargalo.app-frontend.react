@@ -18,7 +18,7 @@ import WelcomeCustomerModal from "./WelcomeCustomerModal";
 import generateUUIDv4 from "../utils/generateUUIDv4";
 import sendOrders from "../services/sendOrders";
 
-const InlineNewAddress = ({ onAdded }) => {
+/* const InlineNewAddress = ({ onAdded }) => {
     const [isSaving, setIsSaving] = useState(false);
     const [form, setForm] = useState({
         alias: "",
@@ -96,7 +96,7 @@ const InlineNewAddress = ({ onAdded }) => {
             </button>
         </form>
     );
-};
+}; */
 
 const CheckoutShopping = () => {
     const navigate = useNavigate();
