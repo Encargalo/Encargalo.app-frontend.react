@@ -18,7 +18,7 @@ import WelcomeCustomerModal from "./WelcomeCustomerModal";
 import generateUUIDv4 from "../utils/generateUUIDv4";
 import sendOrders from "../services/sendOrders";
 
-const InlineNewAddress = ({ onAdded }) => {
+/* const InlineNewAddress = ({ onAdded }) => {
     const [isSaving, setIsSaving] = useState(false);
     const [form, setForm] = useState({
         alias: "",
@@ -96,7 +96,7 @@ const InlineNewAddress = ({ onAdded }) => {
             </button>
         </form>
     );
-};
+}; */
 
 const CheckoutShopping = () => {
     const navigate = useNavigate();
@@ -414,6 +414,14 @@ const CheckoutShopping = () => {
                                                 <p className="text-gray-600">
                                                     <span className="font-medium">Adicionales:</span>{" "}
                                                     {item.additionals.map((a) => a.name).join(", ")}
+                                                </p>
+                                            )}
+                                            {item.flavors?.length > 0 && (
+                                                <p className="text-gray-600">
+                                                    <span className="font-medium">Sabores:</span>{" "}
+                                                    {item.flavors
+                                                        .map((f) => f.name)
+                                                        .join(" / ")}
                                                 </p>
                                             )}
                                             {item.observation && (

@@ -17,9 +17,6 @@ const FoodDetailsModal = ({ food, onClose }) => {
   const [quantity, setQuantity] = useState(1);
   const [flavors, setFlavors] = useState([]);
 
-  console.log(food)
-
-
   const { addItem } = useCartStore();
   const navigate = useNavigate();
 

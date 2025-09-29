@@ -152,6 +152,16 @@ const ShoppingCart = () => {
                                                                     .join(", ")}
                                                             </div>
                                                         )}
+                                                        {item.flavors?.length > 0 && (
+                                                            <div className="text-gray-700">
+                                                                <span className="font-semibold">
+                                                                    Sabores:
+                                                                </span>{" "}
+                                                                {item.flavors
+                                                                    .map((f) => f.name)
+                                                                    .join(" / ")}
+                                                            </div>
+                                                        )}
                                                         {item.observation && (
                                                             <p className="text-gray-600 italic">
                                                                 <span className="font-semibold">Obs.:</span> {item.observation}
