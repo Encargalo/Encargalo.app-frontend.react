@@ -1,8 +1,10 @@
 import api from '../lib/api';
 
-const getAdditionals = async (setAdditionals, shop_id) => {
+const getAdditionals = async (setAdditionals, category_id) => {
   try {
-    const response = await api.get(`/products/additions?shop_id=${shop_id}`);
+    const response = await api.get(
+      `/products/additions?category_id=${category_id}`
+    );
     if (response.status === 200) {
       const additionals = response.data;
       setAdditionals(additionals);

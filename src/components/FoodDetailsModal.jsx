@@ -1,25 +1,36 @@
 //icions
 import { X, Plus, Minus } from "lucide-react";
 //react
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 //services
 import getAdditionals from "../services/getAdditionals";
 //store
 import useCartStore from "../store/cartStore";
+import getFlovors from "../services/getFlovors";
 
-const FoodDetailsModal = ({ combo, onClose }) => {
+const FoodDetailsModal = ({ food, onClose }) => {
   const [additionals, setAdditionals] = useState([]);
   const [selectedAdditionals, setSelectedAdditionals] = useState([]);
+  const [selectedFlavors, setSelectedFlavors] = useState([]);
   const [observation, setObservation] = useState("");
   const [quantity, setQuantity] = useState(1);
+  const [flavors, setFlavors] = useState([]);
+
+  console.log(food)
+
 
   const { addItem } = useCartStore();
   const navigate = useNavigate();
 
   useEffect(() => {
-    getAdditionals(setAdditionals, combo.shop.id);
-  }, [combo.shop.id]);
+    if (food.category_id) {
+      getAdditionals(setAdditionals, food.category_id);
+    }
+    if (food.has_flavors) {
+      getFlovors(setFlavors, food.id);
+    }
+  }, [food.id, food.category_id, food.has_flavors]);
 
   // bloquear scroll body cuando la modal está abierta
   useEffect(() => {
@@ -53,17 +64,53 @@ const FoodDetailsModal = ({ combo, onClose }) => {
   }, [onClose]);
 
   const unitPrice =
-    combo.price + selectedAdditionals.reduce((sum, a) => sum + (a.price || 0), 0);
+    food.price + selectedAdditionals.reduce((sum, a) => sum + (a.price || 0), 0);
   const total = unitPrice * quantity;
 
+  const flavorRules = useMemo(() => {
+    if (!food.rules || !Array.isArray(food.rules)) return {};
+    const rule = food.rules.find((r) => r.rule_key === "max_flavors");
+    return {
+      maxFlavors: rule ? parseInt(rule.rule_value, 10) : 1,
+      selectorType: rule ? rule.selector_type : "single_select",
+    };
+  }, [food.rules]);
+
+  const handleFlavorClick = (flavor) => {
+    setSelectedFlavors((prev) => {
+      const isSelected = prev.find((f) => f.id === flavor.id);
+
+      // Lógica para single_select (pizzas, etc.)
+      if (flavorRules.selectorType === "single_select") {
+        if (isSelected) {
+          // Si ya está seleccionado, lo quita
+          return prev.filter((f) => f.id !== flavor.id);
+        } else {
+          // Si no está seleccionado, y no hemos alcanzado el límite, lo añade
+          if (prev.length < flavorRules.maxFlavors) {
+            return [...prev, flavor];
+          }
+        }
+      }
+
+      return prev; // Mantener el estado si no se cumple ninguna condición
+    });
+  };
+
   const handleAddToCart = () => {
+    // Validación para sabores si son obligatorios
+    if (food.has_flavors && flavorRules.maxFlavors > 0 && selectedFlavors.length === 0) {
+      alert(`Debes seleccionar al menos un sabor.`);
+      return;
+    }
     addItem({
-      ...combo,
+      ...food,
       additionals: selectedAdditionals,
+      flavors: selectedFlavors,
       observation: observation.trim(),
       quantity,
-      price: combo.price,
-      shopInfo: combo.shop,
+      price: food.price,
+      shopInfo: food.shop,
     });
 
     onClose();
@@ -79,22 +126,22 @@ const FoodDetailsModal = ({ combo, onClose }) => {
       onClick={onClose}
     >
       <aside
-        className="bg-white w-full h-full flex flex-col sm:w-1/3 sm:h-max sm:rounded-xl"
+        className="bg-white w-full h-full flex flex-col sm:w-2/5 sm:h-3/4 sm:rounded-xl"
         onClick={(e) => e.stopPropagation()}
       >
         {/* header */}
         <header className="relative shrink-0 ">
           <img
-            src={combo.image}
-            alt={combo.name}
+            src={food.image}
+            alt={food.name}
             className="w-full h-64 object-cover sm:rounded-t-xl"
           />
 
           {/* logo */}
           {
             validateShopPath ?
-              <div className="absolute top-4 left-4" onClick={() => navigate(`/${combo.shop.tag}`)}>
-                <img src={combo.shop.logo_image} alt={combo.shop.logo_image} className="size-16 object-cover rounded-full border-2 border-orange-200 hover:border-orange-500 cursor-pointer transition-colors" />
+              <div className="absolute top-4 left-4" onClick={() => navigate(`/${food.shop.tag}`)}>
+                <img src={food.shop.logo_image} alt={food.shop.logo_image} className="size-16 object-cover rounded-full border-2 border-orange-200 hover:border-orange-500 cursor-pointer transition-colors" />
 
               </div>
               : null
@@ -110,12 +157,12 @@ const FoodDetailsModal = ({ combo, onClose }) => {
         {/* details */}
         <section className="flex-1 overflow-y-auto p-6">
           <div className="flex justify-between items-center flex-wrap mb-2">
-            <h2 className="text-3xl font-bold text-gray-900 mb-2">{combo.name}</h2>
+            <h2 className="text-3xl font-bold text-gray-900 mb-2">{food.name}</h2>
             <h4 className="text-3xl sm:text-4xl font-extrabold text-orange-600">
               ${total.toLocaleString()}
             </h4>
           </div>
-          <p className="text-lg text-gray-600 mt-1">{combo.description}</p>
+          <p className="text-lg text-gray-600 mt-1">{food.description}</p>
 
           {/* cantidad */}
           <div className="mt-6 flex items-center space-x-4">
@@ -146,29 +193,70 @@ const FoodDetailsModal = ({ combo, onClose }) => {
             />
           </div>
 
-          {/* adicionales */}
+          {/* sabores */}
+          {food.has_flavors && flavors.length > 0 && (
+            <div className="mt-4">
+              <div className="flex justify-between items-center mb-2">
+                <h3 className="text-lg sm:text-xl font-semibold">
+                  Sabores
+                  <span className="text-base font-normal text-gray-600 ml-2">
+                    (Elige hasta {flavorRules.maxFlavors})
+                  </span>
+                </h3>
+                {selectedFlavors.length > 0 && (
+                  <button
+                    onClick={() => setSelectedFlavors([])}
+                    className="text-sm text-orange-600 hover:text-orange-800 font-semibold px-2 py-1 rounded-md hover:bg-orange-100 transition-colors"
+                  >
+                    Quitar selección
+                  </button>
+                )}
+              </div>
+              <div className="flex flex-col gap-2">
+                {flavors.map((flavor) => (
+                  <button
+                    key={flavor.id}
+                    onClick={() => handleFlavorClick(flavor)}
+                    disabled={
+                      selectedFlavors.length >= flavorRules.maxFlavors &&
+                      !selectedFlavors.find((f) => f.id === flavor.id)
+                    }
+                    className={`w-full flex justify-between items-center border rounded-lg px-4 py-3 text-base sm:text-lg transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed ${selectedFlavors.find((f) => f.id === flavor.id)
+                      ? "bg-orange-500 text-white border-orange-600 shadow-md"
+                      : "bg-orange-50 hover:bg-orange-100 border-orange-200"
+                      }`}
+                  >
+                    <span className="text-left">{flavor.name}</span>
+                    {/* El precio de los sabores no se suma, es para elegir */}
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
 
+          {/* adicionales */}
           {
             additionals.length > 0 ? (
               <div className="mt-4">
                 <h3 className="text-lg sm:text-xl font-semibold mb-2">Adicionales</h3>
-                <div className="grid grid-cols-2 gap-2">
+                <div className="flex flex-col gap-2">
                   {additionals.map((a) => (
                     <button
                       key={a.id}
                       onClick={() =>
                         setSelectedAdditionals((prev) =>
                           prev.find((x) => x.id === a.id)
-                            ? prev.filter((x) => x.id !== a.id)
-                            : [...prev, a]
+                            ? prev.filter((x) => x.id !== a.id) // Deseleccionar
+                            : [...prev, a] // Seleccionar
                         )
                       }
-                      className={`border rounded-lg px-3 py-2 text-base sm:text-lg ${selectedAdditionals.find((x) => x.id === a.id)
-                        ? "bg-orange-500 text-white border-orange-600"
-                        : "bg-orange-100 hover:bg-orange-200"
+                      className={`w-full flex justify-between items-center border rounded-lg px-4 py-3 text-base sm:text-lg transition-all duration-200 ${selectedAdditionals.find((x) => x.id === a.id)
+                        ? "bg-orange-500 text-white border-orange-600 shadow-md"
+                        : "bg-orange-50 hover:bg-orange-100 border-orange-200"
                         }`}
                     >
-                      {a.name} +${a.price}
+                      <span className="text-left">{a.name}</span>
+                      <span className="font-semibold">+${a.price}</span>
                     </button>
                   ))}
                 </div>
@@ -176,6 +264,7 @@ const FoodDetailsModal = ({ combo, onClose }) => {
             )
               : null
           }
+
 
           {/* footer */}
           <footer className="shrink-0 flex flex-col items-center mt-5 gap-5">

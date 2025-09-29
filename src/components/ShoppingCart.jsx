@@ -210,7 +210,7 @@ const ShoppingCart = () => {
                                             <span className="font-semibold sm:text-lg">{group.shopInfo.name}</span>?
                                         </div>
 
-                                        <div className="flex justify-between items-center flex-col sm:flex-row w-full sm:w-auto gap-3">
+                                        <div className="flex justify-between items-center flex-col sm:flex-row-reverse w-full sm:w-auto gap-3">
                                             <button
                                                 onClick={() =>
                                                     handlePlaceOrder(group.shopInfo, group.items)
