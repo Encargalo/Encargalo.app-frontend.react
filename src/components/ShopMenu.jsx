@@ -33,10 +33,13 @@ const ShopMenu = () => {
   const { cart } = useCartStore();
   const { formatNumber } = useNumberFormat();
   const shopCartItems = cart.filter(item => item.shopInfo?.id === shop.id);
-  const shopTotal = shopCartItems.reduce(
-    (sum, item) => sum + item.price * item.quantity,
-    0
-  );
+  const shopTotal = shopCartItems.reduce((sum, item) => {
+    const additionalsTotal = (item.additionals || []).reduce(
+      (addSum, additional) => addSum + (additional.price || 0),
+      0
+    );
+    return sum + (item.price + additionalsTotal) * item.quantity;
+  }, 0);
 
   const totalItems = shopCartItems.reduce(
     (sum, item) => sum + item.quantity,
