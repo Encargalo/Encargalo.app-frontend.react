@@ -202,12 +202,12 @@ const CheckoutShopping = () => {
                     {/* Direcciones */}
                     <section className="lg:col-span-3 space-y-4">
                         <div className="bg-white border border-gray-300 rounded-2xl p-5">
-                            <div className="flex justify-between items-center mb-2">
+                            <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-4">
                                 <h2 className="text-xl sm:text-2xl font-bold text-gray-800">
                                     Tus direcciones
                                 </h2>
                                 {user_session === session_create && (
-                                    <button onClick={() => navigate("/customer_profile/address")} className="text-orange-600 hover:text-orange-800 font-semibold px-3 py-1 rounded-lg hover:bg-orange-50 transition-colors">
+                                    <button onClick={() => navigate("/customer_profile/address")} className="text-orange-600 hover:text-orange-800 font-semibold px-3 py-1 rounded-lg hover:bg-orange-50 transition-colors mt-2 sm:mt-0">
                                         Agregar nueva dirreción
                                     </button>
                                 )}
