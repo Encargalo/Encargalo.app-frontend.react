@@ -119,11 +119,6 @@ const FoodDetailsModal = ({ food, onClose }) => {
       const existingFlavor = prev.find(f => f.id === flavor.id);
       const currentTotal = prev.reduce((sum, f) => sum + f.quantity, 0);
 
-      // Si se quiere añadir y ya se alcanzó el límite
-      if (change > 0 && currentTotal >= flavorRules.maxFlavors) {
-        return prev;
-      }
-
       if (existingFlavor) {
         const newQuantity = existingFlavor.quantity + change;
         if (newQuantity > 0) {
@@ -225,9 +220,11 @@ const FoodDetailsModal = ({ food, onClose }) => {
               <div className="flex justify-between items-center mb-2">
                 <h3 className="text-lg sm:text-xl font-semibold">
                   Sabores
-                  <span className="text-base font-normal text-gray-600 ml-2">
-                    ({flavorRules.selectorType === 'multi_select' ? `Total: ${totalSelectedFlavors} de ${flavorRules.maxFlavors}` : `Elige hasta ${flavorRules.maxFlavors}`})
-                  </span>
+                  {flavorRules.selectorType !== 'multi_select' && (
+                    <span className="text-base font-normal text-gray-600 ml-2">
+                      (Elige hasta {flavorRules.maxFlavors})
+                    </span>
+                  )}
                 </h3>
                 {selectedFlavors.length > 0 && (
                   <button
@@ -254,7 +251,7 @@ const FoodDetailsModal = ({ food, onClose }) => {
                             <Minus className="size-4" />
                           </button>
                           <span className="text-xl font-bold w-6 text-center">{currentQty}</span>
-                          <button onClick={() => handleFlavorQuantityChange(flavor, 1)} disabled={totalSelectedFlavors >= flavorRules.maxFlavors} className="bg-orange-500 hover:bg-orange-600 text-white p-2 rounded-full disabled:opacity-50">
+                          <button onClick={() => handleFlavorQuantityChange(flavor, 1)} className="bg-orange-500 hover:bg-orange-600 text-white p-2 rounded-full disabled:opacity-50">
                             <Plus className="size-4" />
                           </button>
                         </div>
