@@ -18,35 +18,45 @@ export function buildWhatsAppMessage(items, shopName, purchaseData, formatNumber
 
     items.forEach((item, idx) => {
         const additionals = Array.isArray(item.additionals) ? item.additionals : [];
-        const additionalsTotal = additionals.reduce((sum, a) => sum + (a.price || 0), 0);
+        const isMultiSelect = item.rules?.some(r => r.rule_key === 'max_flavors' && r.selector_type === 'multi_select');
+        const flavorCount = item.flavors?.reduce((sum, f) => sum + (f.quantity || 1), 0) || 0;
+
+        // La cantidad es el total de sabores para multi_select, o la cantidad del item para otros casos.
+        const quantity = isMultiSelect && flavorCount > 0 ? flavorCount : item.quantity || 1;
+
+        const additionalsTotalPerUnit = additionals.reduce((sum, a) => sum + (a.price || 0), 0);
+        // Para multi-select, los adicionales se suman una vez. Para otros, se multiplican por la cantidad.
+        const totalAdditionals = isMultiSelect ? additionalsTotalPerUnit : additionalsTotalPerUnit * quantity;
+
         const unitPrice = item.price || 0;
-        const quantity = item.quantity || 1;
-        const totalUnitPrice = unitPrice * quantity;
-        const totalAdditionals = additionalsTotal * quantity;
-        const subtotal = totalUnitPrice + totalAdditionals;
+        // El precio total del producto base.
+        const baseProductTotal = unitPrice * quantity;
+
+        const subtotal = baseProductTotal + totalAdditionals;
         total += subtotal;
 
         message += `*Producto:* ${item.name}\n\n`;
 
         if (item.flavors && item.flavors.length > 0) {
-            message += `*Sabores:* ${item.flavors.map(f => f.name).join(' / ')}\n\n`;
+            const flavorString = item.flavors.map(f =>
+                f.quantity > 1 ? `${f.name} (x${f.quantity})` : f.name
+            ).join(' / ');
+            message += `*Sabores:* ${flavorString}\n\n`;
         }
-
-        message += ` *Cantidad:* ${quantity}\n`;
-        message += ` Precio unitario: ${formatNumber(unitPrice, 'es-CO')}\n`;
-        message += ` Precio total: ${formatNumber(totalUnitPrice, 'es-CO')}\n\n`;
 
         if (item.observation && item.observation.trim() !== '') {
             message += `*Observaciones:* ${item.observation}\n\n`;
         }
 
+        message += `*Resumen del Producto:*\n`;
+        message += `- Cantidad: ${quantity}\n`;
+        message += `- Precio Unitario: ${formatNumber(unitPrice, 'es-CO')}\n`;
+        message += `- Total Producto: ${formatNumber(baseProductTotal, 'es-CO')}\n`;
+
         if (additionals.length > 0) {
-            message += `*Adicionales por unidad:*\n`;
-            additionals.forEach((a) => {
-                const additionalPrice = a.price || 0;
-                message += `- ${a.name}: ${formatNumber(additionalPrice, 'es-CO')}\n`;
-            });
-            message += `\nPrecio total de los adicionales: ${formatNumber(totalAdditionals, 'es-CO')}\n\n`;
+            const additionalNames = additionals.map(a => `${a.name} (${formatNumber(a.price, 'es-CO')})`).join(', ');
+            message += `- Adicionales: ${additionalNames}\n`;
+            message += `- Total Adicionales: ${formatNumber(totalAdditionals, 'es-CO')}\n`;
         }
 
         message += `*Subtotal:*  ${formatNumber(subtotal, 'es-CO')}\n`;

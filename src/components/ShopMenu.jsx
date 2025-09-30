@@ -33,12 +33,18 @@ const ShopMenu = () => {
   const { cart } = useCartStore();
   const { formatNumber } = useNumberFormat();
   const shopCartItems = cart.filter(item => item.shopInfo?.id === shop.id);
+
   const shopTotal = shopCartItems.reduce((sum, item) => {
-    const additionalsTotal = (item.additionals || []).reduce(
-      (addSum, additional) => addSum + (additional.price || 0),
-      0
-    );
-    return sum + (item.price + additionalsTotal) * item.quantity;
+    const isMultiSelect = item.rules?.some(r => r.rule_key === 'max_flavors' && r.selector_type === 'multi_select');
+    const flavorCount = item.flavors?.reduce((sum, f) => sum + (f.quantity || 1), 0) || 0;
+    const quantity = isMultiSelect && flavorCount > 0 ? flavorCount : item.quantity || 1;
+
+    const additionalsPricePerUnit = (item.additionals || []).reduce((addSum, additional) => addSum + (additional.price || 0), 0);
+
+    const subtotal = isMultiSelect
+      ? (item.price * quantity) + additionalsPricePerUnit
+      : (item.price + additionalsPricePerUnit) * quantity;
+    return sum + subtotal;
   }, 0);
 
   const totalItems = shopCartItems.reduce(

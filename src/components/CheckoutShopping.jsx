@@ -17,9 +17,19 @@ import sendOrders from "../services/sendOrders";
 export const preprocessCartItems = (items) => {
     if (!Array.isArray(items)) return [];
     return items.map((item) => {
-        const quantity = item.quantity || 1;
-        const additionalsTotal = (item.additionals || []).reduce((sum, add) => sum + (add.price || 0), 0);
-        const subtotal = (item.price + additionalsTotal) * quantity;
+        const isMultiSelect = item.rules?.some(r => r.rule_key === 'max_flavors' && r.selector_type === 'multi_select');
+        const flavorCount = item.flavors?.reduce((sum, f) => sum + (f.quantity || 1), 0) || 0;
+
+        // La cantidad es el total de sabores para multi_select, o la cantidad del item para otros casos.
+        const quantity = isMultiSelect && flavorCount > 0 ? flavorCount : item.quantity || 1;
+
+        const additionalsPricePerUnit = (item.additionals || []).reduce((sum, add) => sum + (add.price || 0), 0);
+
+        // El subtotal se basa en el precio del item multiplicado por la cantidad de sabores (si es multi_select)
+        // o por la cantidad del producto.
+        const subtotal = isMultiSelect ? (item.price * quantity) + additionalsPricePerUnit
+            : (item.price + additionalsPricePerUnit) * quantity;
+
         return { ...item, quantity, subtotal };
     });
 };
@@ -413,7 +423,7 @@ const CheckoutShopping = () => {
                                                     {item.name}
                                                 </p>
                                                 <span className="text-lg sm:text-base text-gray-600">
-                                                    x{item.quantity}
+                                                    x{item.rules?.some(r => r.selector_type === 'multi_select') ? item.flavors.reduce((acc, f) => acc + f.quantity, 0) : item.quantity}
                                                 </span>
                                             </div>
                                             {item.additionals?.length > 0 && (
@@ -425,9 +435,13 @@ const CheckoutShopping = () => {
                                             {item.flavors?.length > 0 && (
                                                 <p className="text-gray-600">
                                                     <span className="font-medium">Sabores:</span>{" "}
-                                                    {item.flavors
-                                                        .map((f) => f.name)
-                                                        .join(" / ")}
+                                                    {item.flavors.map(f =>
+                                                        f.quantity > 1
+                                                            ? `${f.name} (x${f.quantity})`
+                                                            : f.name
+                                                    )
+                                                        .join(" / ")
+                                                    }
                                                 </p>
                                             )}
                                             {item.observation && (
