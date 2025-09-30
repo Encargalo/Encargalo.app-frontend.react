@@ -97,10 +97,17 @@ const ShoppingCart = () => {
                         <h2 className="text-2xl font-bold text-gray-800 mb-2">
                             Tu carrito está vacío
                         </h2>
-                        <p className="text-gray-600">
+                        <p className="text-gray-600 mb-1">
                             Aquí estaran todos tus pedidos.
                         </p>
-                        <p>¿Qué esperas para pedir?</p>
+                        <p className="mb-6">¿Qué esperas para pedir?</p>
+
+                        <button
+                            className="w-full sm:w-auto bg-gradient-to-r from-orange-500 to-orange-600 text-white px-6 py-3 rounded-xl font-semibold shadow hover:shadow-md transition"
+                            onClick={() => navigate(-1)}
+                        >
+                            Volver al menú
+                        </button>
                     </div>
                 ) : (
                     <div className="space-y-8">
