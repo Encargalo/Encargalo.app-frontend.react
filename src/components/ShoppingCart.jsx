@@ -6,10 +6,18 @@ import { ilustrations } from "../assets/ilustrations";
 import useCartStore from "../store/cartStore";
 import usePlaceOrderStore from "../store/placeOrderStore";
 import useNumberFormat from "../hooks/useNumberFormat";
-//lib
-import { preprocessCartItems } from "../lib/cartUtils";
 //assets (opcional: si tienes ilustraciones)
 import { removeItem } from "../utils/encryptionUtilities";
+
+export const preprocessCartItems = (items) => {
+    if (!Array.isArray(items)) return [];
+    return items.map((item) => {
+        const quantity = item.quantity || 1;
+        const additionalsTotal = (item.additionals || []).reduce((sum, add) => sum + (add.price || 0), 0);
+        const subtotal = (item.price + additionalsTotal) * quantity;
+        return { ...item, quantity, subtotal };
+    });
+};
 
 const ShoppingCart = () => {
     const navigate = useNavigate();
@@ -177,7 +185,15 @@ const ShoppingCart = () => {
                                                             Unitario
                                                         </p>
                                                         <p className="font-semibold text-xl">
-                                                            ${formatNumber(item.price, "es-CO")}
+                                                            $
+                                                            {formatNumber(
+                                                                item.price +
+                                                                (item.additionals?.reduce(
+                                                                    (sum, add) => sum + add.price,
+                                                                    0
+                                                                ) || 0),
+                                                                "es-CO"
+                                                            )}
                                                         </p>
                                                         <p className="text-gray-500 mt-1">
                                                             Subtotal
