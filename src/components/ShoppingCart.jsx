@@ -225,27 +225,29 @@ const ShoppingCart = () => {
                                                         </div>
                                                     </div>
 
-                                                    <div className="flex items-center gap-3">
-                                                        <button
-                                                            onClick={() =>
-                                                                removeItemQuantity(item)
-                                                            }
-                                                            className="px-4 py-2 sm:px-4 sm:py-3 rounded-xl border border-gray-300 hover:bg-gray-50 font-semibold"
-                                                        >
-                                                            −
-                                                        </button>
-                                                        <span className="min-w-10 text-center font-bold sm:text-xl">
-                                                            x{item.rules?.some(r => r.selector_type === 'multi_select') ? item.flavors.reduce((acc, f) => acc + f.quantity, 0) : item.quantity}
-                                                        </span>
-                                                        <button
-                                                            onClick={() =>
-                                                                addItem({ ...item, quantity: 1 })
-                                                            }
-                                                            className="px-4 py-2 sm:px-4 sm:py-3 rounded-xl bg-orange-50 text-orange-700 border border-orange-300 hover:bg-orange-100 font-semibold"
-                                                        >
-                                                            +
-                                                        </button>
-                                                    </div>
+                                                    {!item.rules?.some(r => r.selector_type === 'multi_select') ? (
+                                                        <div className="flex items-center gap-3">
+                                                            <button
+                                                                onClick={() =>
+                                                                    removeItemQuantity(item)
+                                                                }
+                                                                className="px-4 py-2 sm:px-4 sm:py-3 rounded-xl border border-gray-300 hover:bg-gray-50 font-semibold"
+                                                            >
+                                                                −
+                                                            </button>
+                                                            <span className="min-w-10 text-center font-bold sm:text-xl">
+                                                                x{item.quantity}
+                                                            </span>
+                                                            <button
+                                                                onClick={() =>
+                                                                    addItem({ ...item, quantity: 1 })
+                                                                }
+                                                                className="px-4 py-2 sm:px-4 sm:py-3 rounded-xl bg-orange-50 text-orange-700 border border-orange-300 hover:bg-orange-100 font-semibold"
+                                                            >
+                                                                +
+                                                            </button>
+                                                        </div>
+                                                    ) : null}
                                                 </div>
                                             </li>
                                         ))}
