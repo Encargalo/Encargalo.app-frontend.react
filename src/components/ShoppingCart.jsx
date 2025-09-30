@@ -12,10 +12,26 @@ import { removeItem } from "../utils/encryptionUtilities";
 export const preprocessCartItems = (items) => {
     if (!Array.isArray(items)) return [];
     return items.map((item) => {
-        const quantity = item.quantity || 1;
-        const additionalsTotal = (item.additionals || []).reduce((sum, add) => sum + (add.price || 0), 0);
-        const subtotal = (item.price + additionalsTotal) * quantity;
-        return { ...item, quantity, subtotal };
+        const isMultiSelect = item.rules?.some(r => r.rule_key === 'max_flavors' && r.selector_type === 'multi_select');
+        const flavorCount = item.flavors?.reduce((sum, f) => sum + (f.quantity || 1), 0) || 0;
+
+        // La cantidad es el total de sabores para multi_select, o la cantidad del item para otros casos.
+        const quantity = isMultiSelect && flavorCount > 0 ? flavorCount : item.quantity || 1;
+
+        const additionalsPricePerUnit = (item.additionals || []).reduce((sum, add) => sum + (add.price || 0), 0);
+
+        const baseProductTotal = item.price * quantity;
+        const totalAdditionals = isMultiSelect ? additionalsPricePerUnit : additionalsPricePerUnit * quantity;
+        const subtotal = baseProductTotal + totalAdditionals;
+
+        return {
+            ...item,
+            quantity,
+            subtotal,
+            unitPrice: item.price,
+            baseProductTotal,
+            totalAdditionals,
+        };
     });
 };
 
@@ -165,9 +181,13 @@ const ShoppingCart = () => {
                                                                 <span className="font-semibold">
                                                                     Sabores:
                                                                 </span>{" "}
-                                                                {item.flavors
-                                                                    .map((f) => f.name)
-                                                                    .join(" / ")}
+                                                                {item.flavors.map(f =>
+                                                                    f.quantity > 1
+                                                                        ? `${f.name} (x${f.quantity})`
+                                                                        : f.name
+                                                                )
+                                                                    .join(" / ")
+                                                                }
                                                             </div>
                                                         )}
                                                         {item.observation && (
@@ -181,26 +201,28 @@ const ShoppingCart = () => {
                                                 {/* precio / cantidad / acciones */}
                                                 <div className="flex items-center justify-between sm:justify-end w-full sm:w-auto gap-8">
                                                     <div className="text-right">
-                                                        <p className="sm:text-lg text-gray-500">
-                                                            Unitario
-                                                        </p>
-                                                        <p className="font-semibold text-xl">
-                                                            $
-                                                            {formatNumber(
-                                                                item.price +
-                                                                (item.additionals?.reduce(
-                                                                    (sum, add) => sum + add.price,
-                                                                    0
-                                                                ) || 0),
-                                                                "es-CO"
+                                                        <div className="space-y-1">
+                                                            <div className="flex justify-between items-center gap-4">
+                                                                <span className="text-gray-500">Unitario:</span>
+                                                                <span className="font-semibold">${formatNumber(item.unitPrice, "es-CO")}</span>
+                                                            </div>
+                                                            <div className="flex justify-between items-center gap-4">
+                                                                <span className="text-gray-500">Total Prod.:</span>
+                                                                <span className="font-semibold">${formatNumber(item.baseProductTotal, "es-CO")}</span>
+                                                            </div>
+                                                            {item.totalAdditionals > 0 && (
+                                                                <div className="flex justify-between items-center gap-4">
+                                                                    <span className="text-gray-500">Adicionales:</span>
+                                                                    <span className="font-semibold">${formatNumber(item.totalAdditionals, "es-CO")}</span>
+                                                                </div>
                                                             )}
-                                                        </p>
-                                                        <p className="text-gray-500 mt-1">
-                                                            Subtotal
-                                                        </p>
-                                                        <p className="font-extrabold text-gray-900">
-                                                            ${formatNumber(item.subtotal, "es-CO")}
-                                                        </p>
+                                                            <div className="flex justify-between items-center gap-4 pt-1 border-t mt-1">
+                                                                <span className="text-gray-500 font-bold">Subtotal:</span>
+                                                                <span className="font-extrabold text-gray-900 text-lg">
+                                                                    ${formatNumber(item.subtotal, "es-CO")}
+                                                                </span>
+                                                            </div>
+                                                        </div>
                                                     </div>
 
                                                     <div className="flex items-center gap-3">
@@ -213,7 +235,7 @@ const ShoppingCart = () => {
                                                             −
                                                         </button>
                                                         <span className="min-w-10 text-center font-bold sm:text-xl">
-                                                            x{item.quantity}
+                                                            x{item.rules?.some(r => r.selector_type === 'multi_select') ? item.flavors.reduce((acc, f) => acc + f.quantity, 0) : item.quantity}
                                                         </span>
                                                         <button
                                                             onClick={() =>
