@@ -83,14 +83,6 @@ const ShoppingCart = () => {
                         </p>
                     </div>
 
-                    <div className="sm:space-x-3 space-y-3">
-
-                        <button className="w-full sm:w-auto bg-gradient-to-r from-orange-500 to-orange-600 text-white px-5 py-3 rounded-xl font-semibold shadow hover:shadow-md transition" onClick={() => navigate(-1)}>
-                            Volver al menú
-                        </button>
-
-                    </div>
-
                 </header>
 
                 {isEmpty ? (
@@ -199,7 +191,7 @@ const ShoppingCart = () => {
                                                 </div>
 
                                                 {/* precio / cantidad / acciones */}
-                                                <div className="flex items-center justify-between sm:justify-end w-full sm:w-auto gap-8">
+                                                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-end w-full sm:w-auto gap-4 sm:gap-8">
                                                     <div className="text-right">
                                                         <div className="space-y-1">
                                                             <div className="flex justify-between items-center gap-4">
@@ -226,7 +218,7 @@ const ShoppingCart = () => {
                                                     </div>
 
                                                     {!item.rules?.some(r => r.selector_type === 'multi_select') ? (
-                                                        <div className="flex items-center gap-3">
+                                                        <div className="flex items-center justify-start gap-3">
                                                             <button
                                                                 onClick={() =>
                                                                     removeItemQuantity(item)
@@ -283,14 +275,22 @@ const ShoppingCart = () => {
                     </div>
                 )}
 
-                <footer className="py-5">
+                <footer className="py-5 mt-4">
                     {!isEmpty && (
-                        <button
-                            onClick={clearCart}
-                            className="rounded-xl border border-red-200 text-red-600 hover:bg-red-50 px-4 py-3 font-semibold transition w-full sm:w-auto"
-                        >
-                            Vaciar carrito
-                        </button>
+                        <div className="flex flex-col-reverse sm:flex-row sm:justify-between gap-4">
+                            <button
+                                onClick={clearCart}
+                                className="rounded-xl border border-red-200 text-red-600 hover:bg-red-50 px-5 py-3 font-semibold transition w-full sm:w-auto"
+                            >
+                                Vaciar carrito
+                            </button>
+                            <button
+                                className="w-full sm:w-auto bg-gradient-to-r from-orange-500 to-orange-600 text-white px-5 py-3 rounded-xl font-semibold shadow hover:shadow-md transition"
+                                onClick={() => navigate(-1)}
+                            >
+                                Volver al menú
+                            </button>
+                        </div>
                     )}
                 </footer>
             </section>

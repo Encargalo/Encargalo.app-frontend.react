@@ -181,17 +181,19 @@ const FoodDetailsModal = ({ food, onClose }) => {
 
         {/* Header Fijo con Nombre y Precio */}
         <div className="shrink-0 p-6 border-b border-gray-200">
-          <div className="flex justify-between items-start flex-wrap">
-            <div className="flex items-center gap-x-3">
+          <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-y-2">
+            <div>
               <h2 className="text-3xl font-bold text-gray-900">{food.name}</h2>
               {flavorRules.selectorType === 'multi_select' && (
-                <span className="text-xl font-semibold text-gray-500 bg-gray-100 px-3 py-1 rounded-lg">
+                <span className="text-xl font-semibold text-gray-500 mt-1">
                   ${food.price.toLocaleString()} c/u
                 </span>
               )}
             </div>
             {flavorRules.selectorType !== 'multi_select' && (
-              <h4 className="text-3xl sm:text-4xl font-extrabold text-orange-600">${total.toLocaleString()}</h4>
+              <h4 className="text-3xl font-extrabold text-orange-600">
+                ${total.toLocaleString()}
+              </h4>
             )}
           </div>
         </div>
