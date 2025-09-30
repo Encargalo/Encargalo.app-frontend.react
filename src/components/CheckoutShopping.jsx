@@ -34,86 +34,6 @@ export const preprocessCartItems = (items) => {
     });
 };
 
-/* const InlineNewAddress = ({ onAdded }) => {
-    const [isSaving, setIsSaving] = useState(false);
-    const [form, setForm] = useState({
-        alias: "",
-        address: "",
-        reference: "",
-        coords: null,
-    });
-
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        if (!form.alias || !form.address) return;
-        setIsSaving(true);
-        try {
-            await addAddress(form, null, null, null, () => { });
-            if (typeof onAdded === "function") onAdded();
-        } finally {
-            setIsSaving(false);
-        }
-    };
-
-    return (
-        <form onSubmit={handleSubmit} className="space-y-4 bg-white border border-gray-200 rounded-2xl px-5 py-6">
-            <div>
-                <label className="block text-sm sm:text-lg font-semibold text-gray-700 mb-1">
-                    Nombre de la ubicación
-                </label>
-                <input
-                    type="text"
-                    placeholder="Mi casa"
-                    value={form.alias}
-                    onChange={(e) => setForm((p) => ({ ...p, alias: e.target.value }))}
-                    className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-orange-500"
-                />
-            </div>
-
-            <div>
-                <label className="block text-sm sm:text-xl font-semibold text-gray-700 mb-1">
-                    Dirección
-                </label>
-                <input
-                    readOnly
-                    placeholder="Selecciona en el mapa"
-                    value={form.address}
-                    className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-orange-500 bg-gray-50"
-                />
-            </div>
-
-            <MapComponent
-                onAddressSelect={({ address, coords }) => {
-                    setForm((p) => ({ ...p, address, coords }));
-                }}
-            />
-
-            <div>
-                <label className="block text-sm sm:text-xl font-semibold text-gray-700 mb-1">
-                    Referencia
-                </label>
-                <input
-                    type="text"
-                    placeholder="Edificio, piso, punto de referencia"
-                    value={form.reference}
-                    onChange={(e) =>
-                        setForm((p) => ({ ...p, reference: e.target.value }))
-                    }
-                    className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-orange-500"
-                />
-            </div>
-
-            <button
-                type="submit"
-                disabled={isSaving}
-                className="w-full bg-gradient-to-r from-orange-500 to-orange-600 text-white px-5 py-3 rounded-xl font-semibold shadow hover:shadow-md transition disabled:opacity-60"
-            >
-                {isSaving ? "Guardando..." : "Guardar dirección"}
-            </button>
-        </form>
-    );
-}; */
-
 const CheckoutShopping = () => {
     const navigate = useNavigate();
     const { placeOrder, clearPlaceOrder, setPlaceOrder } = usePlaceOrderStore();
@@ -282,10 +202,16 @@ const CheckoutShopping = () => {
                     {/* Direcciones */}
                     <section className="lg:col-span-3 space-y-4">
                         <div className="bg-white border border-gray-300 rounded-2xl p-5">
-                            <h2 className="text-xl sm:text-2xl font-bold text-gray-800 mb-2">
-                                Tus direcciones
-                            </h2>
-
+                            <div className="flex justify-between items-center mb-2">
+                                <h2 className="text-xl sm:text-2xl font-bold text-gray-800">
+                                    Tus direcciones
+                                </h2>
+                                {user_session === session_create && (
+                                    <button onClick={() => navigate("/customer_profile/address")} className="text-orange-600 hover:text-orange-800 font-semibold px-3 py-1 rounded-lg hover:bg-orange-50 transition-colors">
+                                        Agregar nueva dirreción
+                                    </button>
+                                )}
+                            </div>
                             {addresses?.length > 0 ? (
                                 <ul className="space-y-3 mt-3">
                                     {addresses.map((a) => (
