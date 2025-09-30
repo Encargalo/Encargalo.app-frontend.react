@@ -6,17 +6,23 @@ import usePlaceOrderStore from "../store/placeOrderStore";
 import useCartStore from "../store/cartStore";
 import useNumberFormat from "../hooks/useNumberFormat";
 import useOnLoginStore from "../store/onLoginStore";
-//services
 import getAddressCustomer from "../services/getAddressCustomer";
-//components
-import MapComponent from "./MapComponent";
-//utils/lib
-import { buildWhatsAppMessage, preprocessCartItems } from "../lib/cartUtils";
+import { buildWhatsAppMessage } from "../lib/cartUtils";
 import { getDecryptedItem, setEncryptedItem, removeItem } from "../utils/encryptionUtilities";
 import SessionModal from "./SessionCustomer/SessionModal";
 import WelcomeCustomerModal from "./WelcomeCustomerModal";
 import generateUUIDv4 from "../utils/generateUUIDv4";
 import sendOrders from "../services/sendOrders";
+
+export const preprocessCartItems = (items) => {
+    if (!Array.isArray(items)) return [];
+    return items.map((item) => {
+        const quantity = item.quantity || 1;
+        const additionalsTotal = (item.additionals || []).reduce((sum, add) => sum + (add.price || 0), 0);
+        const subtotal = (item.price + additionalsTotal) * quantity;
+        return { ...item, quantity, subtotal };
+    });
+};
 
 /* const InlineNewAddress = ({ onAdded }) => {
     const [isSaving, setIsSaving] = useState(false);
