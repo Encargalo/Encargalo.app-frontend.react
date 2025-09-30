@@ -357,11 +357,12 @@ const CheckoutShopping = () => {
                             </h3>
                             <div className="flex flex-col gap-6">
                                 <div>
-                                    <label className="block text-lg sm:text-xl font-semibold text-gray-700 mb-3">
-                                        Método de pago
-                                    </label>
-
-                                    {paymentMethod === "" ? <p className="text-red-700 italic mb-2">Escoje un metodo de pago</p> : null}
+                                    <div className="flex items-center gap-x-2 mb-3">
+                                        <label className="block text-lg sm:text-xl font-semibold text-gray-700">
+                                            Método de pago
+                                        </label>
+                                        {!paymentMethod && <span className="text-red-500 text-sm font-medium">(requerido)</span>}
+                                    </div>
                                     <div className="grid grid-cols-2 gap-4">
                                         <button
                                             type="button"
