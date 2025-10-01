@@ -101,8 +101,8 @@ const ShopMenu = () => {
   );
 
   return (
-    <div>
-      <section className="min-h-dvh w-screen bg-white background">
+    <div className="min-h-dvh w-full background">
+      <section className="w-full">
         {/* header */}
         <header className="bg-white shadow-lg sticky top-0 z-40 border-b">
           <div className="w-full px-3 sm:px-4 lg:px-7 py-3">
@@ -218,7 +218,7 @@ const ShopMenu = () => {
                   selectedCategory === category.id) && (
                   <section key={category.id} className="mb-8">
                     {/* name category */}
-                    <h2 className="text-3xl font-bold text-orange-950 mb-4 mt-10">
+                    <h2 className="text-3xl font-bold text-white mb-4 mt-10">
                       {category.name}
                     </h2>
 
@@ -241,7 +241,7 @@ const ShopMenu = () => {
                           {category.items.map((item) => (
                             <li
                               key={item.id}
-                              className="flex justify-between items-start gap-2 p-4 bg-white rounded-xl shadow"
+                              className="flex justify-between items-start gap-2 p-4 bg-white rounded-xl shadow relative"
                               onClick={() => handleFoodClick(item)}
                             >
                               {/* info */}
@@ -254,17 +254,19 @@ const ShopMenu = () => {
                                 <p className="font-bold text-orange-600 text-lg">
                                   ${formatNumber(item.price, "es-CO")}
                                 </p>
-                                {/* 
-                                <p className="flex items-center gap-1 text-sm text-gray-500">
-                                  ⭐ {item.score}
-                                </p> */}
+                                <div className="w-max flex absolute bottom-4 right-5 items-center bg-gradient-to-r from-orange-100 to-orange-50 px-3 py-1 rounded-full border border-orange-200">
+                                  {/* star icon */}
+                                  <Star className="w-3 sm:w-4 h-3 sm:h-4 text-orange-500 fill-current mr-1 inline" />
+                                  {/* score */}
+                                  <span className="text-base font-bold text-gray-900">{item.score}</span>
+                                </div>
                               </article>
 
                               {/* imagen */}
                               <figure className="relative size-24">
                                 <img
                                   src={item.image}
-                                  alt={item.name + " " + item.description}
+                                  alt={`${item.name} - ${item.description}`}
                                   className="size-full object-cover rounded-lg"
                                 />
                                 <button className="absolute bottom-2 right-2 bg-orange-500 text-white text-xl size-full px-3 py-1 w-8 h-8 rounded-full flex justify-center items-center">

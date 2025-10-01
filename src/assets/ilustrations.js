@@ -9,3 +9,11 @@ export const ilustrations = {
   Map65,
   Map167,
 };
+
+/* encargalo */
+
+import EncagaloLogotipo from './encargalo_logos/Encargalo_Logotipo.svg';
+
+export const encargaloLogos = {
+  EncagaloLogotipo,
+};

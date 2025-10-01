@@ -18,8 +18,6 @@ const FoodDetailsModal = ({ food, onClose }) => {
   const [flavors, setFlavors] = useState([]);
   const [selectFlavorsError, setSelectdFlavorsError] = useState("")
 
-  console.log(food)
-
   const { addItem } = useCartStore();
   const navigate = useNavigate();
 
@@ -117,7 +115,6 @@ const FoodDetailsModal = ({ food, onClose }) => {
   const handleFlavorQuantityChange = (flavor, change) => {
     setSelectedFlavors(prev => {
       const existingFlavor = prev.find(f => f.id === flavor.id);
-      const currentTotal = prev.reduce((sum, f) => sum + f.quantity, 0);
 
       if (existingFlavor) {
         const newQuantity = existingFlavor.quantity + change;
@@ -170,13 +167,21 @@ const FoodDetailsModal = ({ food, onClose }) => {
       <aside className="bg-white w-full h-full flex flex-col sm:w-2/5 sm:h-[90vh] sm:max-h-[800px] sm:rounded-xl" onClick={(e) => e.stopPropagation()}>
         {/* Header con imagen (solo móvil) y botón de cerrar */}
         <header className="relative shrink-0 ">
+          {food.shop?.logo && (
+            <figure
+              onClick={() => navigate(`/${food.shop.tag}`)}
+              className="absolute top-4 left-4 bg-white rounded-full p-1 transition-all duration-300 z-10 cursor-pointer shadow-md hover:shadow-lg hover:scale-105 sm:hidden"
+            >
+              <img src={food.shop.logo} alt={`Logo de ${food.shop.name}`} className="size-10 sm:size-12 object-cover rounded-full" />
+            </figure>
+          )}
           <button
             onClick={onClose}
             className="absolute top-4 right-4 bg-white/80 hover:bg-white rounded-full p-2 transition-all duration-300 z-10"
           >
             <X className="w-6 h-6 text-gray-800" />
           </button>
-          <img src={food.image} alt={food.name} className="w-full h-64 object-cover sm:hidden" />
+          <img src={food.image} alt={food.name} className="w-full aspect-video object-cover sm:hidden" />
         </header>
 
         {/* Header Fijo con Nombre y Precio */}
@@ -199,8 +204,8 @@ const FoodDetailsModal = ({ food, onClose }) => {
         </div>
 
         {/* Contenido Principal (Scrollable) */}
-        <section className="flex-1 overflow-y-auto p-6">
-          <img src={food.image} alt={food.name} className="w-full h-64 object-cover rounded-xl mb-4 hidden sm:block" />
+        <section className="flex-1 overflow-y-scroll p-6">
+          <img src={food.image} alt={food.name} className="w-full aspect-video rounded-xl mb-4 hidden sm:block object-cover" />
           <p className="text-lg text-gray-600 mt-1">{food.description}</p>
 
           {/* observaciones */}
@@ -222,20 +227,7 @@ const FoodDetailsModal = ({ food, onClose }) => {
               <div className="flex justify-between items-center mb-2">
                 <h3 className="text-lg sm:text-xl font-semibold">
                   Sabores
-                  {flavorRules.selectorType !== 'multi_select' && (
-                    <span className="text-base font-normal text-gray-600 ml-2">
-                      (Elige hasta {flavorRules.maxFlavors})
-                    </span>
-                  )}
                 </h3>
-                {selectedFlavors.length > 0 && (
-                  <button
-                    onClick={() => setSelectedFlavors([])}
-                    className="text-sm text-orange-600 hover:text-orange-800 font-semibold px-2 py-1 rounded-md hover:bg-orange-100 transition-colors"
-                  >
-                    Quitar selección
-                  </button>
-                )}
               </div>
               {selectFlavorsError && (
                 <p className="text-red-600 my-2">{selectFlavorsError}</p>

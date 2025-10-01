@@ -6,7 +6,7 @@ const getShopDetails = async (setShop, setCategories, tag_shop) => {
   const { showLoader, hideLoader } = useLoaderStore.getState();
   showLoader();
   try {
-    const response = await api.get(`/api/shops?tag=${tag_shop}`);
+    const response = await api.get(`/shops?tag=${tag_shop}`);
     if (response.status === 200) {
       const data = response.data[0];
       setShop(data);

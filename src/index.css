@@ -2,6 +2,31 @@
 @tailwind components;
 @tailwind utilities;
 
+/* --- FUENTES VARIABLES DE NUNITO --- */
+/* Define la fuente para el estilo normal, especificando el rango de pesos que contiene */
+@font-face {
+  font-family: 'Nunito';
+  font-style: normal;
+  font-display: swap; /* Mejora el rendimiento de carga */
+  font-weight: 200 1000; /* Rango de pesos de Nunito */
+  src: url('./assets/fonts/Nunito-VariableFont_wght.ttf')
+    format('truetype-variations');
+}
+
+/* Define la fuente para el estilo cursiva (itálica), con su rango de pesos */
+@font-face {
+  font-family: 'Nunito';
+  font-style: italic;
+  font-display: swap;
+  font-weight: 200 1000;
+  src: url('./assets/fonts/Nunito-Italic-VariableFont_wght.ttf')
+    format('truetype-variations');
+}
+
+body {
+  font-family: 'Nunito', sans-serif;
+}
+
 @layer utilities {
   .no-scrollbar::-webkit-scrollbar {
     display: none; /* Chrome, Safari y Opera */
@@ -75,14 +100,13 @@ a {
 }
 
 .background {
-  width: 100%;
-  height: 100%;
-  background: #fdba74;
-  background: linear-gradient(
-    178deg,
-    rgba(253, 186, 116, 1) 0%,
-    rgba(249, 115, 22, 1) 100%
-  );
+  background: radial-gradient(at 37% 91%, #f06a3a 0px, transparent 50%),
+    radial-gradient(at 69% 17%, #fdba74 0px, transparent 50%),
+    radial-gradient(at 27% 89%, #fef3c7 0px, transparent 50%),
+    radial-gradient(at 93% 11%, #c2410c 0px, transparent 50%), #f26b38;
+  background-attachment: fixed;
+  background-size: cover;
+  background-repeat: no-repeat;
 }
 
 .aspect-ration-default {
