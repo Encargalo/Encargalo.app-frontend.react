@@ -15,7 +15,7 @@ const ItemCard = ({ item, onItemClick }) => {
         <img
           src={item.image}
           alt={item.name}
-          className="w-full h-40 sm:h-48 object-cover"
+          className="w-full aspect-video object-cover"
         />
         {/* score */}
         <div className="flex items-center absolute top-3 right-3 bg-gradient-to-r from-orange-100 to-orange-50 px-2 py-1 rounded-full border border-orange-200">
@@ -32,7 +32,7 @@ const ItemCard = ({ item, onItemClick }) => {
         {/* details */}
         <figure className="mb-4">
           {/* name */}
-          <h3 className="text-2xl font-bold text-gray-900">
+          <h3 className="text-2xl font-bold text-gray-900 truncate">
             {item.name}
           </h3>
           {/* description */}
