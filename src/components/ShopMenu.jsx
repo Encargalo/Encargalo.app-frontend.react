@@ -237,37 +237,44 @@ const ShopMenu = () => {
                         </div>
 
                         {/* Vista en LISTA → solo en móviles */}
-                        <ul className="flex flex-col gap-4 sm:hidden">
+                        <ul className="flex flex-col gap-y-3 sm:hidden">
                           {category.items.map((item) => (
                             <li
                               key={item.id}
-                              className="flex justify-between items-start gap-2 p-4 bg-white rounded-xl shadow relative"
+                              className="flex gap-2 p-3 bg-white rounded-xl shadow relative h-1/3"
                               onClick={() => handleFoodClick(item)}
                             >
                               {/* info */}
-                              <article className="flex-1 pr-2 flex flex-col gap-y-1">
-                                {/* name */}
-                                <h3 className="text-xl font-semibold">{item.name}</h3>
-                                {/* description */}
-                                <p className="text-sm text-gray-600">{item.description}</p>
-                                {/* price */}
-                                <p className="font-bold text-orange-600 text-lg">
-                                  ${formatNumber(item.price, "es-CO")}
-                                </p>
-                                <div className="w-max flex absolute bottom-4 right-5 items-center bg-gradient-to-r from-orange-100 to-orange-50 px-3 py-1 rounded-full border border-orange-200">
-                                  {/* star icon */}
-                                  <Star className="w-3 sm:w-4 h-3 sm:h-4 text-orange-500 fill-current mr-1 inline" />
-                                  {/* score */}
-                                  <span className="text-base font-bold text-gray-900">{item.score}</span>
+                              <article className="flex-1 flex flex-col justify-between gap-2">
+                                <div className="space-y-1">
+                                  {/* name */}
+                                  <h3 className="text-lg font-semibold">{item.name}</h3>
+                                  {/* description */}
+                                  <p className="text-sm text-gray-600 line-clamp-3">{item.description}</p>
                                 </div>
+                                {/* price & score */}
+                                <div className="flex w-full items-center justify-between">
+                                  <p className="font-bold text-orange-600 text-lg">
+                                    ${formatNumber(item.price, "es-CO")}
+                                  </p>
+                                  <div className="flex items-center pr-2">
+                                    {/* star icon */}
+                                    <Star className="size-3 text-orange-500 fill-current mr-1" />
+                                    {/* score */}
+                                    <span className="text-sm font-bold text-gray-900">
+                                      {item.score}
+                                    </span>
+                                  </div>
+                                </div>
+
                               </article>
 
                               {/* imagen */}
-                              <figure className="relative size-24">
+                              <figure className="relative h-full w-28 rounded-md justify-end">
                                 <img
                                   src={item.image}
                                   alt={`${item.name} - ${item.description}`}
-                                  className="size-full object-cover rounded-lg"
+                                  className="w-full h-32 object-cover rounded-lg"
                                 />
                                 <button className="absolute bottom-2 right-2 bg-orange-500 text-white text-xl size-full px-3 py-1 w-8 h-8 rounded-full flex justify-center items-center">
                                   <span><Plus className="size-5" /></span>
