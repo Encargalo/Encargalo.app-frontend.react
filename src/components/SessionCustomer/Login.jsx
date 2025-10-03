@@ -203,7 +203,7 @@ const Login = ({ showPassword, setShowPassword, isLoading, setIsLoading, session
                 </p>
                 <button
                     onClick={() => setSession(!session)}
-                    className="text-orange-500 p-1 sm:p-4 hover:text-orange-600 font-medium text-xl"
+                    className="text-orange-500 p-1 sm:px-3 sm:py-2 hover:text-orange-600 font-medium text-xl rounded-lg"
                 >
                     Regístrate aquí
                 </button>

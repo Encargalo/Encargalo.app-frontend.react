@@ -294,11 +294,15 @@ const SignUp = ({
                     <div className="relative">
                         <Lock className="absolute left-3 top-4 sm:top-5 text-orange-500 size-5" />
                         <input
-                            type={showPassword ? 'text' : 'password'}
+                            type={showPassword ? "text" : "password"}
+                            autoComplete="off"
                             placeholder="Ingresa tu contraseña"
                             className="w-full pl-10 pr-3 py-3 sm:py-4 border-2 text-lg sm:text-xl border-gray-200 rounded-xl focus:ring-2 focus:ring-orange-500"
-                            {...register('password', {
-                                required: 'Escribe tu contraseña',
+                            {...register("password", {
+                                required: {
+                                    value: true,
+                                    message: "Escribe tu contraseña",
+                                },
                                 pattern: {
                                     value: /^.{8,}$/,
                                     message: 'La contraseña debe tener al menos 8 caracteres',
@@ -308,7 +312,7 @@ const SignUp = ({
                         <button
                             type="button"
                             onClick={() => setShowPassword(!showPassword)}
-                            className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-orange-500 lg:right-1"
+                            className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-orange-500"
                         >
                             {showPassword ? (
                                 <EyeOff className="size-5" />
@@ -317,6 +321,13 @@ const SignUp = ({
                             )}
                         </button>
                     </div>
+                    {errors.password && (
+                        <p className="text-sm my-2 pl-4 text-red-600">
+                            {errors.password.message}
+                        </p>
+                    )}
+                </div>
+                <div>
                     {errors.password && (
                         <p className="sm:text-base my-2 pl-4 text-red-600">
                             {errors.password.message}
@@ -347,7 +358,7 @@ const SignUp = ({
                 <p className="text-gray-600">¿Ya tienes cuenta?</p>
                 <button
                     onClick={() => setSession(!session)}
-                    className="text-orange-500 p-1 sm:p-4 hover:text-orange-600 font-medium sm:text-2xl text-xl"
+                    className="text-orange-500 p-1 sm:px-3 sm:py-2 rounded-lg hover:text-orange-600 font-medium text-xl"
                 >
                     Inicia Sesión
                 </button>

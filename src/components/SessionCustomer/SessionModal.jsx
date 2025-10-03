@@ -58,9 +58,7 @@ const SessionModal = ({ onOpenWelcome, setAddress }) => {
                                 setAddress={setAddress}
                             />
                         </div>
-
                 }
-
             </div>
         </dialog>
     );
