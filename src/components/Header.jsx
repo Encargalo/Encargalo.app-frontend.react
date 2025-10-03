@@ -46,7 +46,7 @@ const Header = () => {
       <section className="w-full px-4 sm:px-6 lg:px-8 py-4 sm:py-4">
         <div className="flex items-center justify-between">
           {/* title */}
-          <img src={encargaloLogos.EncagaloLogotipo} alt={encargaloLogos.EncagaloLogotipo} className="w-[140px] h-[52px] object-cover" />
+          <img src={encargaloLogos.EncagaloLogotipo} alt={encargaloLogos.EncagaloLogotipo} className="w-[170px] h-14 object-cover transform translate-y-1" />
 
           {/* address */}
           <div className="flex items-center space-x-4 sm:space-x-6">
