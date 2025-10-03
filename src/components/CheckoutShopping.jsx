@@ -410,7 +410,7 @@ const CheckoutShopping = () => {
 
                         }
 
-                        <div className="flex flex-col sm:flex-row justify-between ">
+                        <div className="flex flex-row justify-between gap-2">
                             <button
                                 className="w-full sm:w-auto rounded-xl border border-gray-300 px-5 py-3 font-semibold hover:bg-gray-50 transition"
                                 onClick={() => navigate('/')}
