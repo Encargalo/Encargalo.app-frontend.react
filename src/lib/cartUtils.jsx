@@ -48,7 +48,7 @@ export function buildWhatsAppMessage(items, shopName, purchaseData, formatNumber
             message += `*Observaciones:* ${item.observation}\n\n`;
         }
 
-        message += `*Resumen del Producto:*\n`;
+        message += `*Resumen del Producto:*\n\n`;
         message += `- Cantidad: ${quantity}\n`;
         message += `- Precio Unitario: ${formatNumber(unitPrice, 'es-CO')}\n`;
         message += `- Total Producto: ${formatNumber(baseProductTotal, 'es-CO')}\n`;
@@ -59,7 +59,7 @@ export function buildWhatsAppMessage(items, shopName, purchaseData, formatNumber
             message += `- Total Adicionales: ${formatNumber(totalAdditionals, 'es-CO')}\n`;
         }
 
-        message += `*Subtotal:*  ${formatNumber(subtotal, 'es-CO')}\n`;
+        message += `*Subtotal:*  ${formatNumber(subtotal, 'es-CO')}\n\n`;
 
         if (items.length > 1 && idx < items.length - 1) {
             message += '-------------------------\n\n';

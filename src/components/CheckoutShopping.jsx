@@ -202,15 +202,10 @@ const CheckoutShopping = () => {
                     {/* Direcciones */}
                     <section className="lg:col-span-3 space-y-4">
                         <div className="bg-white border border-gray-300 rounded-2xl p-5">
-                            <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-4">
+                            <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-4 sm:mb-0">
                                 <h2 className="text-xl sm:text-2xl font-bold text-gray-800">
                                     Tus direcciones
                                 </h2>
-                                {user_session === session_create && (
-                                    <button onClick={() => navigate("/customer_profile/address")} className="text-orange-600 hover:text-orange-800 font-semibold px-3 py-1 rounded-lg hover:bg-orange-50 transition-colors mt-2 sm:mt-0">
-                                        Agregar nueva dirreción
-                                    </button>
-                                )}
                             </div>
                             {addresses?.length > 0 ? (
                                 <ul className="space-y-3 mt-3">
@@ -415,13 +410,21 @@ const CheckoutShopping = () => {
 
                         }
 
+                        <div className="flex flex-col sm:flex-row justify-between ">
+                            <button
+                                className="w-full sm:w-auto rounded-xl border border-gray-300 px-5 py-3 font-semibold hover:bg-gray-50 transition"
+                                onClick={() => navigate('/')}
+                            >
+                                Volver al menú
+                            </button>
+                            <button
+                                onClick={() => navigate(-1)}
+                                className="w-full sm:w-auto bg-gradient-to-r from-orange-500 to-orange-600 text-white px-5 py-3 rounded-xl font-semibold shadow hover:shadow-md transition"
+                            >
+                                Volver al carrito
+                            </button>
+                        </div>
 
-                        <button
-                            onClick={() => navigate(-1)}
-                            className="w-full rounded-xl border border-gray-300 px-5 py-3 font-semibold hover:bg-gray-50 transition"
-                        >
-                            Volver al carrito
-                        </button>
                     </aside>
                 </div>
             </section>

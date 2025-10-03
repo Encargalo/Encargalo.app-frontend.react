@@ -42,47 +42,43 @@ const WelcomeCustomerModal = () => {
                 </header>
 
                 {/* Solo renderiza el contenido cuando las direcciones se hayan cargado */}
-                {isAddressLoaded && (
-                    <>
-                        {/* Contenido */}
-                        <div className="px-6 pt-6 pb-4 text-center text-gray-700 text-lg sm:text-xl font-medium">
-                            {isAddress.length > 0 ? (
-                                <div>
-                                    <p>Haz tus pedidos de comida rápida de forma fácil y rápida.</p>
-                                    <p>¡Disfruta de tus comidas favoritos en minutos!</p>
-                                </div>
-                            ) : (
-                                <div>
-                                    <p>Para continuar y realizar pedidos, es necesario que agregues una dirección de entrega.</p>
-                                </div>
-                            )}
-                            {/* Imagen / ilustración opcional */}
-                            <img
-                                src={isAddress.length > 0 ? ilustrations.fastFood1 : ilustrations.Map65}
-                                alt="Welcome Illustration"
-                                className="size-2/4 sm:size-2/6 mx-auto"
-                            />
+                {/* Contenido */}
+                <div className="px-6 pt-6 pb-4 text-center text-gray-700 text-lg sm:text-xl font-medium">
+                    {isAddress?.length > 0 ? (
+                        <div>
+                            <p>Haz tus pedidos de comida rápida de forma fácil y rápida.</p>
+                            <p>¡Disfruta de tus comidas favoritos en minutos!</p>
                         </div>
-                        {/* Botón principal */}
-                        <div className="px-6 pb-6 w-full flex justify-center">
-                            {isAddress.length > 0 ? (
-                                <button
-                                    onClick={handleClose}
-                                    className="w-full bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white font-bold py-3 rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl text-lg sm:text-2xl"
-                                >
-                                    ¡Seguir comprando!
-                                </button>
-                            ) : (
-                                <button
-                                    onClick={handleNavigate}
-                                    className="w-full bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white font-bold py-3 rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl text-base sm:text-lg sm:size-2/4"
-                                >
-                                    Agregar Dirección
-                                </button>
-                            )}
+                    ) : (
+                        <div>
+                            <p>Para continuar y realizar pedidos, es necesario que agregues una dirección de entrega.</p>
                         </div>
-                    </>
-                )}
+                    )}
+                    {/* Imagen / ilustración opcional */}
+                    <img
+                        src={isAddress?.length > 0 ? ilustrations.fastFood1 : ilustrations.Map65}
+                        alt="Welcome Illustration"
+                        className="size-2/4 sm:size-2/6 mx-auto"
+                    />
+                </div>
+                {/* Botón principal */}
+                <div className="px-6 pb-6 w-full flex justify-center">
+                    {isAddress?.length > 0 ? (
+                        <button
+                            onClick={handleClose}
+                            className="w-full bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white font-bold py-3 rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl text-lg sm:text-2xl"
+                        >
+                            ¡Seguir comprando!
+                        </button>
+                    ) : (
+                        <button
+                            onClick={handleNavigate}
+                            className="w-full bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white font-bold py-3 rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl text-base sm:text-lg sm:size-2/4"
+                        >
+                            Agregar Dirección
+                        </button>
+                    )}
+                </div>
             </section>
         </dialog>
     );

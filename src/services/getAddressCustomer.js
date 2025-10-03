@@ -19,8 +19,6 @@ const getAddressCustomer = async (setAddress) => {
     const response = error.response;
     if (response?.status === 401) {
       setAddress([]);
-    } else {
-      setAddress([]);
     }
   }
 };
