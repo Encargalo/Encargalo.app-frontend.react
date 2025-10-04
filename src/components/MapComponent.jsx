@@ -8,9 +8,10 @@ const containerStyle = {
   position: "relative",
   borderRadius: "10px",
   display: "flex",
+  flexDirection: "column",
+  gap: "10px",
   justifyContent: "center",
   alignItems: "center",
-  marginTop: "10px",
 };
 
 const MapComponent = ({ onAddressSelect }) => {
@@ -88,6 +89,12 @@ const MapComponent = ({ onAddressSelect }) => {
 
   return (
     <div style={containerStyle}>
+      <div
+        className="bg-white rounded-md p-3 shadow-md border border-gra cursor-pointer flex items-center justify-center z-10 w-2/4"
+        onClick={goToCurrentLocation}
+      >
+        <p className="">Buscar mi ubicación</p>
+      </div>
       <GoogleMap
         mapContainerStyle={{ width: "80%", height: "70%", borderRadius: "10px" }}
         center={center}
@@ -95,19 +102,12 @@ const MapComponent = ({ onAddressSelect }) => {
         onLoad={(map) => (mapRef.current = map)}
         onIdle={handleIdle}
         options={{
-          streetViewControl: false,
-          mapTypeControl: false,
+          disableDefaultUI: true,
           gestureHandling: "greedy",
         }}
       />
       <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-full text-3xl">
         <MapPin className="size-9 text-orange-800" />
-      </div>
-      <div
-        className="absolute w-full top-0 left-0 bg-white rounded-md p-3 shadow-md border border-gra cursor-pointer flex items-center justify-center z-10"
-        onClick={goToCurrentLocation}
-      >
-        <p className="">Buscar mi ubicación</p>
       </div>
     </div>
   );
