@@ -327,13 +327,6 @@ const SignUp = ({
                         </p>
                     )}
                 </div>
-                <div>
-                    {errors.password && (
-                        <p className="sm:text-base my-2 pl-4 text-red-600">
-                            {errors.password.message}
-                        </p>
-                    )}
-                </div>
 
                 {/* Botón login */}
                 <div className="col-span-1 sm:col-span-2 lg:col-span-3 w-full flex items-center justify-center">
