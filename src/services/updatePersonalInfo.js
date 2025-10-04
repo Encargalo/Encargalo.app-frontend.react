@@ -6,7 +6,7 @@ import getInformationCustomer from './getInformationCustomer';
 const updatePersonalInfo = async (data, setConfirmUpdate, setIsLoading) => {
   setIsLoading(true);
   try {
-    const response = await api.put('/api/customers', data);
+    const response = await api.put('/customers', data);
 
     if (response.status === 200) {
       setConfirmUpdate(true);

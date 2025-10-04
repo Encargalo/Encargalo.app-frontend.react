@@ -19,7 +19,7 @@ const signupCustomer = async (
   setIsLoading(true);
 
   try {
-    const response = await api.post('/api/customers', data);
+    const response = await api.post('/customers', data);
 
     if (response.status === 201) {
       // Actualiza el user_session con los datos de la respuesta

@@ -5,7 +5,7 @@ import { setEncryptedItem } from '../utils/encryptionUtilities';
 
 const getInformationCustomer = async () => {
   try {
-    const response = await api.get('/api/customers');
+    const response = await api.get('/customers');
 
     if (response.status === 200) {
       const user_session = import.meta.env.VITE_USER_SESSION;

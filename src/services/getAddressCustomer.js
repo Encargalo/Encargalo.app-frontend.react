@@ -2,7 +2,7 @@ import api from '../lib/api';
 
 const getAddressCustomer = async (setAddress) => {
   try {
-    const response = await api.get('/api/customers/address');
+    const response = await api.get('/customers/address');
 
     if (response.status === 200) {
       const data = response.data;
