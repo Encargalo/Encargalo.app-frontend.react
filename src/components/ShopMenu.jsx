@@ -1,5 +1,5 @@
 //lucide react / icons
-import { Star, ChevronLeft, ChevronRight, Plus, ArrowLeft } from "lucide-react";
+import { Star, ChevronLeft, ChevronRight, Plus, ArrowLeft, Flame } from "lucide-react";
 //components
 import ItemCard from "./ItemCard";
 import FoodDetailsModal from "./FoodDetailsModal";
@@ -12,6 +12,7 @@ import useNumberFormat from "../hooks/useNumberFormat";
 import useOnLoginStore from "../store/onLoginStore";
 //services
 import getShopDetails from "../services/getShopDetails";
+import getBestSellingFoods from "../services/getBestSellingFoods";
 //utils
 import { getDecryptedItem } from "../utils/encryptionUtilities";
 //react
@@ -24,7 +25,7 @@ const ShopMenu = () => {
   const [shop, setShop] = useState({});
   const [selectedCategory, setSelectedCategory] = useState("all");
   const carouselRef = useRef(null);
-  const [userData, setUserData] = useState({})
+  const [userData, setUserData] = useState({});
 
   //onLogin
   const { openLoginModal } = useOnLoginStore()
@@ -34,18 +35,13 @@ const ShopMenu = () => {
   const { formatNumber } = useNumberFormat();
   const shopCartItems = cart.filter(item => item.shopInfo?.id === shop.id);
 
-  const shopTotal = shopCartItems.reduce((sum, item) => {
-    const isMultiSelect = item.rules?.some(r => r.rule_key === 'max_flavors' && r.selector_type === 'multi_select');
-    const flavorCount = item.flavors?.reduce((sum, f) => sum + (f.quantity || 1), 0) || 0;
-    const quantity = isMultiSelect && flavorCount > 0 ? flavorCount : item.quantity || 1;
+  // La función calculateItemSubtotal se importaría desde un archivo de utilidades
+  const calculateItemSubtotal = (item) => {
+    const additionalsPrice = (item.additionals || []).reduce((sum, add) => sum + (add.price || 0), 0);
+    return (item.price + additionalsPrice) * (item.quantity || 1);
+  };
 
-    const additionalsPricePerUnit = (item.additionals || []).reduce((addSum, additional) => addSum + (additional.price || 0), 0);
-
-    const subtotal = isMultiSelect
-      ? (item.price * quantity) + additionalsPricePerUnit
-      : (item.price + additionalsPricePerUnit) * quantity;
-    return sum + subtotal;
-  }, 0);
+  const shopTotal = shopCartItems.reduce((sum, item) => sum + calculateItemSubtotal(item), 0);
 
   const totalItems = shopCartItems.reduce(
     (sum, item) => sum + item.quantity,
@@ -63,6 +59,14 @@ const ShopMenu = () => {
   useEffect(() => {
     getShopDetails(setShop, setCategories, tag_shop);
   }, [tag_shop]);
+
+  // Obtiene los productos más vendidos cuando la tienda está cargada
+  const [bestSellingFoods, setBestSellingFoods] = useState([]);
+  useEffect(() => {
+    if (shop.id) {
+      getBestSellingFoods(setBestSellingFoods, shop.id);
+    }
+  }, [shop.id]);
 
   const [selectedFood, setSelectedFood] = useState(null);
 
@@ -207,6 +211,63 @@ const ShopMenu = () => {
                 <ChevronRight className="size-5 text-gray-600 hover:text-orange-600" />
               </button>
             </nav>
+          )}
+
+          {/* Best Selling Foods */}
+          {bestSellingFoods.length > 0 && (
+            <div className="w-full px-3 pt-8 sm:px-6 lg:px-8">
+              <section className="mb-8">
+                <header className="flex items-center gap-3 mb-4">
+                  <h2 className="text-3xl font-bold text-white">
+                    ¡Los 5 más vendidos!
+                  </h2>
+                </header>
+
+                {/* Vista en GRID → solo en sm en adelante */}
+                <div className="hidden sm:grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                  {bestSellingFoods.map((item) => (
+                    <ItemCard
+                      key={item.id}
+                      item={item}
+                      onItemClick={handleFoodClick}
+                    />
+                  ))}
+                </div>
+
+                {/* Vista en LISTA → solo en móviles */}
+                <ul className="flex flex-col gap-y-3 sm:hidden">
+                  {bestSellingFoods.map((item) => (
+                    <li
+                      key={item.id}
+                      className="flex gap-2 p-3 bg-white rounded-xl shadow relative h-1/3"
+                      onClick={() => handleFoodClick(item)}
+                    >
+                      <article className="flex-1 flex flex-col justify-between gap-2">
+                        <div className="space-y-1">
+                          <h3 className="text-lg font-semibold">{item.name}</h3>
+                          <p className="text-sm text-gray-600 line-clamp-3">{item.description}</p>
+                        </div>
+                        <div className="flex w-full items-center justify-between">
+                          <p className="font-bold text-orange-600 text-lg">
+                            ${formatNumber(item.price, "es-CO")}
+                          </p>
+                          <div className="flex items-center pr-2">
+                            <Star className="size-3 text-orange-500 fill-current mr-1" />
+                            <span className="text-sm font-bold text-gray-900">{item.score}</span>
+                          </div>
+                        </div>
+                      </article>
+                      <figure className="relative h-full w-28 rounded-md justify-end">
+                        <img src={item.image} alt={`${item.name} - ${item.description}`} className="w-full h-32 object-cover rounded-lg" />
+                        <button className="absolute bottom-2 right-2 bg-orange-500 text-white text-xl size-full px-3 py-1 w-8 h-8 rounded-full flex justify-center items-center">
+                          <span><Plus className="size-5" /></span>
+                        </button>
+                      </figure>
+                    </li>
+                  ))}
+                </ul>
+              </section>
+            </div>
           )}
 
           {/* list categories*/}
