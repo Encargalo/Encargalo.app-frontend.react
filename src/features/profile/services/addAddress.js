@@ -1,5 +1,5 @@
 //api
-import api from '../lib/api';
+import api from '../../../lib/axios';
 import getAddressCustomer from './getAddressCustomer';
 
 const addAddress = async (

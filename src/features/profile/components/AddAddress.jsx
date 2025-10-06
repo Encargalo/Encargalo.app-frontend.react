@@ -2,15 +2,15 @@
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 //services
-import addAddress from "../../services/addAddress";
-import deleteAddress from "../../services/deleteAddress";
-import getAddressCustomer from "../../services/getAddressCustomer";
+import addAddress from "../services/addAddress";
+import deleteAddress from "../services/deleteAddress";
+import getAddressCustomer from "../services/getAddressCustomer";
 //compentns
-import MapComponent from "../MapComponent";
-import RequestLocationModal from "../RequestLocationModal";
+import MapComponent from "../../../components/MapComponent.jsx";
+import RequestLocationModal from "../../../components/RequestLocationModal.jsx";
 //icons
 import { DeleteIcon, Send } from "lucide-react";
-import { ilustrations } from "../../assets/ilustrations";
+import { ilustrations } from "../../../assets/ilustrations.js";
 
 const AddAddress = () => {
     const [isLoading, setIsLoading] = useState(false);

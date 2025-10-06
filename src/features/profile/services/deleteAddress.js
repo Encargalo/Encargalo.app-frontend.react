@@ -1,4 +1,4 @@
-import api from '../lib/api';
+import api from '../../../lib/axios';
 import getAddressCustomer from './getAddressCustomer';
 
 const deleteAddress = async (id, setConfirmDeleted, setAddress) => {

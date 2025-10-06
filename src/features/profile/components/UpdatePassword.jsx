@@ -1,7 +1,7 @@
 import { Check, Eye, EyeOff, Lock } from "lucide-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import updatePassword from "../../services/updatePassword";
+import updatePassword from "../services/updatePassword.js";
 
 const UpdatePassword = () => {
     const [isLoading, setIsLoading] = useState(false);

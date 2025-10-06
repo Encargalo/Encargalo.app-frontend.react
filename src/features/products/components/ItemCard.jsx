@@ -1,8 +1,11 @@
 //icons
 import { Star, Plus } from "lucide-react";
+//hooks
+import useNumberFormat from "../../../hooks/useNumberFormat";
 
 // Tarjeta de artículo con imagen, nombre, descripción, precio y botón de agregar.
 const ItemCard = ({ item, onItemClick }) => {
+  const { formatNumber } = useNumberFormat();
 
   return (
     <article
@@ -44,7 +47,7 @@ const ItemCard = ({ item, onItemClick }) => {
         {/* footer */}
         <footer className="flex items-center justify-between">
           <p className="text-xl sm:text-2xl font-bold text-orange-600">
-            ${item.price.toLocaleString()}
+            ${formatNumber(item.price)}
           </p>
 
           <button

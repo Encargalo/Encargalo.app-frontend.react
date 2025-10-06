@@ -4,8 +4,8 @@ import { Phone, Lock, Eye, EyeOff, X, User, IdCard, Mail } from 'lucide-react';
 import { Controller, useForm } from 'react-hook-form';
 //components
 import InputCalendar from '../InputCalendar';
-import signupCustomer from '../../services/signupCustomer';
-import useOnLoginStore from '../../store/onLoginStore';
+import signupCustomer from '../services/signupCustomer';
+import useOnLoginStore from '../../../store/onLoginStore';
 
 const SignUp = ({
     showPassword,

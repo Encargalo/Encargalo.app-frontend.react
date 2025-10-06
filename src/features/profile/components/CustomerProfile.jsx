@@ -1,7 +1,7 @@
 import { Outlet, useLocation, useNavigate } from "react-router-dom"
 import { useEffect, useState, useRef } from "react"
-import { getDecryptedItem } from "../../utils/encryptionUtilities"
-import getInformationCustomer from "../../services/getInformationCustomer"
+import { getDecryptedItem } from "../../../utils/encryptionUtilities"
+import getInformationCustomer from "../services/getInformationCustomer"
 import { ChevronDown, User, MapPin, Lock, ArrowLeft } from "lucide-react"
 
 const CustomerProfile = () => {

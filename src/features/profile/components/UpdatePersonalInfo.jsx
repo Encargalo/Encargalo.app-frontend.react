@@ -1,13 +1,12 @@
 //icons
-import { Eye, EyeOff, IdCard, Mail, Phone, User, Lock } from "lucide-react"
+import { Eye, EyeOff, IdCard, Mail, Phone, User } from "lucide-react"
 //react
 import { Controller, useForm } from "react-hook-form"
 import { useEffect, useState } from "react";
 //utils
-import { getDecryptedItem } from "../../utils/encryptionUtilities";
+import { getDecryptedItem } from "../../../utils/encryptionUtilities";
 //components
-import InputCalendar from "../InputCalendar"
-import updatePersonalInfo from "../../services/updatePersonalInfo";
+import updatePersonalInfo from "../services/updatePersonalInfo.js";
 
 const UpdatePersonalInfo = () => {
   const [user, setUser] = useState(null)

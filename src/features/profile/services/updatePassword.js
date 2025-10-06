@@ -1,4 +1,4 @@
-import api from '../lib/api';
+import api from '../../../lib/axios';
 
 const updatePassword = async (data, setIsLoading, setConfirmUpdate, reset) => {
   setIsLoading(true);

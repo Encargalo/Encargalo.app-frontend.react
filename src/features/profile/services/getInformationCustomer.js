@@ -1,7 +1,7 @@
 //api
-import api from '../lib/api';
+import api from '../../../lib/axios';
 //utils
-import { setEncryptedItem } from '../utils/encryptionUtilities';
+import { setEncryptedItem } from '../../../utils/encryptionUtilities';
 
 const getInformationCustomer = async () => {
   try {

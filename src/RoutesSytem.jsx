@@ -3,17 +3,17 @@ import { createBrowserRouter } from "react-router-dom";
 import { lazy, Suspense } from "react";
 //stores
 import useLoaderStore from "./store/loaderStore";
-//lazy
-const Loader = lazy(() => import("./components/Loader.jsx"));
+//lazy (usando alias para rutas más limpias)
 const EncargaloApp = lazy(() => import("./EncargaloApp.jsx"));
-const ShopMenu = lazy(() => import("./components/ShopMenu.jsx"));
-const CustomerProfile = lazy(() => import("./components/CustomerProfile/CustomerProfile.jsx"));
-const ShoppingCart = lazy(() => import("./components/ShoppingCart.jsx"));
-const CheckoutShopping = lazy(() => import("./components/CheckoutShopping.jsx"));
+const ShopMenu = lazy(() => import("./features/shops/components/ShopMenu.jsx"));
+const CustomerProfile = lazy(() => import("./features/profile/components/CustomerProfile.jsx"));
+const ShoppingCart = lazy(() => import("./features/cart/components/ShoppingCart.jsx"));
+const CheckoutShopping = lazy(() => import("./features/checkout/components/CheckoutShopping.jsx"));
 //customer
-import UpdatePersonalInfo from "./components/CustomerProfile/UpdatePersonalInfo";
-import AddAddress from "./components/CustomerProfile/AddAddress";
-import UpdatePassword from "./components/CustomerProfile/UpdatePassword";
+import UpdatePersonalInfo from "./features/profile/components/UpdatePersonalInfo";
+import AddAddress from "./features/profile/components/AddAddress";
+import UpdatePassword from "./features/profile/components/UpdatePassword";
+import Loader from "./components/Loader.jsx";
 
 // HOC para envolver cada página y activar Loader global
 function WithLoader({ children }) {

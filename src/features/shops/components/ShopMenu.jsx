@@ -1,20 +1,20 @@
 //lucide react / icons
-import { Star, ChevronLeft, ChevronRight, Plus, ArrowLeft, Flame } from "lucide-react";
+import { ArrowLeft, ChevronLeft, ChevronRight, Plus, Star } from "lucide-react";
 //components
-import ItemCard from "./ItemCard";
-import FoodDetailsModal from "./FoodDetailsModal";
-import SessionModal from "./SessionCustomer/SessionModal";
-import WelcomeCustomerModal from "./WelcomeCustomerModal";
-import UserMenu from "./UserMenu";
+import SessionModal from "../../auth/components/SessionModal";
+import UserMenu from "../.././../components/UserMenu.jsx";
+import WelcomeCustomerModal from "../../auth/components/WelcomeCustomerModal";
+import FoodDetailsModal from "../../products/components/FoodDetailsModal";
+import ItemCard from "../../products/components/ItemCard";
 //store/hooks
-import useCartStore from "../store/cartStore";
-import useNumberFormat from "../hooks/useNumberFormat";
-import useOnLoginStore from "../store/onLoginStore";
+import useNumberFormat from "../../../hooks/useNumberFormat";
+import { useOnLoginStore } from "../../auth/store/onLoginStore";
+import { useCartStore } from "../../cart/store/cartStore";
 //services
-import getShopDetails from "../services/getShopDetails";
-import getBestSellingFoods from "../services/getBestSellingFoods";
+import { getBestSellingFoods } from "../../products/services/productsService";
+import { getShopDetails } from "../services/shopsService";
 //utils
-import { getDecryptedItem } from "../utils/encryptionUtilities";
+import { getDecryptedItem } from "../../../utils/encryptionUtilities";
 //react
 import { useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
