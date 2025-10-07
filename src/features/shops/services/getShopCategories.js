@@ -1,4 +1,4 @@
-import api from '../lib/api';
+import api from '../../../lib/axios';
 
 const getShopCategories = async (setCategories, shop_id, hideLoader) => {
   try {

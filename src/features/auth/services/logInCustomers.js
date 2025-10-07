@@ -1,7 +1,7 @@
 //caliApi
-import api from '../lib/api';
-import getAddressCustomer from './getAddressCustomer';
-import getInformationCustomer from './getInformationCustomer';
+import api from '../../../lib/axios';
+import getAddressCustomer from '../../profile/services/getAddressCustomer';
+import getInformationCustomer from '../../profile/services/getInformationCustomer';
 
 const logInCustomers = async (
   data,

@@ -1,5 +1,5 @@
-import api from '../lib/api';
-import useLoaderStore from '../store/loaderStore';
+import api from '../../../lib/axios';
+import useLoaderStore from '../../../store/loaderStore';
 import getShopCategories from './getShopCategories';
 
 const getShopDetails = async (setShop, setCategories, tag_shop) => {

@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 //services
 import getAdditionals from "../services/getAdditionals";
 //store
-import useCartStore from "../store/cartStore";
+import useCartStore from "../../cart/store/cartStore";
 import getFlovors from "../services/getFlovors";
 
 const FoodDetailsModal = ({ food, onClose }) => {

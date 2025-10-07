@@ -1,10 +1,10 @@
 //react
 import { useState } from "react";
 //components
-import Login from "./Login";
-import SignUp from "./SignUp";
+import Login from "./LoginForm";
+import SignUp from "./SignUpForm";
 //store/hooks
-import useOnLoginStore from "../../store/onLoginStore";
+import useOnLoginStore from "../../../store/onLoginStore";
 
 const SessionModal = ({ onOpenWelcome, setAddress }) => {
     const [isLoading, setIsLoading] = useState(false);

@@ -1,13 +1,13 @@
 //react
 import { useEffect, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
-import { ilustrations } from "../assets/ilustrations";
+import { ilustrations } from "../../../assets/ilustrations";
 //store/hooks
 import useCartStore from "../store/cartStore";
-import usePlaceOrderStore from "../store/placeOrderStore";
-import useNumberFormat from "../hooks/useNumberFormat";
+import usePlaceOrderStore from "../../checkout/store/placeOrderStore";
+import useNumberFormat from "../../../hooks/useNumberFormat";
 //assets (opcional: si tienes ilustraciones)
-import { removeItem } from "../utils/encryptionUtilities";
+import { removeItem } from "../../../utils/encryptionUtilities";
 
 export const preprocessCartItems = (items) => {
     if (!Array.isArray(items)) return [];

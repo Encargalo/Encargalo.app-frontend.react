@@ -1,9 +1,8 @@
 //api
-import api from '../lib/api';
+import api from '../../../lib/axios';
 //utils
-import { setEncryptedItem } from '../utils/encryptionUtilities';
-import getAddressCustomer from './getAddressCustomer';
-import getInformationCustomer from './getInformationCustomer';
+import getAddressCustomer from '../../profile/services/getAddressCustomer';
+import getInformationCustomer from '../../profile/services/getInformationCustomer';
 
 const signupCustomer = async (
   data,

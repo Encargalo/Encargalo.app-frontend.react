@@ -1,7 +1,7 @@
 //ilustrations
-import { ilustrations } from "../assets/ilustrations";
+import { ilustrations } from "../../../assets/ilustrations";
 //store/hooks
-import useOnLoginStore from "../store/onLoginStore";
+import useOnLoginStore from "../../../store/onLoginStore";
 //react
 import { useNavigate } from "react-router-dom";
 

@@ -3,7 +3,7 @@ import { persist } from 'zustand/middleware';
 import {
   setEncryptedItem,
   getDecryptedItem,
-} from '../utils/encryptionUtilities';
+} from '../../../utils/encryptionUtilities';
 
 const cartStorage = {
   getItem: (name) => {
@@ -38,16 +38,22 @@ const useCartStore = create(
             (item) =>
               item.id === newItem.id &&
               JSON.stringify(item.additionals) ===
-                JSON.stringify(newItem.additionals) &&
-              item.observation === newItem.observation
+                JSON.stringify(newItem.additionals || []) &&
+              JSON.stringify(item.flavors || []) ===
+                JSON.stringify(newItem.flavors || []) &&
+              (item.observation?.trim() || '') ===
+                (newItem.observation?.trim() || '')
           );
           if (exists) {
             return {
               cart: state.cart.map((item) =>
                 item.id === newItem.id &&
                 JSON.stringify(item.additionals) ===
-                  JSON.stringify(newItem.additionals) &&
-                item.observation === newItem.observation
+                  JSON.stringify(newItem.additionals || []) &&
+                JSON.stringify(item.flavors || []) ===
+                  JSON.stringify(newItem.flavors || []) &&
+                (item.observation?.trim() || '') ===
+                  (newItem.observation?.trim() || '')
                   ? {
                       ...item,
                       quantity: item.quantity + (newItem.quantity || 1),
@@ -71,7 +77,9 @@ const useCartStore = create(
               if (
                 item.id === product.id &&
                 JSON.stringify(item.additionals) ===
-                  JSON.stringify(product.additionals) &&
+                  JSON.stringify(product.additionals || []) &&
+                JSON.stringify(item.flavors || []) ===
+                  JSON.stringify(product.flavors || []) &&
                 (item.observation?.trim() || '') ===
                   (product.observation?.trim() || '')
               ) {

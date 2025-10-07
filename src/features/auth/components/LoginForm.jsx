@@ -4,9 +4,9 @@ import { Phone, Lock, Eye, EyeOff, X } from "lucide-react";
 import { Controller, useForm } from "react-hook-form";
 import { useEffect, useRef } from "react";
 //services
-import logInCustomers from "../../services/logInCustomers";
+import logInCustomers from "../services/logInCustomers";
 //stores/hooks
-import useOnLoginStore from "../../store/onLoginStore";
+import useOnLoginStore from "../../../store/onLoginStore";
 
 const Login = ({ showPassword, setShowPassword, isLoading, setIsLoading, session, setSession }) => {
     const { setAddress, openWelcomeModal, closeLoginModal } = useOnLoginStore();

@@ -4,9 +4,9 @@ import { useEffect, useRef, useState } from "react";
 import { ChevronDown, ChevronRight, LogOut, ShoppingCart, User } from "lucide-react";
 //services
 import { useNavigate } from "react-router-dom";
-import logOutCustomer from "../services/logOutCustomer";
+import logOutCustomer from "../features/auth/services/logOutCustomer";
 import { getDecryptedItem } from "../utils/encryptionUtilities";
-import ShoppingCartIcon from "./ShoppingCartIcon";
+import ShoppingCartIcon from "./Icons/ShoppingCartIcon";
 
 const UserMenu = () => {
     const [userData, setUserData] = useState(null);

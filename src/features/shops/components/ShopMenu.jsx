@@ -2,22 +2,22 @@
 import { ArrowLeft, ChevronLeft, ChevronRight, Plus, Star } from "lucide-react";
 //components
 import SessionModal from "../../auth/components/SessionModal";
-import UserMenu from "../.././../components/UserMenu.jsx";
+import UserMenu from "../../../components/UserMenu.jsx";
 import WelcomeCustomerModal from "../../auth/components/WelcomeCustomerModal";
 import FoodDetailsModal from "../../products/components/FoodDetailsModal";
 import ItemCard from "../../products/components/ItemCard";
 //store/hooks
 import useNumberFormat from "../../../hooks/useNumberFormat";
-import { useOnLoginStore } from "../../auth/store/onLoginStore";
-import { useCartStore } from "../../cart/store/cartStore";
+import useOnLoginStore from "../../../store/onLoginStore";
+import useCartStore from "../../cart/store/cartStore";
 //services
-import { getBestSellingFoods } from "../../products/services/productsService";
-import { getShopDetails } from "../services/shopsService";
+import getShopDetails from "../services/getShopDetails.js";
 //utils
 import { getDecryptedItem } from "../../../utils/encryptionUtilities";
 //react
 import { useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import getBestSellingFoods from "../services/getBestSellingFoods.js";
 
 const ShopMenu = () => {
   // Estados
@@ -35,7 +35,7 @@ const ShopMenu = () => {
   const { formatNumber } = useNumberFormat();
   const shopCartItems = cart.filter(item => item.shopInfo?.id === shop.id);
 
-  // La función calculateItemSubtotal se importaría desde un archivo de utilidades
+  // Calcula el subtotal para un item del carrito, incluyendo adicionales.
   const calculateItemSubtotal = (item) => {
     const additionalsPrice = (item.additionals || []).reduce((sum, add) => sum + (add.price || 0), 0);
     return (item.price + additionalsPrice) * (item.quantity || 1);
@@ -71,7 +71,16 @@ const ShopMenu = () => {
   const [selectedFood, setSelectedFood] = useState(null);
 
   const handleFoodClick = (item) => {
-    setSelectedFood(item);
+    // Busca el item completo en las categorías para asegurar que tenga las 'rules'
+    let fullItem = null;
+    for (const category of categories) {
+      fullItem = category.items?.find(i => i.id === item.id);
+      if (fullItem) break;
+    }
+    // Si se encuentra el item completo (con rules), se usa. Si no, se usa el item original.
+    // Esto es importante para que los sabores funcionen desde "Más Vendidos".
+    const itemToShow = fullItem || item;
+    setSelectedFood(itemToShow);
   };
 
   const handleCloseModal = () => {
@@ -214,7 +223,7 @@ const ShopMenu = () => {
           )}
 
           {/* Best Selling Foods */}
-          {bestSellingFoods.length > 0 && (
+          {selectedCategory === "all" && bestSellingFoods.length > 0 && (
             <div className="w-full px-3 pt-8 sm:px-6 lg:px-8">
               <section className="mb-8">
                 <header className="flex items-center gap-3 mb-4">

@@ -3,15 +3,15 @@ import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 //stores/hooks
 import usePlaceOrderStore from "../store/placeOrderStore";
-import useCartStore from "../store/cartStore";
-import useNumberFormat from "../hooks/useNumberFormat";
-import useOnLoginStore from "../store/onLoginStore";
-import getAddressCustomer from "../services/getAddressCustomer";
-import { buildWhatsAppMessage } from "../lib/cartUtils";
-import { getDecryptedItem, setEncryptedItem, removeItem } from "../utils/encryptionUtilities";
-import SessionModal from "./SessionCustomer/SessionModal";
-import WelcomeCustomerModal from "./WelcomeCustomerModal";
-import generateUUIDv4 from "../utils/generateUUIDv4";
+import useCartStore from "../../cart/store/cartStore";
+import useNumberFormat from "../../../hooks/useNumberFormat";
+import useOnLoginStore from "../../../store/onLoginStore";
+import getAddressCustomer from "../../profile/services/getAddressCustomer";
+import { buildWhatsAppMessage } from "../../cart/utils/cartUtils";
+import { getDecryptedItem, setEncryptedItem, removeItem } from "../../../utils/encryptionUtilities";
+import SessionModal from "../../auth/components/SessionModal";
+import WelcomeCustomerModal from "../../auth/components/WelcomeCustomerModal";
+import generateUUIDv4 from "../../../utils/generateUUIDv4";
 import sendOrders from "../services/sendOrders";
 
 export const preprocessCartItems = (items) => {

@@ -1,6 +1,6 @@
-import api from '../lib/api';
-import { setEncryptedItem } from '../utils/encryptionUtilities';
-import useCartStore from '../store/cartStore';
+import api from '../../../lib/axios';
+import { setEncryptedItem } from '../../../utils/encryptionUtilities';
+import useCartStore from '../../cart/store/cartStore';
 
 const logOutCustomer = async () => {
   try {

@@ -1,10 +1,9 @@
 //react
-import { useState, useMemo, useEffect } from "react";
+import { useEffect, useMemo, useState } from "react";
 //components
 import getShops from "../services/getShops";
-import SearchAndFilters from "./SearchAndFilters";
 import ShopCard from "./ShopCard";
-import TopCombosCarousel from "./TopCombosCarousel";
+import SearchAndFilters from "./SearchAndFilters";
 const FoodDashboard = ({ favorites, toggleFavorite }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedFilter, setSelectedFilter] = useState("all");

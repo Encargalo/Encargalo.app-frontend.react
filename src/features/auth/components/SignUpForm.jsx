@@ -3,11 +3,11 @@ import { Phone, Lock, Eye, EyeOff, X, User, IdCard, Mail } from 'lucide-react';
 //react
 import { Controller, useForm } from 'react-hook-form';
 //components
-import InputCalendar from '../InputCalendar';
+import InputCalendar from '../../../components/InputCalendar';
 import signupCustomer from '../services/signupCustomer';
 import useOnLoginStore from '../../../store/onLoginStore';
 
-const SignUp = ({
+const SignUpForm = ({
     showPassword,
     setShowPassword,
     isLoading,
@@ -360,4 +360,4 @@ const SignUp = ({
     );
 };
 
-export default SignUp;
+export default SignUpForm;

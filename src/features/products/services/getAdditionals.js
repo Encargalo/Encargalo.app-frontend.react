@@ -1,4 +1,4 @@
-import api from '../lib/api';
+import api from '../../../lib/axios';
 
 const getAdditionals = async (setAdditionals, category_id) => {
   try {

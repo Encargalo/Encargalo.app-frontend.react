@@ -1,6 +1,6 @@
 //api
-import api from '../lib/api';
-import useLoaderStore from '../store/loaderStore';
+import api from '../../../lib/axios';
+import useLoaderStore from '../../../store/loaderStore';
 
 const getAllShops = async (setShops) => {
   const { showLoader, hideLoader } = useLoaderStore.getState();

@@ -1,7 +1,6 @@
 //api
-//services
-
 import api from '../../../lib/axios';
+//services
 import getInformationCustomer from './getInformationCustomer';
 
 const updatePersonalInfo = async (data, setConfirmUpdate, setIsLoading) => {
