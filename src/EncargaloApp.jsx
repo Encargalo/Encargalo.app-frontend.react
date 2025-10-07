@@ -1,20 +1,20 @@
 //icons
-import { ShoppingCartIcon } from "lucide-react"
+import { ShoppingCartIcon } from "lucide-react";
 //react
 import { lazy, Suspense, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 // components
 import Header from "./components/Header";
-const FoodDashboard = lazy(() => import('./components/FoodDashboard.jsx'))
 import Loader from "./components/Loader.jsx";
-import WelcomeCustomerModal from "./components/WelcomeCustomerModal.jsx";
-import SessionModal from "./components/SessionCustomer/SessionModal.jsx";
+import SessionModal from "./features/auth/components/SessionModal.jsx";
+import WelcomeCustomerModal from "./features/auth/components/WelcomeCustomerModal.jsx";
+const FoodDashboard = lazy(() => import("./features/shops/components/FoodDashboard.jsx"))
 //utils
 import useLoaderStore from "./store/loaderStore.js";
 //services
-import getInformationCustomer from "./services/getInformationCustomer.js";
-import useCartStore from "./store/cartStore.js";
 import RequestLocationModal from "./components/RequestLocationModal.jsx";
+import getInformationCustomer from "./features/profile/services/getInformationCustomer.js";
+import useCartStore from "./features/cart/store/cartStore.js";
 
 const EncargaloApp = () => {
   //favorites
