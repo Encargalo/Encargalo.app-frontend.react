@@ -79,10 +79,10 @@ const MapComponent = ({ onAddressSelect }) => {
     }
   };
 
-  // ⚠️ Renderizamos solo cuando isLoaded y center ya tienen valor
   if (!isLoaded || !center)
     return (
       <div className="h-2/3 w-full relative">
+        {/* ⚠️ Renderizamos solo cuando isLoaded y center ya tienen valor */}
         <div className="w-12 h-12 border-4 border-orange-950 border-b-orange-600 rounded-full animate-spin absolute top-2/3 left-[150px] sm:left-[370px]"></div>
       </div>
     );
