@@ -25,7 +25,7 @@ const ItemCard = ({ item, onItemClick }) => {
           {/* star icon */}
           <Star className="w-3 sm:w-4 h-3 sm:h-4 text-orange-500 fill-current mr-1 inline" />
           {/* score */}
-          <span className="text-base font-bold text-gray-900">{item.score}</span>
+          <span className="font-bold text-gray-900">{item.score}</span>
         </div>
       </header>
 
@@ -35,11 +35,11 @@ const ItemCard = ({ item, onItemClick }) => {
         {/* details */}
         <figure className="mb-4">
           {/* name */}
-          <h3 className="text-2xl font-bold text-gray-900 truncate">
+          <h3 className="text-xl font-bold text-gray-900 truncate">
             {item.name}
           </h3>
           {/* description */}
-          <p className="text-gray-600 text-xl sm:text-1xl leading-relaxed truncate">
+          <p className="text-gray-600 text-lg sm:text-1xl leading-relaxed truncate">
             {item.description}
           </p>
         </figure>
@@ -51,7 +51,7 @@ const ItemCard = ({ item, onItemClick }) => {
           </p>
 
           <button
-            className="bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white px-4 sm:px-6 py-2 rounded-xl font-semibold transition-all duration-300 flex items-center justify-center space-x-2 shadow-lg hover:shadow-xl"
+            className="bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white px-4 py-2 rounded-xl font-semibold transition-all duration-300 flex items-center justify-center space-x-2 shadow-lg hover:shadow-xl"
             aria-label={`Agregar ${item.name} al carrito`}
           >
             <Plus className="w-6 h-6" />

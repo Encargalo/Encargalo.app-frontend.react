@@ -156,7 +156,7 @@ const FoodDetailsModal = ({ food, onClose }) => {
   };
 
   const pathname = location.pathname
-  const validateShopPath = pathname === "/"
+  const validateShopPath = pathname === "/";
 
 
   return (
