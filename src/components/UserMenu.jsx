@@ -1,12 +1,12 @@
 //react
 import { useEffect, useRef, useState } from "react";
 //icons
-import { User, LogOut, ChevronRight, ChevronDown, ShoppingCart } from "lucide-react";
+import { ChevronDown, ChevronRight, LogOut, ShoppingCart, User } from "lucide-react";
 //services
-import logOutCustomer from "../services/logOutCustomer";
-import ShoppingCartIcon from "./ShoppingCartIcon";
 import { useNavigate } from "react-router-dom";
+import logOutCustomer from "../features/auth/services/logOutCustomer";
 import { getDecryptedItem } from "../utils/encryptionUtilities";
+import ShoppingCartIcon from "./Icons/ShoppingCartIcon";
 
 const UserMenu = () => {
     const [userData, setUserData] = useState(null);

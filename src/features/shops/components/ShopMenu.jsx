@@ -1,0 +1,421 @@
+//lucide react / icons
+import { ArrowLeft, ChevronLeft, ChevronRight, Plus, Star } from "lucide-react";
+//components
+import SessionModal from "../../auth/components/SessionModal";
+import UserMenu from "../../../components/UserMenu.jsx";
+import WelcomeCustomerModal from "../../auth/components/WelcomeCustomerModal";
+import FoodDetailsModal from "../../products/components/FoodDetailsModal";
+import ItemCard from "../../products/components/ItemCard";
+//store/hooks
+import useNumberFormat from "../../../hooks/useNumberFormat";
+import useOnLoginStore from "../../../store/onLoginStore";
+import useCartStore from "../../cart/store/cartStore";
+//services
+import getShopDetails from "../services/getShopDetails.js";
+//utils
+import { getDecryptedItem } from "../../../utils/encryptionUtilities";
+//react
+import { useEffect, useRef, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import getBestSellingFoods from "../services/getBestSellingFoods.js";
+
+const ShopMenu = () => {
+  // Estados
+  const [categories, setCategories] = useState([]);
+  const [shop, setShop] = useState({});
+  const [selectedCategory, setSelectedCategory] = useState("all");
+  const carouselRef = useRef(null);
+  const bestSellingCarouselRefMobile = useRef(null);
+  const bestSellingCarouselRef = useRef(null);
+  const [userData, setUserData] = useState({});
+
+  //onLogin
+  const { openLoginModal } = useOnLoginStore()
+
+  /* prev cart items */
+  const { cart } = useCartStore();
+  const { formatNumber } = useNumberFormat();
+  const shopCartItems = cart.filter(item => item.shopInfo?.id === shop.id);
+
+  // Calcula el subtotal para un item del carrito, incluyendo adicionales.
+  const calculateItemSubtotal = (item) => {
+    const additionalsPrice = (item.additionals || []).reduce((sum, add) => sum + (add.price || 0), 0);
+    return (item.price + additionalsPrice) * (item.quantity || 1);
+  };
+
+  const shopTotal = shopCartItems.reduce((sum, item) => sum + calculateItemSubtotal(item), 0);
+
+  const totalItems = shopCartItems.reduce(
+    (sum, item) => sum + item.quantity,
+    0
+  );
+
+  // Hooks de Navegación
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  // Obtiene el identificador de la tienda desde la URL
+  const tag_shop = location.pathname.split("/")[1];
+
+  // Se ejecuta al cargar el componente para obtener los datos de la tienda
+  useEffect(() => {
+    getShopDetails(setShop, setCategories, tag_shop);
+  }, [tag_shop]);
+
+  // Obtiene los productos más vendidos cuando la tienda está cargada
+  const [bestSellingFoods, setBestSellingFoods] = useState([]);
+  useEffect(() => {
+    if (shop.id) {
+      getBestSellingFoods(setBestSellingFoods, shop.id);
+    }
+  }, [shop.id]);
+
+  const [selectedFood, setSelectedFood] = useState(null);
+
+  const handleFoodClick = (item) => {
+    // Busca el item completo en las categorías para asegurar que tenga las 'rules'
+    let fullItem = null;
+    for (const category of categories) {
+      fullItem = category.items?.find(i => i.id === item.id);
+      if (fullItem) break;
+    }
+    // Si se encuentra el item completo (con rules), se usa. Si no, se usa el item original.
+    // Esto es importante para que los sabores funcionen desde "Más Vendidos".
+    const itemToShow = fullItem || item;
+    setSelectedFood(itemToShow);
+  };
+
+  const handleCloseModal = () => {
+    setSelectedFood(null);
+  };
+
+  //Carousel filtering
+  const scrollCarouselFiltering = (direction) => {
+    if (carouselRef.current) {
+      const scrollAmount = 280;
+      const newScrollLeft =
+        carouselRef.current.scrollLeft +
+        (direction === "left" ? -scrollAmount : scrollAmount);
+      carouselRef.current.scrollTo({
+        left: newScrollLeft,
+        behavior: "smooth",
+      });
+    }
+  };
+
+  const scrollBestSellingCarousel = (direction) => {
+    const isMobile = window.innerWidth < 640;
+    const carousel = isMobile ? bestSellingCarouselRefMobile.current : bestSellingCarouselRef.current;
+
+    if (carousel) {
+      // Ancho de tarjeta + gap
+      // Móvil: w-48 (192px) + gap-4 (16px) = 208px
+      // PC: w-80 (320px) + gap-4 (16px) = 336px
+      const scrollAmount = isMobile ? 208 : 336;
+
+      const newScrollLeft =
+        carousel.scrollLeft +
+        (direction === "left" ? -scrollAmount : scrollAmount);
+
+      carousel.scrollTo({
+        left: newScrollLeft,
+        behavior: "smooth",
+      });
+    }
+  };
+
+  //user data
+  useEffect(() => {
+    const user_session = import.meta.env.VITE_USER_SESSION
+    const user_data = getDecryptedItem(user_session)
+    setUserData(user_data)
+  }, [])
+
+  // Filtrar categorías que sí tienen productos
+  const validCategories = categories.filter(
+    (category) => Array.isArray(category.items) && category.items.length > 0
+  );
+
+  return (
+    <div className="min-h-dvh w-full background">
+      <section className="w-full">
+        {/* header */}
+        <header className="bg-white shadow-lg sticky top-0 z-40 border-b">
+          <div className="w-full px-3 sm:px-4 lg:px-7 py-3">
+            <div className="flex items-center justify-between">
+              {/* return */}
+              <div className="flex items-center"
+                onClick={() => navigate("/")}
+              >
+                <button
+                  className="text-orange-500 hover:text-orange-600 font-semibold text-lg sm:text-xl py-2 px-4 flex items-center gap-2 rounded-lg"
+                >
+                  <ArrowLeft className="size-5" />
+                  Volver
+                </button>
+              </div>
+              {
+                userData?.session ?
+                  <UserMenu userData={userData} handleNavigate={navigate} />
+                  :
+                  /* login */
+                  <button
+                    onClick={openLoginModal}
+                    className="bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white px-3 sm:px-6 py-1 sm:py-2 rounded-xl font-semibold transition-all duration-300 shadow-lg hover:shadow-xl sm:text-2xl"
+                  >
+                    Iniciar Sesión
+                  </button>
+              }
+
+
+            </div>
+          </div>
+        </header>
+
+        <main className="pb-14">
+          {/* banner shop*/}
+          <div className="relative sm:h-[40em] overflow-hidden">
+            <img
+              src={shop.banner}
+              alt={`Logo de ${shop.name}`}
+              className="w-full h-full object-cover"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
+            <div className="absolute bottom-6 left-3 sm:left-6 text-white px-2">
+              <div className="flex items-center space-x-4 mb-2">
+                {/* score */}
+                <div className="flex items-center bg-white/20 backdrop-blur-sm px-3 py-1 rounded-full">
+                  <Star className="size-3 sm:size-5 text-yellow-400 fill-current mr-1" />
+                  <span className="font-bold text-xs sm:text-xl">{shop.score}</span>
+                </div>
+              </div>
+              {/* address shop */}
+              <p className="text-white bg-white/20 sm:text-xl text-sm backdrop-blur-sm px-3 py-1 rounded-full">
+                {shop.address}
+              </p>
+            </div>
+          </div>
+
+          {/* filtering categories */}
+          {validCategories.length > 0 && (
+            <nav className="py-4 sticky top-[68px] bg-white z-30">
+              {/* button move carousel filtering */}
+              <button
+                onClick={() => scrollCarouselFiltering("left")}
+                className="bg-white hover:bg-orange-50 border-2 border-gray-200 hover:border-orange-300 rounded-full p-2 sm:p-3 transition-all duration-300 shadow-md hover:shadow-lg absolute left-2 z-30 top-4 sm:left-3"
+              >
+                <ChevronLeft className="size-5 text-gray-600 hover:text-orange-600" />
+              </button>
+
+              {/* buttons actions */}
+              <div className="relative flex space-x-2 overflow-x-auto px-12 sm:px-16 no-scrollbar"
+                ref={carouselRef}>
+                {/* button all categories */}
+                <button
+                  onClick={() => setSelectedCategory("all")}
+                  className={`px-4 py-2 sm:text-lg font-medium rounded-full transition-colors ${selectedCategory === "all"
+                    ? "bg-orange-500 text-white"
+                    : "bg-gray-200 text-gray-700 hover:bg-gray-300"
+                    }`}
+                >
+                  Todas
+                </button>
+
+                {/* map buttons categories */}
+                {validCategories.map((category) => (
+                  <button
+                    key={category.id}
+                    onClick={() => setSelectedCategory(category.id)}
+                    className={`px-4 py-2 sm:text-lg font-medium rounded-full transition-colors whitespace-nowrap ${selectedCategory === category.id
+                      ? "bg-orange-500 text-white"
+                      : "bg-gray-200 text-gray-700 hover:bg-gray-300"
+                      }`}
+                  >
+                    {category.name}
+                  </button>
+                ))}
+              </div>
+              {/* button move carousel filtering */}
+              <button
+                onClick={() => scrollCarouselFiltering("right")}
+                className="bg-white hover:bg-orange-50 border-2 border-gray-200 hover:border-orange-300 rounded-full p-2 sm:p-3 transition-all duration-300 shadow-md hover:shadow-lg absolute top-4 right-2 sm:right-4"
+              >
+                <ChevronRight className="size-5 text-gray-600 hover:text-orange-600" />
+              </button>
+            </nav>
+          )}
+
+          {/* Best Selling Foods */}
+          {selectedCategory === "all" && bestSellingFoods.length > 0 && (
+            <div className="w-full px-3 pt-8 sm:px-6 lg:px-8">
+              <section className="relative">
+                <header className="flex items-center justify-between mb-4">
+                  <h2 className="text-2xl font-bold text-white">
+                    ¡Los más vendido!
+                  </h2>
+                  <div className="flex space-x-2">
+                    <button
+                      onClick={() => scrollBestSellingCarousel("left")}
+                      className="bg-white hover:bg-orange-50 border-2 border-gray-200 hover:border-orange-300 rounded-full p-2 transition-all duration-300 shadow-md hover:shadow-lg"
+                    >
+                      <ChevronLeft className="size-5 text-gray-600 hover:text-orange-600" />
+                    </button>
+                    <button
+                      onClick={() => scrollBestSellingCarousel("right")}
+                      className="bg-white hover:bg-orange-50 border-2 border-gray-200 hover:border-orange-300 rounded-full p-2 transition-all duration-300 shadow-md hover:shadow-lg"
+                    >
+                      <ChevronRight className="size-5 text-gray-600 hover:text-orange-600" />
+                    </button>
+                  </div>
+                </header>
+
+                {/* Vista para Móviles (diseño compacto) */}
+                <div ref={bestSellingCarouselRefMobile} className="flex gap-4 overflow-x-auto no-scrollbar pb-4 sm:hidden">
+                  {bestSellingFoods.map((item) => (
+                    <div key={item.id} className="flex-shrink-0 w-48">
+                      <article onClick={() => handleFoodClick(item)} className="bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden border border-gray-100 cursor-pointer group">
+                        <header className="relative">
+                          <img src={item.image} alt={item.name} className="w-full h-32 object-cover" />
+                          <div className="absolute top-2 right-2 flex items-center bg-white/90 backdrop-blur-sm px-2 py-1 rounded-full shadow-md"><Star className="size-3 text-orange-500 fill-current mr-1" /><span className="text-xs font-bold">{item.score}</span></div>
+                        </header>
+                        <div className="p-3">
+                          <h3 className="text-base font-bold text-gray-900 truncate group-hover:text-orange-600">{item.name}</h3><p className="text-sm text-gray-600 truncate">{item.description}</p>
+                          <footer className="flex items-center justify-between mt-2"><p className="text-base font-bold text-orange-600">${formatNumber(item.price)}</p><button className="bg-orange-500 text-white p-1.5 rounded-full shadow-md hover:bg-orange-600"><Plus className="size-4" /></button></footer>
+                        </div>
+                      </article>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Vista para PC (diseño con ItemCard) */}
+                <div ref={bestSellingCarouselRef} className="hidden sm:flex gap-4 overflow-x-auto no-scrollbar pb-4">
+                  {bestSellingFoods.map((item) => (
+                    <div key={item.id} className="flex-shrink-0 w-72 sm:w-80">
+                      <ItemCard item={item} onItemClick={handleFoodClick} />
+                    </div>
+                  ))}
+                </div>
+
+              </section>
+            </div>
+          )}
+
+          {/* list categories*/}
+          <div className="w-full px-3 pb-12 sm:px-6 lg:px-8">
+            {validCategories.map(
+              (category) =>
+                // Muestra la categoría solo si está seleccionada o si se eligen "Todas"
+                (selectedCategory === "all" ||
+                  selectedCategory === category.id) && (
+                  <section key={category.id} className="mb-8">
+                    {/* name category */}
+                    <h2 className="text-2xl font-bold text-white mb-4 mt-10">
+                      {category.name}
+                    </h2>
+
+                    {/* products */}
+                    {category.items && category.items.length > 0 ? (
+                      <>
+                        {/* Vista en GRID → solo en sm en adelante */}
+                        <div className="hidden sm:grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                          {category.items.map((item) => (
+                            <ItemCard
+                              key={item.id}
+                              item={item}
+                              onItemClick={handleFoodClick}
+                            />
+                          ))}
+                        </div>
+
+                        {/* Vista en LISTA → solo en móviles */}
+                        <ul className="flex flex-col gap-y-3 sm:hidden">
+                          {category.items.map((item) => (
+                            <li
+                              key={item.id}
+                              className="flex gap-2 p-3 bg-white rounded-xl shadow relative"
+                              onClick={() => handleFoodClick(item)}
+                            >
+                              {/* info */}
+                              <article className="flex-1 flex flex-col justify-between gap-2">
+                                <div className="space-y-1">
+                                  {/* name */}
+                                  <h3 className="text-base font-semibold">{item.name}</h3>
+                                  {/* description */}
+                                  <p className="text-sm text-gray-600 line-clamp-3">{item.description}</p>
+                                </div>
+                                {/* price & score */}
+                                <div className="flex w-full items-center justify-between">
+                                  <p className="font-bold text-orange-600 text-base">
+                                    ${formatNumber(item.price, "es-CO")}
+                                  </p>
+                                  <div className="flex items-center pr-2">
+                                    {/* star icon */}
+                                    <Star className="size-3 text-orange-500 fill-current mr-1" />
+                                    {/* score */}
+                                    <span className="text-sm font-bold text-gray-900">
+                                      {item.score}
+                                    </span>
+                                  </div>
+                                </div>
+
+                              </article>
+
+                              {/* imagen */}
+                              <figure className="relative w-24 flex-shrink-0">
+                                <img
+                                  src={item.image}
+                                  alt={`${item.name} - ${item.description}`}
+                                  className="w-full h-28 object-cover rounded-lg"
+                                />
+                                <button className="absolute bottom-2 right-2 bg-orange-500 text-white text-xl size-full px-3 py-1 w-8 h-8 rounded-full flex justify-center items-center">
+                                  <span><Plus className="size-5" /></span>
+                                </button>
+                              </figure>
+                            </li>
+                          ))}
+                        </ul>
+                      </>
+                    ) : null}
+                  </section>
+                )
+            )}
+          </div>
+        </main>
+        {selectedFood && (
+          <FoodDetailsModal
+            food={{ ...selectedFood, shop: shop }}
+            onClose={handleCloseModal}
+          />
+        )}
+      </section>
+
+      {shopCartItems.length > 0 && !selectedFood && (
+        <footer className="fixed bottom-0 sm:right-5 w-full sm:w-auto bg-white sm:size-m sm:rounded-md shadow-orange-700 shadow-2xl z-50">
+          <div className="max-w-6xl mx-auto flex items-center justify-between px-3 sm:px-4 sm:gap-x-6 py-3">
+            <div>
+              <h2 className="text-lg sm:text-xl">Monto Total:</h2>
+              <h3 className="text-orange-600 font-extrabold text-2xl sm:text-3xl">
+                ${formatNumber(shopTotal, "es-CO")}
+              </h3>
+            </div>
+            <button
+              onClick={() => navigate("/shopping_cart")}
+              className="bg-gradient-to-r from-orange-500 to-orange-600 text-white px-4 py-3 rounded-xl font-semibold shadow hover:shadow-md transition"
+            >
+              Ver carrito
+              <span className="size-full px-3 py-1 rounded-full ml-3 font-bold bg-white text-orange-950">
+                {totalItems}
+              </span>
+            </button>
+          </div>
+        </footer>
+      )}
+
+      {/* modals */}
+      <SessionModal />
+      <WelcomeCustomerModal />
+    </div>
+  );
+};
+
+export default ShopMenu;
