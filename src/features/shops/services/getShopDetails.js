@@ -29,6 +29,12 @@ const getShopDetails = async (setShop, setCategories, tag_shop) => {
 
   try {
     // Intenta obtener las coordenadas y luego los detalles de la tienda
+    /* 
+      Cordenadas para test
+      Cambiar antes de desplegar
+      lat: 3.4273946
+      lon: -76.4908917
+    */
     const coords = await getCoords();
     const response = await api.get(
       `/shops?tag=${tag_shop}&lat=${coords.lat}&lon=${coords.lon}`

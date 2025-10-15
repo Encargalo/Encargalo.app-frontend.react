@@ -8,10 +8,9 @@ const VITE_REQUEST_LOCATION = import.meta.env.VITE_REQUEST_LOCATION;
 
 const RequestLocationModal = () => {
     const [isOpen, setIsOpen] = useState(false);
-    const [isDenied, setIsDenied] = useState(false);
     const [instructions, setInstructions] = useState("");
     const [platform, setPlatform] = useState("");
-    const [isGranted, setIsGranted] = useState(false);
+    const [permissionStatus, setPermissionStatus] = useState("prompt"); // 'prompt', 'granted', 'denied'
 
     // Detectar tipo de dispositivo/navegador
     const detectPlatform = () => {
@@ -70,26 +69,13 @@ const RequestLocationModal = () => {
 
         if (navigator.permissions) {
             navigator.permissions.query({ name: "geolocation" }).then((result) => {
-                if (result.state === "granted") {
-                    setIsGranted(true);
-                    setIsOpen(true);
-                } else if (result.state === "denied") {
-                    setIsDenied(true);
-                    setIsOpen(true);
-                } else {
-                    setIsOpen(true);
-                }
+                setPermissionStatus(result.state);
+                setIsOpen(true);
 
                 result.onchange = () => {
-                    if (result.state === "granted") {
-                        setIsGranted(true);
-                        setIsDenied(false);
-                        setIsOpen(true);
-                    } else if (result.state === "denied") {
-                        setIsGranted(false);
-                        setIsDenied(true);
-                        setIsOpen(true);
-                    }
+                    // Actualiza el estado y mantiene el modal abierto para mostrar el mensaje correcto
+                    setPermissionStatus(result.state);
+                    setIsOpen(true);
                 };
             });
         } else {
@@ -99,7 +85,7 @@ const RequestLocationModal = () => {
 
     const handleClose = () => {
         // Si ya se agradeció y permisos concedidos, guarda en localStorage encriptado
-        if (isGranted) {
+        if (permissionStatus === "granted") {
             setEncryptedItem(VITE_REQUEST_LOCATION, true);
         }
         setIsOpen(false);
@@ -113,7 +99,7 @@ const RequestLocationModal = () => {
             open
         >
             {
-                platform === "android" && !isGranted &&
+                platform === "android" && permissionStatus !== "granted" &&
                 <ArrowUpLeft className="bg-orange-600 text-white p-2 w-[40px] h-[40px] rounded-full absolute top-2 left-20 animate-slide-in-top-infinite" />
             }
             <section className="bg-white rounded-2xl shadow-2xl w-full lg:w-2/4 overflow-hidden animate-fadeIn">
@@ -126,12 +112,12 @@ const RequestLocationModal = () => {
 
                 {/* Contenido */}
                 <div className="px-6 pt-6 pb-4 text-center text-gray-700 text-lg sm:text-xl font-medium">
-                    {isGranted ? (
+                    {permissionStatus === "granted" ? (
                         <div>
                             <p className="mb-2">✅ ¡Gracias por permitir el acceso a tu ubicación!</p>
                             <p className="mb-2">Ya puedes cerrar este mensaje y continuar usando la aplicación.</p>
                         </div>
-                    ) : isDenied ? (
+                    ) : permissionStatus === "denied" ? (
                         <div>
                             <p className="mb-2">🚫 Parece que bloqueaste el acceso a tu ubicación.</p>
                             <p className="mb-2">Para continuar, sigue estos pasos:</p>
