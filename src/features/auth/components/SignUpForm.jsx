@@ -152,43 +152,29 @@ const SignUpForm = ({
                             name="phone"
                             control={control}
                             rules={{
+                                required: 'Escribe tu número de teléfono',
                                 validate: {
-                                    // 1) No ha escrito nada (o solo el prefijo)
-                                    requerido: (value) => {
-                                        const prefix = '+57 ';
-                                        if (!value || value === '+57' || value === prefix) {
-                                            return 'Escribe tu número de teléfono';
+                                    // 1) Solo números después del prefijo
+                                    soloNumeros: (value) => {
+                                        const numericPart = value.slice('+57 '.length);
+                                        return /^\d*$/.test(numericPart) || 'Solo se permiten números';
+                                    },
+                                    // 2) Longitud exacta de 10 dígitos
+                                    longitud: (value) => {
+                                        const numericPart = value.slice('+57 '.length);
+                                        if (numericPart.length > 0 && numericPart.length < 10) {
+                                            return 'El número está incompleto (deben ser 10 dígitos)';
+                                        }
+                                        if (numericPart.length > 10) {
+                                            return 'El número tiene demasiados dígitos (deben ser 10)';
                                         }
                                         return true;
                                     },
-                                    // 2) Solo números después del prefijo
-                                    soloNumeros: (value) => {
-                                        const prefix = '+57 ';
-                                        const numericPart = value.startsWith(prefix)
-                                            ? value.slice(prefix.length)
-                                            : value.replace(/^\+57\s?/, '');
-                                        if (!/^\d*$/.test(numericPart))
-                                            return 'Solo se permiten números';
-                                        return true;
-                                    },
-                                    // 3) Longitud exacta de 10 dígitos (incompleto / demasiado largo)
-                                    longitud: (value) => {
-                                        const prefix = '+57 ';
-                                        const numericPart = value.startsWith(prefix)
-                                            ? value.slice(prefix.length)
-                                            : value.replace(/^\+57\s?/, '');
-                                        if (numericPart.length < 10)
-                                            return 'El número está incompleto (deben ser 10 dígitos)';
-                                        if (numericPart.length > 10)
-                                            return 'El número tiene demasiados dígitos (deben ser 10)';
-                                        return true;
-                                    },
-                                    // 4) Formato final exacto
+                                    // 3) Formato final exacto
                                     formato: (value) => {
-                                        return (
-                                            /^\+57\s\d{10}$/.test(value) ||
-                                            'El formato no es válido (usa: +57 3171812128)'
-                                        );
+                                        // Solo valida el formato final si el campo no está vacío (ya cubierto por 'required')
+                                        if (value === '+57 ') return true;
+                                        return /^\+57\s\d{10}$/.test(value) || 'El formato no es válido (ej: +57 3101234567)';
                                     },
                                 },
                             }}

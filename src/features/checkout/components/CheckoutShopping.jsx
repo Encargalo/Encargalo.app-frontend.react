@@ -8,13 +8,13 @@ import useNumberFormat from "../../../hooks/useNumberFormat";
 import useOnLoginStore from "../../../store/onLoginStore";
 import getAddressCustomer from "../../profile/services/getAddressCustomer";
 import { buildWhatsAppMessage } from "../../cart/utils/cartUtils";
-import { getDecryptedItem, setEncryptedItem, removeItem } from "../../../utils/encryptionUtilities";
+import { getDecryptedItem, setEncryptedItem } from "../../../utils/encryptionUtilities";
 import SessionModal from "../../auth/components/SessionModal";
 import WelcomeCustomerModal from "../../auth/components/WelcomeCustomerModal";
 import generateUUIDv4 from "../../../utils/generateUUIDv4";
 import sendOrders from "../services/sendOrders";
 
-export const preprocessCartItems = (items) => {
+const preprocessCartItems = (items) => {
     if (!Array.isArray(items)) return [];
     return items.map((item) => {
         const isMultiSelect = item.rules?.some(r => r.rule_key === 'max_flavors' && r.selector_type === 'multi_select');

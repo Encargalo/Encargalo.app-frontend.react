@@ -11,10 +11,8 @@ const WelcomeCustomerModal = () => {
     const { isWelcomeModalOpen, isAddress, closeWelcomeModal } = useOnLoginStore()
 
 
-    const handleClose = (e) => {
-        e.preventDefault
-        closeWelcomeModal()
-        location.reload();
+    const handleClose = () => {
+        closeWelcomeModal();
     }
 
     const handleNavigate = () => {
@@ -24,12 +22,8 @@ const WelcomeCustomerModal = () => {
 
     if (!isWelcomeModalOpen) return null;
 
-    // El estado inicial de isAddress es un objeto `{}`, y se convierte en un array una vez cargado.
-    // Verificamos si es un array para determinar si los datos se han cargado y así evitar un parpadeo.
-    const isAddressLoaded = Array.isArray(isAddress);
-
     return (
-        <dialog className="fixed inset-0 bg-transparent w-full h-full backdrop-blur-sm flex items-center justify-center z-50 p-4">
+        <dialog open className="fixed inset-0 bg-transparent w-full h-full backdrop-blur-sm flex items-center justify-center z-50 p-4">
             <section className="bg-white rounded-2xl shadow-2xl w-full lg:w-2/4 overflow-hidden animate-fadeIn">
                 {/* Header */}
                 <header className="bg-gradient-to-r from-orange-500 to-orange-600 px-9 py-8">

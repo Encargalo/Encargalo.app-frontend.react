@@ -30,6 +30,12 @@ const getAllShops = async (setShops) => {
     // Intenta obtener las coordenadas
     const coordsCustomer = await getCoords();
     //requests
+    /* 
+      Cordenadas para test
+      Cambiar antes de desplegar
+      lat: 3.4273946
+      lon: -76.4908917
+    */
     const response = await api.get(
       `/shops/all?lat=${coordsCustomer.lat}&lon=${coordsCustomer.lon}`
     );

@@ -15,7 +15,7 @@ import getShopDetails from "../services/getShopDetails.js";
 //utils
 import { getDecryptedItem } from "../../../utils/encryptionUtilities";
 //react
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import getBestSellingFoods from "../services/getBestSellingFoods.js";
 
@@ -74,13 +74,11 @@ const ShopMenu = () => {
 
   const handleFoodClick = (item) => {
     // Busca el item completo en las categorías para asegurar que tenga las 'rules'
-    let fullItem = null;
-    for (const category of categories) {
-      fullItem = category.items?.find(i => i.id === item.id);
-      if (fullItem) break;
-    }
+    const fullItem = categories
+      .flatMap(category => category.items || [])
+      .find(i => i.id === item.id);
+
     // Si se encuentra el item completo (con rules), se usa. Si no, se usa el item original.
-    // Esto es importante para que los sabores funcionen desde "Más Vendidos".
     const itemToShow = fullItem || item;
     setSelectedFood(itemToShow);
   };
@@ -104,24 +102,23 @@ const ShopMenu = () => {
   };
 
   const scrollBestSellingCarousel = (direction) => {
-    const isMobile = window.innerWidth < 640;
-    const carousel = isMobile ? bestSellingCarouselRefMobile.current : bestSellingCarouselRef.current;
-
-    if (carousel) {
-      // Ancho de tarjeta + gap
-      // Móvil: w-48 (192px) + gap-4 (16px) = 208px
-      // PC: w-80 (320px) + gap-4 (16px) = 336px
-      const scrollAmount = isMobile ? 208 : 336;
-
-      const newScrollLeft =
+    const scrollAmount = 336; // Ancho de tarjeta PC + gap
+    [bestSellingCarouselRef, bestSellingCarouselRefMobile].forEach(ref => {
+      const carousel = ref.current;
+      if (carousel) {
+        const currentScrollAmount = carousel === bestSellingCarouselRefMobile.current ? 208 : scrollAmount;
+        const newScrollLeft =
+          carousel.scrollLeft +
+          (direction === "left" ? -currentScrollAmount : currentScrollAmount);
         carousel.scrollLeft +
-        (direction === "left" ? -scrollAmount : scrollAmount);
+          (direction === "left" ? -scrollAmount : scrollAmount);
 
-      carousel.scrollTo({
-        left: newScrollLeft,
-        behavior: "smooth",
-      });
-    }
+        carousel.scrollTo({
+          left: newScrollLeft,
+          behavior: "smooth",
+        });
+      }
+    });
   };
 
   //user data
@@ -132,9 +129,9 @@ const ShopMenu = () => {
   }, [])
 
   // Filtrar categorías que sí tienen productos
-  const validCategories = categories.filter(
+  const validCategories = useMemo(() => categories.filter(
     (category) => Array.isArray(category.items) && category.items.length > 0
-  );
+  ), [categories]);
 
   return (
     <div className="min-h-dvh w-full background">
