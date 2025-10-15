@@ -7,10 +7,10 @@ import { useNavigate } from "react-router-dom";
 import { getDecryptedItem } from "../utils/encryptionUtilities";
 //services
 import { encargaloLogos } from "../assets/ilustrations";
-import getAddress from "../features/profile/services/getAddress";
 import useOnLoginStore from "../store/onLoginStore";
 import UserMenu from "./UserMenu";
 import ShoppingCartIcon from "./Icons/ShoppingCartIcon";
+import getAddress from "../service/getAddress";
 
 const Header = () => {
     const [userData, setUserData] = useState(null)
