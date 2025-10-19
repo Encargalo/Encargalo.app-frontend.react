@@ -13,7 +13,7 @@ const logInCustomers = async (
 ) => {
   setIsLoading(true);
   try {
-    const response = await api.post('/customers/sign_in', data);
+    const response = await api.post('sign-in/customers', data);
 
     /* session created success */
     if (response.status === 201) {
