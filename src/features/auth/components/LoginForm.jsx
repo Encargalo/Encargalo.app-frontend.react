@@ -23,7 +23,7 @@ const Login = ({ showPassword, setShowPassword, isLoading, setIsLoading, session
         setError,
     } = useForm({
         defaultValues: {
-            phone: "+57 ",
+            phone_number: "+57 ",
             password: "",
         },
     });
