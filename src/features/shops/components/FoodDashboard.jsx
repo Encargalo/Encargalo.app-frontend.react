@@ -1,17 +1,17 @@
 //react
 import { useEffect, useMemo, useState } from "react";
 //components
-import getShops from "../services/getShops";
 import ShopCard from "./ShopCard";
 import SearchAndFilters from "./SearchAndFilters";
+//services
+import getShops from "../services/getShops";
+
 const FoodDashboard = ({ favorites, toggleFavorite }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedFilter, setSelectedFilter] = useState("all");
   const [sortBy, setSortBy] = useState("score");
   const [showFilters, setShowFilters] = useState(true);
   const [shops, setShops] = useState([]);
-
-  //loader
 
   //Get shops
   useEffect(() => {
@@ -20,7 +20,7 @@ const FoodDashboard = ({ favorites, toggleFavorite }) => {
 
   // Filtrar y ordenar restaurantes
   const filteredShops = useMemo(() => {
-    let filtered = shops.filter((shop) => {
+    let filtered = (shops || []).filter((shop) => {
       // Búsqueda por nombre o tag
       const matchesSearch =
         shop.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
