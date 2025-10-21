@@ -13,6 +13,7 @@ const WelcomeCustomerModal = () => {
 
     const handleClose = () => {
         closeWelcomeModal();
+        location.reload()
     }
 
     const handleNavigate = () => {
