@@ -4,7 +4,8 @@ import useCartStore from '../../cart/store/cartStore';
 
 const logOutCustomer = async () => {
   try {
-    const response = await api.delete('/customers/sessions');
+    const response = await api.delete('/auth/logout');
+    console.log(response);
     if (response.status === 200) {
       const user_session = import.meta.env.VITE_USER_SESSION;
       const userSession = {
@@ -16,6 +17,8 @@ const logOutCustomer = async () => {
       useCartStore.getState().clearCart();
       location.reload();
     }
+  } catch (error) {
+    console.log(error);
   } finally {
     return false;
   }
