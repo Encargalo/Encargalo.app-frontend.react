@@ -14,6 +14,7 @@ const logInCustomers = async (
   setIsLoading(true);
   try {
     const response = await api.post('/auth/sign-in/customers', data);
+    console.log(response);
 
     /* session created success */
     if (response.status === 201) {
@@ -24,6 +25,7 @@ const logInCustomers = async (
     }
   } catch (error) {
     const response = error.response;
+    console.log(error);
 
     /* incorrect acces data */
     if (response.status === 422) {
