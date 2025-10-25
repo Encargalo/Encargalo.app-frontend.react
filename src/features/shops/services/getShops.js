@@ -1,8 +1,6 @@
 //api
 import api from '../../../lib/axios';
-//hooks
 import useLoaderStore from '../../../store/loaderStore';
-//lib / utils
 import getCoordsCustomer from '../../../utils/getCoordsCustomer';
 
 const getAllShops = async (setShops) => {
@@ -10,24 +8,18 @@ const getAllShops = async (setShops) => {
   showLoader();
 
   try {
-    // Intenta obtener las coordenadas
-    const coordsCustomer = await getCoordsCustomer();
-    //requests
-    /* 
-      Cordenadas para test
-      Cambiar antes de desplegar
-      lat: 3.4273946
-      lon: -76.4908917
-    */
+    let coordsCustomer;
+    try {
+      coordsCustomer = await getCoordsCustomer(5000);
+    } catch (err) {
+      return err;
+    }
+
     const response = await api.get(
       `/shops/all?lat=${coordsCustomer.lat}&lon=${coordsCustomer.lon}`
     );
-    //add shops
-    if (response.status === 200) {
-      const shops = response.data;
-      setShops(shops);
-      return;
-    }
+
+    if (response.status === 200) setShops(response.data);
   } finally {
     hideLoader();
   }
