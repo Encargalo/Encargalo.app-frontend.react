@@ -177,7 +177,21 @@ const ShopMenu = () => {
               alt={`Logo de ${shop.name}`}
               className="w-full h-full object-cover"
             />
+            {/* overlay negro actual */}
             <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
+
+            {/* nuevo overlay anaranjado con blur si el local está cerrado */}
+            {shop && shop.opened === false && (
+              <>
+                <div className="absolute inset-0 bg-orange-400/30 backdrop-blur-sm pointer-events-none" />
+                <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                  <span className="bg-red-600 text-white px-5 py-2 rounded-full font-bold shadow-lg text-lg">
+                    Cerrado
+                  </span>
+                </div>
+              </>
+            )}
+
             <div className="absolute bottom-6 left-3 sm:left-6 text-white px-2">
               <div className="flex items-center space-x-4 mb-2">
                 {/* score */}
