@@ -171,14 +171,14 @@ const ShopMenu = () => {
 
         <main className="pb-14">
           {/* banner shop*/}
-          <div className="relative sm:h-[40em] overflow-hidden">
+          <div className="relative h-56 sm:h-[40em] md:h-[48em] overflow-hidden">
             <img
-              src={shop.banner}
-              alt={`Logo de ${shop.name}`}
-              className="w-full h-full object-cover"
+              src={shop.banner || shop.logo}
+              alt={`Imagen de ${shop.name}`}
+              className="w-full h-full object-cover object-center
             />
             {/* overlay negro actual */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black /50 to-transparent"
 
             {/* nuevo overlay anaranjado con blur si el local está cerrado */}
             {shop && shop.opened === false && (
