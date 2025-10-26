@@ -98,6 +98,9 @@ const CheckoutShopping = () => {
         [processedItems]
     );
 
+    // Determina si el local está abierto según el placeOrder (si existe)
+    const shopOpened = placeOrder?.shopInfo?.opened ?? true;
+
     // Datos del usuario (si manejas sesión encriptada como en Header)
     const user_session_key = import.meta.env.VITE_USER_SESSION;
     const userSession = getDecryptedItem(user_session_key);
@@ -389,13 +392,23 @@ const CheckoutShopping = () => {
 
                         {
                             user_session === session_create ?
-                                <button
-                                    disabled={!validate_paymentMethod || !selectedAddressId || !checkAddress}
-                                    onClick={handleSend}
-                                    className="w-full bg-gradient-to-r from-orange-500 to-orange-600 text-white px-5 py-3 rounded-xl font-semibold shadow hover:shadow-md transition disabled:opacity-60"
-                                >
-                                    Enviar pedido por WhatsApp
-                                </button> :
+                                // Si el local está cerrado NO mostramos el botón de enviar pedido
+                                (!shopOpened ? (
+                                    <div className="w-full text-center p-4 bg-yellow-50 border border-yellow-200 rounded-xl">
+                                        <p className="text-orange-800 font-medium">
+                                            El local está cerrado. Puedes seguir agregando productos, pero no es posible enviar el pedido ahora.
+                                        </p>
+                                    </div>
+                                ) : (
+                                    <button
+                                        disabled={!validate_paymentMethod || !selectedAddressId || !checkAddress}
+                                        onClick={handleSend}
+                                        className="w-full bg-gradient-to-r from-orange-500 to-orange-600 text-white px-5 py-3 rounded-xl font-semibold shadow hover:shadow-md transition disabled:opacity-60"
+                                    >
+                                        Enviar pedido por WhatsApp
+                                    </button>
+                                ))
+                                :
 
                                 <div className="w-full text-lg font-medium">
                                     <h5 className="py-2 my-3 italic text-orange-800 rounded-lg">Inicia sessión o Registrate para poder enviar el pedido</h5>
