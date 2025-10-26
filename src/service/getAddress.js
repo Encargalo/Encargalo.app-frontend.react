@@ -1,46 +1,62 @@
-const getAddress = (setAddress) => {
-  if (!navigator.geolocation) {
-    console.warn('Geolocation not available');
-    setAddress(null);
-    return;
-  }
+/**
+ * Obtiene coords localmente con timeout y devuelve la dirección formateada.
+ * No bloquea la aplicación: si falla la geolocalización se setea null.
+ */
+const getCoordsLocal = (timeout = 3000) =>
+  new Promise((resolve, reject) => {
+    if (!navigator.geolocation) {
+      return reject(new Error('Geolocation not available'));
+    }
 
-  const success = (position) => {
-    const coords = {
-      lat: position.coords.latitude,
-      lng: position.coords.longitude,
-    };
+    let settled = false;
+    const timer = setTimeout(() => {
+      if (settled) return;
+      settled = true;
+      reject(new Error('Geolocation timeout'));
+    }, timeout);
+
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        if (settled) return;
+        settled = true;
+        clearTimeout(timer);
+        resolve({
+          lat: position.coords.latitude,
+          lon: position.coords.longitude,
+        });
+      },
+      (err) => {
+        if (settled) return;
+        settled = true;
+        clearTimeout(timer);
+        reject(err);
+      },
+      { enableHighAccuracy: true, timeout }
+    );
+  });
+
+const getAddress = async (setAddress) => {
+  try {
+    // intento rápido de coords; si falla no bloqueamos la UI
+    const coords = await getCoordsLocal(3000);
 
     const apiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
-    const geocodeURL = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${coords.lat},${coords.lng}&key=${apiKey}`;
+    const geocodeURL = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${coords.lat},${coords.lon}&key=${apiKey}`;
 
-    fetch(geocodeURL)
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.status === 'OK' && data.results && data.results.length > 0) {
-          // protejo índice por si no existe
-          const addr = data.results[3] || data.results[0];
-          setAddress(addr.formatted_address);
-        } else {
-          setAddress(null);
-        }
-      })
-      .catch((err) => {
-        console.error('Geocode fetch error', err);
-        setAddress(null);
-      });
-  };
+    const res = await fetch(geocodeURL);
+    const data = await res.json();
 
-  const failure = (err) => {
+    if (data.status === 'OK' && data.results && data.results.length > 0) {
+      const addr = data.results[3] || data.results[0];
+      setAddress(addr.formatted_address);
+    } else {
+      setAddress(null);
+    }
+  } catch (err) {
+    // Si falla (permiso denegado, timeout, error fetch...) no bloquear la app
     console.warn('getAddress error:', err);
     setAddress(null);
-  };
-
-  // timeout opcional en opciones (algunas plataformas lo ignoran)
-  navigator.geolocation.getCurrentPosition(success, failure, {
-    enableHighAccuracy: true,
-    timeout: 5000,
-  });
+  }
 };
 
 export default getAddress;
