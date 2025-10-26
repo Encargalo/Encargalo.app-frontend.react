@@ -171,7 +171,7 @@ const ShopMenu = () => {
 
         <main className="pb-14">
           {/* banner shop*/}
-          <div className="relative sm:h-[40em] overflow-hidden">
+          <div className="relative sm:h-[40em] h-[17em] overflow-hidden">
             <img
               src={shop.banner}
               alt={`Logo de ${shop.name}`}
