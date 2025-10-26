@@ -64,18 +64,22 @@ export function buildWhatsAppMessage(
 
     message += `*Resumen del Producto:*\n\n`;
     message += `- Cantidad: ${quantity}\n`;
-    message += `- Precio Unitario: ${formatNumber(unitPrice, 'es-CO')}\n`;
-    message += `- Total Producto: ${formatNumber(baseProductTotal, 'es-CO')}\n`;
+    message += `- Precio Unitario: ${formatNumber(unitPrice, 'es-CO')}\n\n`; // Agregado salto de línea
+
+    message += `- Total Producto: ${formatNumber(
+      baseProductTotal,
+      'es-CO'
+    )}\n\n`; // Agregado salto de línea
 
     if (additionals.length > 0) {
       const additionalNames = additionals
         .map((a) => `${a.name} (${formatNumber(a.price, 'es-CO')})`)
         .join(', ');
-      message += `- Adicionales: ${additionalNames}\n`;
+      message += `- Adicionales: ${additionalNames}\n\n`; // Agregado salto de línea
       message += `- Total Adicionales: ${formatNumber(
         totalAdditionals,
         'es-CO'
-      )}\n`;
+      )}\n\n`; // Agregado salto de línea
     }
 
     // Agrega un salto de línea antes del subtotal para separarlo visualmente.
