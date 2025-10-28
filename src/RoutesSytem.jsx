@@ -2,7 +2,6 @@
 import { createBrowserRouter } from "react-router-dom";
 import { lazy, Suspense } from "react";
 //stores
-import useLoaderStore from "./store/loaderStore";
 //lazy (usando alias para rutas más limpias)
 const EncargaloApp = lazy(() => import("./EncargaloApp.jsx"));
 const ShopMenu = lazy(() => import("./features/shops/components/ShopMenu.jsx"));
@@ -14,17 +13,15 @@ import UpdatePersonalInfo from "./features/profile/components/UpdatePersonalInfo
 import AddAddress from "./features/profile/components/AddAddress";
 import UpdatePassword from "./features/profile/components/UpdatePassword";
 import Loader from "./components/Loader.jsx";
+import { WithLoader } from "./store/WithLoader";
 
-// HOC para envolver cada página y activar Loader global
-function WithLoader({ children }) {
-  const { isLoading } = useLoaderStore();
-  return (
-    <>
-      {isLoading && <Loader />} {/* Loader global */}
+const LoadingWrapper = ({ children }) => (
+  <Suspense fallback={<Loader />}>
+    <WithLoader>
       {children}
-    </>
-  );
-}
+    </WithLoader>
+  </Suspense>
+);
 
 
 const RoutesSystem = createBrowserRouter([
@@ -33,11 +30,9 @@ const RoutesSystem = createBrowserRouter([
   {
     path: "/",
     element: (
-      <Suspense fallback={<Loader />}>
-        <WithLoader>
-          <EncargaloApp />
-        </WithLoader>
-      </Suspense>
+      <LoadingWrapper>
+        <EncargaloApp />
+      </LoadingWrapper>
     ),
   },
 
@@ -45,12 +40,9 @@ const RoutesSystem = createBrowserRouter([
   {
     path: "/:tag_shop",
     element: (
-      <Suspense fallback={<Loader />}>
-        <WithLoader>
-          <ShopMenu />
-        </WithLoader>
-      </Suspense>
-
+      <LoadingWrapper>
+        <ShopMenu />
+      </LoadingWrapper>
     ),
   },
 
