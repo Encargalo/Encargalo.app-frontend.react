@@ -1,21 +1,21 @@
-import { GoogleMap, useJsApiLoader } from "@react-google-maps/api";
-import { MapPin } from "lucide-react";
-import { useEffect, useState, useRef } from "react";
+import { GoogleMap, useJsApiLoader } from '@react-google-maps/api';
+import { MapPin } from 'lucide-react';
+import { useEffect, useState, useRef } from 'react';
 
 const containerStyle = {
-  width: "100%",
-  height: "400px",
-  position: "relative",
-  borderRadius: "10px",
-  display: "flex",
-  justifyContent: "center",
-  alignItems: "center",
-  marginTop: "10px",
+  width: '100%',
+  height: '400px',
+  position: 'relative',
+  borderRadius: '10px',
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  marginTop: '10px',
 };
 
 const MapComponent = ({ onAddressSelect }) => {
   const { isLoaded } = useJsApiLoader({
-    id: "google-map-script",
+    id: 'google-map-script',
     googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAPS_API_KEY,
   });
 
@@ -33,7 +33,7 @@ const MapComponent = ({ onAddressSelect }) => {
         setCenter(coords);
         fetchAddress(coords);
       },
-      (error) => console.error("Error obteniendo ubicación", error),
+      (error) => console.error('Error obteniendo ubicación', error),
       { enableHighAccuracy: true }
     );
   }, []);
@@ -50,7 +50,7 @@ const MapComponent = ({ onAddressSelect }) => {
         onAddressSelect({ address, coords });
       }
     } catch (error) {
-      console.error("Error obteniendo dirección:", error);
+      console.error('Error obteniendo dirección:', error);
     }
   };
 
@@ -73,23 +73,28 @@ const MapComponent = ({ onAddressSelect }) => {
           fetchAddress(coords);
           setCenter(coords);
         },
-        (error) => console.error("Error obteniendo ubicación", error),
+        (error) => console.error('Error obteniendo ubicación', error),
         { enableHighAccuracy: true }
       );
     }
   };
 
-  // ⚠️ Renderizamos solo cuando isLoaded y center ya tienen valor
-  if (!isLoaded || !center) return (
-    <div className="h-2/3 w-full relative">
-      <div className="w-12 h-12 border-4 border-orange-950 border-b-orange-600 rounded-full animate-spin absolute top-2/3 left-[150px] sm:left-[370px]"></div>
-    </div>
-  );
+  if (!isLoaded || !center)
+    return (
+      <div className="h-2/3 w-full relative">
+        {/* ⚠️ Renderizamos solo cuando isLoaded y center ya tienen valor */}
+        <div className="w-12 h-12 border-4 border-orange-950 border-b-orange-600 rounded-full animate-spin absolute top-2/3 left-[150px] sm:left-[370px]"></div>
+      </div>
+    );
 
   return (
     <div style={containerStyle}>
       <GoogleMap
-        mapContainerStyle={{ width: "80%", height: "70%", borderRadius: "10px" }}
+        mapContainerStyle={{
+          width: '80%',
+          height: '70%',
+          borderRadius: '10px',
+        }}
         center={center}
         zoom={15}
         onLoad={(map) => (mapRef.current = map)}
@@ -97,7 +102,7 @@ const MapComponent = ({ onAddressSelect }) => {
         options={{
           streetViewControl: false,
           mapTypeControl: false,
-          gestureHandling: "greedy",
+          gestureHandling: 'greedy',
         }}
       />
       <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-full text-3xl">

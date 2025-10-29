@@ -13,6 +13,7 @@ dist-ssr
 mis_cambios.diff
 *.local
 .env
+mis_cambios.diff
 
 # Editor directories and files
 .vscode/*
