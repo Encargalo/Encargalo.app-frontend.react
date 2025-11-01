@@ -1,44 +1,14 @@
+import getCoordsCustomer from '../utils/getCoordsCustomer';
+
 /**
  * Obtiene coords localmente con timeout y devuelve la dirección formateada.
  * No bloquea la aplicación: si falla la geolocalización se setea null.
  */
-const getCoordsLocal = (timeout = 3000) =>
-  new Promise((resolve, reject) => {
-    if (!navigator.geolocation) {
-      return reject(new Error('Geolocation not available'));
-    }
-
-    let settled = false;
-    const timer = setTimeout(() => {
-      if (settled) return;
-      settled = true;
-      reject(new Error('Geolocation timeout'));
-    }, timeout);
-
-    navigator.geolocation.getCurrentPosition(
-      (position) => {
-        if (settled) return;
-        settled = true;
-        clearTimeout(timer);
-        resolve({
-          lat: position.coords.latitude,
-          lon: position.coords.longitude,
-        });
-      },
-      (err) => {
-        if (settled) return;
-        settled = true;
-        clearTimeout(timer);
-        reject(err);
-      },
-      { enableHighAccuracy: true, timeout }
-    );
-  });
-
 const getAddress = async (setAddress) => {
+  let coords;
   try {
     // intento rápido de coords; si falla no bloqueamos la UI
-    const coords = await getCoordsLocal(3000);
+    coords = await getCoordsCustomer(3000);
 
     const apiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
     const geocodeURL = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${coords.lat},${coords.lon}&key=${apiKey}`;
