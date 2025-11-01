@@ -17,7 +17,12 @@ const getShopDetails = async (setShop, setCategories, tag_shop) => {
       lat: 3.4273946
       lon: -76.4908917
     */
-    const coords = await getCoordsCustomer();
+    let coords;
+    try {
+      coords = await getCoordsCustomer();
+    } catch (err) {
+      return err;
+    }
     const response = await api.get(
       `/shops?tag=${tag_shop}&lat=${coords.lat}&lon=${coords.lon}`
     );

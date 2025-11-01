@@ -1,11 +1,11 @@
-const TTL = 5 * 60 * 1000; // cache 5 minutos
+const TTL = 5 * 60 * 1000; // Cache de 5 minutos
 
 let cachedCoords = null;
 let cachedAt = 0;
 let pendingPromise = null;
 
-const getCoordsCustomer = (timeout = 5000, force = false) => {
-  // si hay cache válida y no forzamos, devolverla
+const getCoordsCustomer = (force = false) => {
+  // Si hay caché válida y no se fuerza, devolverla.
   if (!force && cachedCoords && Date.now() - cachedAt < TTL) {
     return Promise.resolve(cachedCoords);
   }
@@ -21,18 +21,7 @@ const getCoordsCustomer = (timeout = 5000, force = false) => {
       return reject(new Error('Geolocation not available'));
     }
 
-    let settled = false;
-    const timer = setTimeout(() => {
-      if (settled) return;
-      settled = true;
-      pendingPromise = null;
-      reject(new Error('Geolocation timeout'));
-    }, timeout + 200);
-
     const success = (position) => {
-      if (settled) return;
-      settled = true;
-      clearTimeout(timer);
       const coords = {
         lat: position.coords.latitude,
         lon: position.coords.longitude,
@@ -44,16 +33,12 @@ const getCoordsCustomer = (timeout = 5000, force = false) => {
     };
 
     const failure = (error) => {
-      if (settled) return;
-      settled = true;
-      clearTimeout(timer);
       pendingPromise = null;
       reject(error);
     };
 
     navigator.geolocation.getCurrentPosition(success, failure, {
       enableHighAccuracy: true,
-      timeout,
     });
   });
 

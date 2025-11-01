@@ -175,10 +175,10 @@ const ShopMenu = () => {
             <img
               src={shop.banner || shop.logo}
               alt={`Imagen de ${shop.name}`}
-              className="w-full h-full object-cover object-center
+              className="w-full h-full object-cover object-center"
             />
             {/* overlay negro actual */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black /50 to-transparent"
+            <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
 
             {/* nuevo overlay anaranjado con blur si el local está cerrado */}
             {shop && shop.opened === false && (
