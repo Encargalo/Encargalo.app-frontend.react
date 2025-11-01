@@ -2,7 +2,7 @@
 import { ArrowUpLeft } from "lucide-react";
 import { ilustrations } from "../assets/ilustrations";
 import { useEffect, useState } from "react";
-import { setEncryptedItem, getDecryptedItem } from "../utils/encryptionUtilities"; // <-- Importa utilidades
+import { setEncryptedItem, getDecryptedItem } from "../utils/encryptionUtilities";
 
 const VITE_REQUEST_LOCATION = import.meta.env.VITE_REQUEST_LOCATION;
 
@@ -10,7 +10,8 @@ const RequestLocationModal = () => {
     const [isOpen, setIsOpen] = useState(false);
     const [instructions, setInstructions] = useState("");
     const [platform, setPlatform] = useState("");
-    const [permissionStatus, setPermissionStatus] = useState("prompt"); // 'prompt', 'granted', 'denied'
+    const [permissionStatus, setPermissionStatus] = useState("prompt");
+    const [showRefreshMessage, setShowRefreshMessage] = useState(false);
 
     // Detectar tipo de dispositivo/navegador
     const detectPlatform = () => {
@@ -60,38 +61,60 @@ const RequestLocationModal = () => {
         setPlatform(platform);
         setInstructions(getInstructions(platform));
 
-        // Verifica si ya se mostró el agradecimiento
-        const thanked = getDecryptedItem(VITE_REQUEST_LOCATION) === true;
-        if (thanked) {
-            setIsOpen(false);
-            return;
-        }
-
-        if (navigator.permissions) {
-            navigator.permissions.query({ name: "geolocation" }).then((result) => {
-                setPermissionStatus(result.state);
-                setIsOpen(true);
-
-                result.onchange = () => {
-                    // Actualiza el estado y mantiene el modal abierto para mostrar el mensaje correcto
+        const checkPermissions = async () => {
+            try {
+                if (navigator.permissions) {
+                    const result = await navigator.permissions.query({ name: "geolocation" });
                     setPermissionStatus(result.state);
-                    setIsOpen(true);
-                };
-            });
-        } else {
-            setIsOpen(true);
-        }
+
+                    // Verificar si los permisos están concedidos
+                    if (result.state === "granted") {
+                        const hasRefreshed = getDecryptedItem(VITE_REQUEST_LOCATION) === true;
+                        if (hasRefreshed) {
+                            setIsOpen(false);
+                            setShowRefreshMessage(false);
+                        } else {
+                            setShowRefreshMessage(true);
+                        }
+                    } else {
+                        setIsOpen(true);
+                        setShowRefreshMessage(false);
+                    }
+
+                    result.onchange = () => {
+                        setPermissionStatus(result.state);
+                        if (result.state === "granted") {
+                            const hasRefreshed = getDecryptedItem(VITE_REQUEST_LOCATION) === true;
+                            if (hasRefreshed) {
+                                setIsOpen(false);
+                                setShowRefreshMessage(false);
+                            } else {
+                                setShowRefreshMessage(true);
+                            }
+                        } else {
+                            setIsOpen(true);
+                            setShowRefreshMessage(false);
+                            setEncryptedItem(VITE_REQUEST_LOCATION, false);
+                        }
+                    };
+                }
+            } catch (error) {
+                setIsOpen(true);
+            }
+        };
+
+        checkPermissions();
+        const intervalId = setInterval(checkPermissions, 2000);
+
+        return () => clearInterval(intervalId);
     }, []);
 
-    const handleClose = () => {
-        // Si ya se agradeció y permisos concedidos, guarda en localStorage encriptado
-        if (permissionStatus === "granted") {
-            setEncryptedItem(VITE_REQUEST_LOCATION, true);
-        }
-        setIsOpen(false);
+    const handleRefresh = () => {
+        setEncryptedItem(VITE_REQUEST_LOCATION, true);
+        window.location.reload();
     };
 
-    if (!isOpen) return null;
+    if (!isOpen && !showRefreshMessage) return null;
 
     return (
         <dialog
@@ -106,20 +129,28 @@ const RequestLocationModal = () => {
                 {/* Header */}
                 <header className="bg-gradient-to-r from-orange-500 to-orange-600 px-9 py-8">
                     <h2 className="text-2xl sm:text-4xl font-bold text-white">
-                        ¡Ayúdanos con tu ubicación!
+                        {showRefreshMessage
+                            ? "¡Listo! Ya puedes refrescar la página"
+                            : "¡Ayúdanos con tu ubicación!"}
                     </h2>
                 </header>
 
                 {/* Contenido */}
                 <div className="px-6 pt-6 pb-4 text-center text-gray-700 text-lg sm:text-xl font-medium">
-                    {permissionStatus === "granted" ? (
-                        <div>
-                            <p className="mb-2">✅ ¡Gracias por permitir el acceso a tu ubicación!</p>
-                            <p className="mb-2">Ya puedes cerrar este mensaje y continuar usando la aplicación.</p>
+                    {showRefreshMessage ? (
+                        <div className="flex flex-col items-center gap-4">
+                            <p className="mb-2">¡Gracias por permitir el acceso a tu ubicación!</p>
+                            <p className="mb-4">Para que los cambios surtan efecto, necesitas refrescar la página.</p>
+                            <button
+                                onClick={handleRefresh}
+                                className="bg-orange-500 hover:bg-orange-600 text-white font-bold py-3 px-6 rounded-lg transition-colors"
+                            >
+                                Refrescar página
+                            </button>
                         </div>
                     ) : permissionStatus === "denied" ? (
                         <div>
-                            <p className="mb-2">🚫 Parece que bloqueaste el acceso a tu ubicación.</p>
+                            <p className="mb-2">Parece que bloqueaste el acceso a tu ubicación.</p>
                             <p className="mb-2">Para continuar, sigue estos pasos:</p>
                             {instructions}
                         </div>
@@ -134,16 +165,6 @@ const RequestLocationModal = () => {
                             />
                         </div>
                     )}
-                </div>
-
-                {/* Botones */}
-                <div className="px-6 pb-6 w-full flex flex-col sm:flex-row gap-3 justify-center">
-                    <button
-                        onClick={handleClose}
-                        className="w-full bg-gray-200 hover:bg-gray-300 text-gray-700 font-bold py-3 rounded-xl transition-all duration-300 shadow text-base sm:text-lg"
-                    >
-                        Cerrar
-                    </button>
                 </div>
             </section>
         </dialog>

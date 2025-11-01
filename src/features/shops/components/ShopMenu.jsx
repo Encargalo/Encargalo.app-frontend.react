@@ -18,6 +18,7 @@ import { getDecryptedItem } from "../../../utils/encryptionUtilities";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import getBestSellingFoods from "../services/getBestSellingFoods.js";
+import RequestLocationModal from "../../../components/RequestLocationModal.jsx";
 
 const ShopMenu = () => {
   // Estados
@@ -425,6 +426,7 @@ const ShopMenu = () => {
       {/* modals */}
       <SessionModal />
       <WelcomeCustomerModal />
+      <RequestLocationModal />
     </div>
   );
 };
