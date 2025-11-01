@@ -10,16 +10,22 @@ const getAllShops = async (setShops) => {
   try {
     let coordsCustomer;
     try {
-      coordsCustomer = await getCoordsCustomer(5000);
+      coordsCustomer = await getCoordsCustomer();
     } catch (err) {
       return err;
     }
 
-    const response = await api.get(
-      `/shops/all?lat=${coordsCustomer.lat}&lon=${coordsCustomer.lon}`
-    );
+    try {
+      const response = await api.get(
+        `/shops/all?lat=${coordsCustomer.lat}&lon=${coordsCustomer.lon}`
+      );
 
-    if (response.status === 200) setShops(response.data);
+      if (response.status === 200) setShops(response.data);
+    } catch (apiErr) {
+      return apiErr;
+    }
+  } catch (error) {
+    return error;
   } finally {
     hideLoader();
   }
