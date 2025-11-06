@@ -1,17 +1,13 @@
 //ilustrations
 import { ArrowUpLeft } from "lucide-react";
 import { ilustrations } from "../assets/ilustrations";
-import { useEffect, useState } from "react";
-import { setEncryptedItem, getDecryptedItem } from "../utils/encryptionUtilities";
-
-const VITE_REQUEST_LOCATION = import.meta.env.VITE_REQUEST_LOCATION;
+import { useEffect, useState, useCallback } from "react";
 
 const RequestLocationModal = () => {
     const [isOpen, setIsOpen] = useState(false);
-    const [instructions, setInstructions] = useState("");
-    const [platform, setPlatform] = useState("");
+    const [instructions, setInstructions] = useState(null);
+    const [platform, setPlatform] = useState(null);
     const [permissionStatus, setPermissionStatus] = useState("prompt");
-    const [showRefreshMessage, setShowRefreshMessage] = useState(false);
 
     // Detectar tipo de dispositivo/navegador
     const detectPlatform = () => {
@@ -55,66 +51,40 @@ const RequestLocationModal = () => {
         }
     };
 
-    // Verifica el permiso de geolocalización al montar el componente
-    useEffect(() => {
-        const platform = detectPlatform();
-        setPlatform(platform);
-        setInstructions(getInstructions(platform));
+    const checkPermissions = useCallback(async () => {
+        const currentPlatform = detectPlatform();
+        setPlatform(currentPlatform);
+        setInstructions(getInstructions(currentPlatform));
 
-        const checkPermissions = async () => {
-            try {
-                if (navigator.permissions) {
-                    const result = await navigator.permissions.query({ name: "geolocation" });
-                    setPermissionStatus(result.state);
+        try {
+            if (navigator.permissions) {
+                const result = await navigator.permissions.query({ name: "geolocation" });
+                setPermissionStatus(result.state);
 
-                    // Verificar si los permisos están concedidos
-                    if (result.state === "granted") {
-                        const hasRefreshed = getDecryptedItem(VITE_REQUEST_LOCATION) === true;
-                        if (hasRefreshed) {
-                            setIsOpen(false);
-                            setShowRefreshMessage(false);
-                        } else {
-                            setShowRefreshMessage(true);
-                        }
-                    } else {
-                        setIsOpen(true);
-                        setShowRefreshMessage(false);
-                    }
-
-                    result.onchange = () => {
-                        setPermissionStatus(result.state);
-                        if (result.state === "granted") {
-                            const hasRefreshed = getDecryptedItem(VITE_REQUEST_LOCATION) === true;
-                            if (hasRefreshed) {
-                                setIsOpen(false);
-                                setShowRefreshMessage(false);
-                            } else {
-                                setShowRefreshMessage(true);
-                            }
-                        } else {
-                            setIsOpen(true);
-                            setShowRefreshMessage(false);
-                            setEncryptedItem(VITE_REQUEST_LOCATION, false);
-                        }
-                    };
+                // Solo mostrar el modal si el permiso no está concedido
+                if (result.state !== "granted") {
+                    setIsOpen(true);
                 }
-            } catch (error) {
-                setIsOpen(true);
+
+                result.onchange = () => {
+                    setPermissionStatus(result.state);
+                    if (result.state === "granted") {
+                        window.location.reload();
+                    }
+                };
             }
-        };
-
-        checkPermissions();
-        const intervalId = setInterval(checkPermissions, 2000);
-
-        return () => clearInterval(intervalId);
+        } catch (error) {
+            setIsOpen(true);
+        }
     }, []);
 
-    const handleRefresh = () => {
-        setEncryptedItem(VITE_REQUEST_LOCATION, true);
-        window.location.reload();
-    };
+    // Verifica el permiso de geolocalización al montar el componente
+    useEffect(() => {
+        checkPermissions();
+        // Se elimina el intervalo para evitar recargas constantes.
+    }, [checkPermissions]);
 
-    if (!isOpen && !showRefreshMessage) return null;
+    if (!isOpen) return null;
 
     return (
         <dialog
@@ -128,27 +98,12 @@ const RequestLocationModal = () => {
             <section className="bg-white rounded-2xl shadow-2xl w-full lg:w-2/4 overflow-hidden animate-fadeIn">
                 {/* Header */}
                 <header className="bg-gradient-to-r from-orange-500 to-orange-600 px-9 py-8">
-                    <h2 className="text-2xl sm:text-4xl font-bold text-white">
-                        {showRefreshMessage
-                            ? "¡Listo! Ya puedes refrescar la página"
-                            : "¡Ayúdanos con tu ubicación!"}
-                    </h2>
+                    <h2 className="text-2xl sm:text-4xl font-bold text-white">¡Ayúdanos con tu ubicación!</h2>
                 </header>
 
                 {/* Contenido */}
                 <div className="px-6 pt-6 pb-4 text-center text-gray-700 text-lg sm:text-xl font-medium">
-                    {showRefreshMessage ? (
-                        <div className="flex flex-col items-center gap-4">
-                            <p className="mb-2">¡Gracias por permitir el acceso a tu ubicación!</p>
-                            <p className="mb-4">Para que los cambios surtan efecto, necesitas refrescar la página.</p>
-                            <button
-                                onClick={handleRefresh}
-                                className="bg-orange-500 hover:bg-orange-600 text-white font-bold py-3 px-6 rounded-lg transition-colors"
-                            >
-                                Refrescar página
-                            </button>
-                        </div>
-                    ) : permissionStatus === "denied" ? (
+                    {permissionStatus === "denied" ? (
                         <div>
                             <p className="mb-2">Parece que bloqueaste el acceso a tu ubicación.</p>
                             <p className="mb-2">Para continuar, sigue estos pasos:</p>
