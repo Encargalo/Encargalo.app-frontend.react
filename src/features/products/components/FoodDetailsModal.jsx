@@ -245,7 +245,7 @@ const FoodDetailsModal = ({ food, onClose }) => {
                             <Minus className="size-4" />
                           </button>
                           <span className="text-xl font-bold w-6 text-center">{currentQty}</span>
-                          <button onClick={() => handleFlavorQuantityChange(flavor, 1)} className="bg-orange-500 hover:bg-orange-600 text-white p-2 rounded-full disabled:opacity-50">
+                          <button onClick={() => handleFlavorQuantityChange(flavor, 1)} disabled={totalSelectedFlavors >= flavorRules.maxFlavors} className="bg-orange-500 hover:bg-orange-600 text-white p-2 rounded-full disabled:opacity-50">
                             <Plus className="size-4" />
                           </button>
                         </div>
