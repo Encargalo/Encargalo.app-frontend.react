@@ -1,5 +1,5 @@
 //lucide react / icons
-import { ArrowLeft, ChevronLeft, ChevronRight, Plus, Star } from "lucide-react";
+import { ArrowLeft, ChevronLeft, ChevronRight, Plus, Star, Tag } from "lucide-react";
 //components
 import SessionModal from "../../auth/components/SessionModal";
 import UserMenu from "../../../components/UserMenu.jsx";
@@ -27,6 +27,8 @@ const ShopMenu = () => {
   const [selectedCategory, setSelectedCategory] = useState("all");
   const carouselRef = useRef(null);
   const bestSellingCarouselRefMobile = useRef(null);
+  const discountedCarouselRef = useRef(null);
+  const discountedCarouselRefMobile = useRef(null);
   const bestSellingCarouselRef = useRef(null);
   const [userData, setUserData] = useState({});
 
@@ -122,6 +124,23 @@ const ShopMenu = () => {
     });
   };
 
+  const scrollDiscountedCarousel = (direction) => {
+    const scrollAmount = 336; // Ancho de tarjeta PC + gap
+    [discountedCarouselRef, discountedCarouselRefMobile].forEach(ref => {
+      const carousel = ref.current;
+      if (carousel) {
+        const currentScrollAmount = carousel === discountedCarouselRefMobile.current ? 208 : scrollAmount;
+        const newScrollLeft =
+          carousel.scrollLeft +
+          (direction === "left" ? -currentScrollAmount : currentScrollAmount);
+        carousel.scrollTo({
+          left: newScrollLeft,
+          behavior: "smooth",
+        });
+      }
+    });
+  };
+
   //user data
   useEffect(() => {
     const user_session = import.meta.env.VITE_USER_SESSION
@@ -133,6 +152,12 @@ const ShopMenu = () => {
   const validCategories = useMemo(() => categories.filter(
     (category) => Array.isArray(category.items) && category.items.length > 0
   ), [categories]);
+
+  const discountedItems = useMemo(() =>
+    categories
+      .flatMap(category => category.items || [])
+      .filter(item => item.rules?.some(rule => rule.rule_key === 'discount'))
+    , [categories]);
 
   return (
     <div className="min-h-dvh w-full background">
@@ -233,6 +258,20 @@ const ShopMenu = () => {
                   Todas
                 </button>
 
+                {/* Botón de Descuentos */}
+                {discountedItems.length > 0 && (
+                  <button
+                    onClick={() => setSelectedCategory("discounts")}
+                    className={`relative flex items-center gap-2 px-4 py-2 sm:text-lg font-medium rounded-full transition-all whitespace-nowrap group ${selectedCategory === "discounts"
+                      ? "bg-red-600 text-white"
+                      : "bg-white text-red-600 border border-red-300 hover:bg-red-50"
+                      }`}
+                  >
+                    <Tag className="size-4" />
+                    Descuentos
+                  </button>
+                )}
+
                 {/* map buttons categories */}
                 {validCategories.map((category) => (
                   <button
@@ -257,12 +296,86 @@ const ShopMenu = () => {
             </nav>
           )}
 
+          {/* Discounted Items Section (when 'all' is selected) */}
+          {selectedCategory === 'all' && discountedItems.length > 0 && (
+            <section className="px-3 sm:px-6 lg:px-8 pt-8">
+              <header className="flex items-center justify-between mb-4">
+                <h2 className="text-xl font-bold text-white">
+                  ¡Tu Descuento Ideal!
+                </h2>
+                <div className="flex space-x-2">
+                  <button
+                    onClick={() => scrollDiscountedCarousel("left")}
+                    className="bg-white hover:bg-orange-50 border-2 border-gray-200 hover:border-orange-300 rounded-full p-2 transition-all duration-300 shadow-md hover:shadow-lg"
+                  >
+                    <ChevronLeft className="size-4 text-gray-600 hover:text-orange-600" />
+                  </button>
+                  <button
+                    onClick={() => scrollDiscountedCarousel("right")}
+                    className="bg-white hover:bg-orange-50 border-2 border-gray-200 hover:border-orange-300 rounded-full p-2 transition-all duration-300 shadow-md hover:shadow-lg"
+                  >
+                    <ChevronRight className="size-4 text-gray-600 hover:text-orange-600" />
+                  </button>
+                </div>
+              </header>
+              {/* Vista para Móviles (diseño compacto) */}
+              <div ref={discountedCarouselRefMobile} className="flex gap-4 overflow-x-auto no-scrollbar pb-4 sm:hidden">
+                {discountedItems.map((item) => (
+                  <div key={item.id} className="flex-shrink-0 w-48">
+                    <article onClick={() => handleFoodClick(item)} className="bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden border border-gray-100 cursor-pointer group h-full flex flex-col">
+
+                      {/* header */}
+                      <header className="relative">
+                        {/* image */}
+                        <img src={item.image} alt={item.name} className="w-full h-32 object-cover" />
+
+                        {/* score */}
+                        <div className="absolute top-2 right-2 flex items-center bg-white/90 backdrop-blur-sm px-2 py-1 rounded-full shadow-md">
+                          <Star className="size-3 text-orange-500 fill-current mr-1" /><span className="text-xs font-bold">{item.score}</span>
+                        </div>
+
+                        {/* rules */}
+                        {item.rules?.find(r => r.rule_key === 'discount') && (
+                          <div className="absolute bottom-0 left-0 right-0 background_discount text-white text-center py-1 text-xs font-bold">
+                            {`Descuento ${item.rules.find(r => r.rule_key === 'discount').rule_value}%`}
+                          </div>
+                        )}
+                      </header>
+
+                      {/* body */}
+                      <div className="p-3 flex flex-col flex-grow">
+                        <h3 className="text-base font-bold text-gray-900 truncate group-hover:text-orange-600">{item.name}</h3>
+                        <p className="text-sm text-gray-600 truncate flex-grow">{item.description}</p>
+
+                        {/* footer */}
+                        <footer className="flex items-center justify-between mt-2">
+                          {/* price */}
+                          <p className="text-base font-bold text-orange-600">${formatNumber(item.price)}</p>
+                          {/* button */}
+                          <button className="bg-orange-500 text-white p-1.5 rounded-full shadow-md hover:bg-orange-600"><Plus className="size-4" /></button>
+                        </footer>
+                      </div>
+                    </article>
+                  </div>
+                ))}
+              </div>
+
+              {/* Vista para PC (diseño con ItemCard) */}
+              <div ref={discountedCarouselRef} className="hidden sm:flex gap-4 overflow-x-auto no-scrollbar pb-4">
+                {discountedItems.map((item) => (
+                  <div key={item.id} className="flex-shrink-0 w-72 sm:w-80">
+                    <ItemCard item={item} onItemClick={handleFoodClick} />
+                  </div>
+                ))}
+              </div>
+            </section>
+          )}
           {/* Best Selling Foods */}
           {selectedCategory === "all" && bestSellingFoods.length > 0 && (
-            <div className="w-full px-3 pt-8 sm:px-6 lg:px-8">
+            <div className="w-full px-3 pt-7 sm:px-6 lg:px-8">
               <section className="relative">
                 <header className="flex items-center justify-between mb-4">
-                  <h2 className="text-2xl font-bold text-white">
+                  <h2 className="text-xl font-bold text-white">
                     ¡Los más vendido!
                   </h2>
                   <div className="flex space-x-2">
@@ -270,13 +383,13 @@ const ShopMenu = () => {
                       onClick={() => scrollBestSellingCarousel("left")}
                       className="bg-white hover:bg-orange-50 border-2 border-gray-200 hover:border-orange-300 rounded-full p-2 transition-all duration-300 shadow-md hover:shadow-lg"
                     >
-                      <ChevronLeft className="size-5 text-gray-600 hover:text-orange-600" />
+                      <ChevronLeft className="size-4 text-gray-600 hover:text-orange-600" />
                     </button>
                     <button
                       onClick={() => scrollBestSellingCarousel("right")}
                       className="bg-white hover:bg-orange-50 border-2 border-gray-200 hover:border-orange-300 rounded-full p-2 transition-all duration-300 shadow-md hover:shadow-lg"
                     >
-                      <ChevronRight className="size-5 text-gray-600 hover:text-orange-600" />
+                      <ChevronRight className="size-4 text-gray-600 hover:text-orange-600" />
                     </button>
                   </div>
                 </header>
@@ -285,14 +398,38 @@ const ShopMenu = () => {
                 <div ref={bestSellingCarouselRefMobile} className="flex gap-4 overflow-x-auto no-scrollbar pb-4 sm:hidden">
                   {bestSellingFoods.map((item) => (
                     <div key={item.id} className="flex-shrink-0 w-48">
-                      <article onClick={() => handleFoodClick(item)} className="bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden border border-gray-100 cursor-pointer group">
+                      <article onClick={() => handleFoodClick(item)} className="bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden border border-gray-100 cursor-pointer group h-full flex flex-col">
+
+                        {/* header */}
                         <header className="relative">
+                          {/* image */}
                           <img src={item.image} alt={item.name} className="w-full h-32 object-cover" />
-                          <div className="absolute top-2 right-2 flex items-center bg-white/90 backdrop-blur-sm px-2 py-1 rounded-full shadow-md"><Star className="size-3 text-orange-500 fill-current mr-1" /><span className="text-xs font-bold">{item.score}</span></div>
+
+                          {/* score */}
+                          <div className="absolute top-2 right-2 flex items-center bg-white/90 backdrop-blur-sm px-2 py-1 rounded-full shadow-md">
+                            <Star className="size-3 text-orange-500 fill-current mr-1" /><span className="text-xs font-bold">{item.score}</span>
+                          </div>
+
+                          {/* rules */}
+                          {item.rules?.find(r => r.rule_key === 'discount') && (
+                            <div className="absolute bottom-0 left-0 right-0 bg-red-600 text-white text-center py-1 text-xs font-bold">
+                              {`Descuento ${item.rules.find(r => r.rule_key === 'discount').rule_value}%`}
+                            </div>
+                          )}
                         </header>
-                        <div className="p-3">
-                          <h3 className="text-base font-bold text-gray-900 truncate group-hover:text-orange-600">{item.name}</h3><p className="text-sm text-gray-600 truncate">{item.description}</p>
-                          <footer className="flex items-center justify-between mt-2"><p className="text-base font-bold text-orange-600">${formatNumber(item.price)}</p><button className="bg-orange-500 text-white p-1.5 rounded-full shadow-md hover:bg-orange-600"><Plus className="size-4" /></button></footer>
+
+                        {/* body */}
+                        <div className="p-3 flex flex-col flex-grow">
+                          <h3 className="text-base font-bold text-gray-900 truncate group-hover:text-orange-600">{item.name}</h3>
+                          <p className="text-sm text-gray-600 truncate flex-grow">{item.description}</p>
+
+                          {/* footer */}
+                          <footer className="flex items-center justify-between mt-2">
+                            {/* price */}
+                            <p className="text-base font-bold text-orange-600">${formatNumber(item.price)}</p>
+                            {/* button */}
+                            <button className="bg-orange-500 text-white p-1.5 rounded-full shadow-md hover:bg-orange-600"><Plus className="size-4" /></button>
+                          </footer>
                         </div>
                       </article>
                     </div>
@@ -318,6 +455,7 @@ const ShopMenu = () => {
               (category) =>
                 // Muestra la categoría solo si está seleccionada o si se eligen "Todas"
                 (selectedCategory === "all" ||
+                  selectedCategory === "discounts" && discountedItems.some(dItem => category.items.some(cItem => cItem.id === dItem.id)) ||
                   selectedCategory === category.id) && (
                   <section key={category.id} className="mb-8">
                     {/* name category */}
@@ -326,65 +464,75 @@ const ShopMenu = () => {
                     </h2>
 
                     {/* products */}
-                    {category.items && category.items.length > 0 ? (
+                    {category.items?.length > 0 ? (
                       <>
                         {/* Vista en GRID → solo en sm en adelante */}
                         <div className="hidden sm:grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                          {category.items.map((item) => (
-                            <ItemCard
-                              key={item.id}
-                              item={item}
-                              onItemClick={handleFoodClick}
-                            />
-                          ))}
+                          {(selectedCategory === 'discounts' ? discountedItems.filter(dItem => category.items.some(cItem => cItem.id === dItem.id)) : category.items)
+                            .map((item) => (
+                              <ItemCard
+                                key={item.id}
+                                item={item}
+                                onItemClick={handleFoodClick}
+                              />
+                            ))}
                         </div>
 
                         {/* Vista en LISTA → solo en móviles */}
                         <ul className="flex flex-col gap-y-3 sm:hidden">
-                          {category.items.map((item) => (
-                            <li
-                              key={item.id}
-                              className="flex gap-2 p-3 bg-white rounded-xl shadow relative"
-                              onClick={() => handleFoodClick(item)}
-                            >
-                              {/* info */}
-                              <article className="flex-1 flex flex-col justify-between gap-2">
-                                <div className="space-y-1">
-                                  {/* name */}
-                                  <h3 className="text-base font-semibold">{item.name}</h3>
-                                  {/* description */}
-                                  <p className="text-sm text-gray-600 line-clamp-3">{item.description}</p>
-                                </div>
-                                {/* price & score */}
-                                <div className="flex w-full items-center justify-between">
-                                  <p className="font-bold text-orange-600 text-base">
-                                    ${formatNumber(item.price, "es-CO")}
-                                  </p>
-                                  <div className="flex items-center pr-2">
-                                    {/* star icon */}
-                                    <Star className="size-3 text-orange-500 fill-current mr-1" />
-                                    {/* score */}
-                                    <span className="text-sm font-bold text-gray-900">
-                                      {item.score}
-                                    </span>
+                          {(selectedCategory === 'discounts' ? discountedItems.filter(dItem => category.items.some(cItem => cItem.id === dItem.id)) : category.items)
+                            .map((item) => (
+                              <li
+                                key={item.id}
+                                className="flex gap-2 p-3 bg-white rounded-xl shadow"
+                                onClick={() => handleFoodClick(item)}
+                              >
+                                {/* info */}
+                                <article className="flex-1 flex flex-col justify-between gap-2">
+                                  <div className="space-y-1 mb-2">
+                                    {/* name */}
+                                    <h3 className="text-base font-semibold truncate">{item.name}</h3>
+                                    {/* description */}
+                                    <p className="text-sm text-gray-600 line-clamp-3">{item.description}</p>
+
+                                    {/* discount */}
+                                    {item.rules?.find(r => r.rule_key === 'discount') && (
+                                      <div className="w-max px-2 background_discount text-white text-center py-0.5 text-sm font-bold rounded-md ">
+                                        {`Descuento del ${item.rules.find(r => r.rule_key === 'discount').rule_value}%`}
+                                      </div>
+                                    )}
                                   </div>
-                                </div>
 
-                              </article>
+                                  {/* price & score */}
+                                  <div className="flex w-full items-center justify-between">
+                                    <p className="font-bold text-orange-600 text-base">
+                                      ${formatNumber(item.price, "es-CO")}
+                                    </p>
+                                    <div className="flex items-center pr-2">
+                                      {/* star icon */}
+                                      <Star className="size-3 text-orange-500 fill-current mr-1" />
+                                      {/* score */}
+                                      <span className="text-sm font-bold text-gray-900">
+                                        {item.score}
+                                      </span>
+                                    </div>
+                                  </div>
 
-                              {/* imagen */}
-                              <figure className="relative w-24 flex-shrink-0">
-                                <img
-                                  src={item.image}
-                                  alt={`${item.name} - ${item.description}`}
-                                  className="w-full h-28 object-cover rounded-lg"
-                                />
-                                <button className="absolute bottom-2 right-2 bg-orange-500 text-white text-xl size-full px-3 py-1 w-8 h-8 rounded-full flex justify-center items-center">
-                                  <span><Plus className="size-5" /></span>
-                                </button>
-                              </figure>
-                            </li>
-                          ))}
+                                </article>
+
+                                {/* imagen */}
+                                <figure className="relative h-full w-24 flex-shrink-0">
+                                  <img
+                                    src={item.image}
+                                    alt={`${item.name} - ${item.description}`}
+                                    className="w-full h-32 object-cover rounded-lg"
+                                  />
+                                  <button className="absolute bottom-2 right-2 bg-orange-500 text-white text-xl size-full px-3 py-1 w-8 h-8 rounded-full flex justify-center items-center">
+                                    <span><Plus className="size-5" /></span>
+                                  </button>
+                                </figure>
+                              </li>
+                            ))}
                         </ul>
                       </>
                     ) : null}
@@ -401,33 +549,35 @@ const ShopMenu = () => {
         )}
       </section>
 
-      {shopCartItems.length > 0 && !selectedFood && (
-        <footer className="fixed bottom-0 sm:right-5 w-full sm:w-auto bg-white sm:size-m sm:rounded-md shadow-orange-700 shadow-2xl z-50">
-          <div className="max-w-6xl mx-auto flex items-center justify-between px-3 sm:px-4 sm:gap-x-6 py-3">
-            <div>
-              <h2 className="text-lg sm:text-xl">Monto Total:</h2>
-              <h3 className="text-orange-600 font-extrabold text-2xl sm:text-3xl">
-                ${formatNumber(shopTotal, "es-CO")}
-              </h3>
+      {
+        shopCartItems.length > 0 && !selectedFood && (
+          <footer className="fixed bottom-0 sm:right-5 w-full sm:w-auto bg-white sm:size-m sm:rounded-md shadow-orange-700 shadow-2xl z-50">
+            <div className="max-w-6xl mx-auto flex items-center justify-between px-3 sm:px-4 sm:gap-x-6 py-3">
+              <div>
+                <h2 className="text-lg sm:text-xl">Monto Total:</h2>
+                <h3 className="text-orange-600 font-extrabold text-2xl sm:text-3xl">
+                  ${formatNumber(shopTotal, "es-CO")}
+                </h3>
+              </div>
+              <button
+                onClick={() => navigate("/shopping_cart")}
+                className="bg-gradient-to-r from-orange-500 to-orange-600 text-white px-4 py-3 rounded-xl font-semibold shadow hover:shadow-md transition"
+              >
+                Ver carrito
+                <span className="size-full px-3 py-1 rounded-full ml-3 font-bold bg-white text-orange-950">
+                  {totalItems}
+                </span>
+              </button>
             </div>
-            <button
-              onClick={() => navigate("/shopping_cart")}
-              className="bg-gradient-to-r from-orange-500 to-orange-600 text-white px-4 py-3 rounded-xl font-semibold shadow hover:shadow-md transition"
-            >
-              Ver carrito
-              <span className="size-full px-3 py-1 rounded-full ml-3 font-bold bg-white text-orange-950">
-                {totalItems}
-              </span>
-            </button>
-          </div>
-        </footer>
-      )}
+          </footer>
+        )
+      }
 
       {/* modals */}
       <SessionModal />
       <WelcomeCustomerModal />
       <RequestLocationModal />
-    </div>
+    </div >
   );
 };
 

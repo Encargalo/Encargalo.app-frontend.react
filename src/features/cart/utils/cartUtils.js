@@ -42,18 +42,28 @@ export function buildWhatsAppMessage(
       ? additionalsTotalPerUnit
       : additionalsTotalPerUnit * quantity;
 
-    const unitPrice = item.price || 0;
-    // El precio total del producto base.
-    const baseProductTotal = unitPrice * quantity;
+    const discountRule = item.rules?.find(
+      (rule) => rule.rule_key === 'discount'
+    );
+    const hasDiscount = !!discountRule;
+    const originalPrice = item.originalPrice || item.price;
+    const discountedPrice = item.price;
 
-    const subtotal = baseProductTotal + totalAdditionals;
+    // El precio total del producto base.
+    const baseProductTotal = originalPrice * quantity;
+    const discountedBaseProductTotal = discountedPrice * quantity;
+
+    const subtotal = discountedBaseProductTotal + totalAdditionals;
     total += subtotal;
 
     message += `*Producto:* ${item.name}\n\n`;
 
     if (item.flavors && item.flavors.length > 0) {
       const flavorString = item.flavors
-        .map((f) => (f.quantity > 1 ? `${f.name} (x${f.quantity})` : f.name))
+        .map((f) => {
+          const qty = f.quantity > 1 ? ` (x${f.quantity})` : '';
+          return `${f.name}${qty}`;
+        })
         .join(' / ');
       message += `*Sabores:* ${flavorString}\n\n`;
     }
@@ -64,12 +74,19 @@ export function buildWhatsAppMessage(
 
     message += `*Resumen del Producto:*\n\n`;
     message += `- Cantidad: ${quantity}\n`;
-    message += `- Precio Unitario: ${formatNumber(unitPrice, 'es-CO')}\n\n`; // Agregado salto de línea
+    message += `- Precio Unitario: ${formatNumber(originalPrice, 'es-CO')}\n\n`;
 
-    message += `- Total Producto: ${formatNumber(
-      baseProductTotal,
-      'es-CO'
-    )}\n\n`; // Agregado salto de línea
+    if (hasDiscount) {
+      message += `- Total Producto: ~${formatNumber(
+        baseProductTotal,
+        'es-CO'
+      )}~ ${formatNumber(discountedBaseProductTotal, 'es-CO')}\n\n`;
+    } else {
+      message += `- Total Producto: ${formatNumber(
+        baseProductTotal,
+        'es-CO'
+      )}\n\n`;
+    }
 
     if (additionals.length > 0) {
       const additionalNames = additionals
