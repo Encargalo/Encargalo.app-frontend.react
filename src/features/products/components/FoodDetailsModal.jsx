@@ -18,6 +18,15 @@ const FoodDetailsModal = ({ food, onClose }) => {
   const [flavors, setFlavors] = useState([]);
   const [selectFlavorsError, setSelectdFlavorsError] = useState("")
 
+  const discountRule = food.rules?.find(rule => rule.rule_key === 'discount');
+  const discountValue = discountRule ? parseFloat(discountRule.rule_value) : 0;
+  const hasDiscount = discountValue > 0;
+
+  const originalPrice = food.price;
+  const discountedPrice = hasDiscount ? originalPrice * (1 - discountValue / 100) : originalPrice;
+
+  const foodWithDiscount = { ...food, price: discountedPrice, originalPrice: hasDiscount ? originalPrice : undefined };
+
   const { addItem } = useCartStore();
   const navigate = useNavigate();
 
@@ -80,16 +89,16 @@ const FoodDetailsModal = ({ food, onClose }) => {
 
     if (flavorRules.selectorType === 'multi_select') {
       // Para multi_select, la cantidad es el total de sabores y el precio se multiplica.
-      const flavorsTotal = food.price * totalSelectedFlavors;
+      const flavorsTotal = foodWithDiscount.price * totalSelectedFlavors;
       // Los adicionales se suman al final, no se multiplican por cantidad de sabores.
       return { total: flavorsTotal + additionalsPrice, finalQuantity: totalSelectedFlavors };
     }
 
     // Para productos normales y single_select, se usa el contador de cantidad.
-    const unitPrice = food.price + additionalsPrice;
+    const unitPrice = foodWithDiscount.price + additionalsPrice;
     return { total: unitPrice * quantity, finalQuantity: quantity };
 
-  }, [food.price, selectedAdditionals, totalSelectedFlavors, flavorRules.selectorType, quantity]);
+  }, [foodWithDiscount.price, selectedAdditionals, totalSelectedFlavors, flavorRules.selectorType, quantity]);
 
   const handleFlavorClick = (flavor) => {
     setSelectedFlavors((prev) => {
@@ -143,12 +152,11 @@ const FoodDetailsModal = ({ food, onClose }) => {
 
     setSelectdFlavorsError(''); // Limpiar error si pasa la validación
     addItem({
-      ...food,
+      ...foodWithDiscount,
       additionals: selectedAdditionals,
       flavors: selectedFlavors,
       observation: observation.trim(),
       quantity: finalQuantity,
-      price: food.price,
       shopInfo: food.shop,
     });
 
@@ -181,6 +189,11 @@ const FoodDetailsModal = ({ food, onClose }) => {
           >
             <X className="w-6 h-6 text-gray-800" />
           </button>
+          {hasDiscount && (
+            <div className="absolute bottom-0 left-0 right-0 background_discount text-white text-center py-1 font-bold sm:hidden">
+              {`Descuento del ${discountValue}%`}
+            </div>
+          )}
           <img src={food.image} alt={food.name} className="w-full aspect-video object-cover sm:hidden" />
         </header>
 
@@ -188,14 +201,25 @@ const FoodDetailsModal = ({ food, onClose }) => {
         <div className="shrink-0 p-6 border-b border-gray-200">
           <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-y-2">
             <div>
-              <h2 className="text-3xl font-bold text-gray-900">{food.name}</h2>
-              {flavorRules.selectorType === 'multi_select' && (
-                <span className="text-xl font-semibold text-gray-500 mt-1">
-                  ${food.price.toLocaleString()} c/u
+              <div className="flex text-sm items-baseline gap-2 mt-1 flex-wrap">
+                <h2 className="text-3xl font-bold text-gray-900">{food.name}</h2>
+                {hasDiscount && (
+                  <span className="font-semibold text-gray-400 line-through">
+                    ${originalPrice.toLocaleString()}
+                  </span>
+                )}
+                <span className="font-semibold text-gray-800">
+                  ${discountedPrice.toLocaleString()}
+                  {flavorRules.selectorType === 'multi_select' && ' c/u'}
                 </span>
-              )}
+              </div>
             </div>
-            {flavorRules.selectorType !== 'multi_select' && (
+            {flavorRules.selectorType !== 'multi_select' && !hasDiscount && (
+              <h4 className="text-3xl font-extrabold text-orange-600">
+                ${total.toLocaleString()}
+              </h4>
+            )}
+            {flavorRules.selectorType !== 'multi_select' && hasDiscount && (
               <h4 className="text-3xl font-extrabold text-orange-600">
                 ${total.toLocaleString()}
               </h4>
@@ -205,7 +229,14 @@ const FoodDetailsModal = ({ food, onClose }) => {
 
         {/* Contenido Principal (Scrollable) */}
         <section className="flex-1 overflow-y-scroll p-6">
-          <img src={food.image} alt={food.name} className="w-full aspect-video rounded-xl mb-4 hidden sm:block object-cover" />
+          <div className="relative hidden sm:block mb-4">
+            <img src={food.image} alt={food.name} className="w-full aspect-video rounded-xl object-cover" />
+            {hasDiscount && (
+              <div className="absolute bottom-0 left-0 right-0 background_discount text-white text-center py-1 font-bold rounded-b-xl">
+                {`Descuento ${discountValue}%`}
+              </div>
+            )}
+          </div>
           <p className="text-lg text-gray-600 mt-1">{food.description}</p>
 
           {/* observaciones */}
@@ -325,7 +356,7 @@ const FoodDetailsModal = ({ food, onClose }) => {
               <div className="flex flex-col">
                 <span className="text-gray-600 text-lg">Total</span>
                 <span className="text-2xl font-extrabold text-orange-600">
-                  ${(food.price * totalSelectedFlavors).toLocaleString()}
+                  ${(foodWithDiscount.price * totalSelectedFlavors).toLocaleString()}
                 </span>
               </div>
             )}

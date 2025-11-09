@@ -18,9 +18,15 @@ export const preprocessCartItems = (items) => {
         // La cantidad es el total de sabores para multi_select, o la cantidad del item para otros casos.
         const quantity = isMultiSelect && flavorCount > 0 ? flavorCount : item.quantity || 1;
 
+        const discountRule = item.rules?.find(rule => rule.rule_key === 'discount');
+        const discountPercentage = discountRule ? parseFloat(discountRule.rule_value) : 0;
+        const hasDiscount = !!discountRule;
+        const originalPrice = item.originalPrice || item.price; // Si tiene descuento, el precio ya viene descontado.
+        const discountedPrice = item.price;
+
         const additionalsPricePerUnit = (item.additionals || []).reduce((sum, add) => sum + (add.price || 0), 0);
 
-        const baseProductTotal = item.price * quantity;
+        const baseProductTotal = discountedPrice * quantity;
         const totalAdditionals = isMultiSelect ? additionalsPricePerUnit : additionalsPricePerUnit * quantity;
         const subtotal = baseProductTotal + totalAdditionals;
 
@@ -28,7 +34,9 @@ export const preprocessCartItems = (items) => {
             ...item,
             quantity,
             subtotal,
-            unitPrice: item.price,
+            unitPrice: discountedPrice,
+            originalUnitPrice: hasDiscount ? originalPrice : undefined,
+            discountPercentage: hasDiscount ? discountPercentage : 0,
             baseProductTotal,
             totalAdditionals,
         };
@@ -200,15 +208,29 @@ const ShoppingCart = () => {
                                                 {/* precio / cantidad / acciones */}
                                                 <div className="flex flex-col sm:flex-row sm:items-center sm:justify-end w-full sm:w-auto gap-4 sm:gap-8">
                                                     <div className="text-right">
-                                                        <div className="space-y-1">
+                                                        <div className="space-y-2 text-sm">
+                                                            {item.originalUnitPrice && (
+                                                                <div className="flex justify-between items-center gap-4">
+                                                                    <span className="text-gray-500">Precio Original:</span>
+                                                                    <span className="font-semibold line-through">${formatNumber(item.originalUnitPrice * item.quantity, "es-CO")}</span>
+                                                                </div>
+                                                            )}
+                                                            {item.originalUnitPrice && (
+                                                                <div className="flex justify-between items-center gap-4 text-green-600">
+                                                                    <span className="font-bold">Descuento: {item.discountPercentage}%</span>
+                                                                    <span className="font-bold">
+                                                                        -${formatNumber((item.originalUnitPrice - item.unitPrice) * item.quantity, "es-CO")}
+                                                                    </span>
+                                                                </div>
+                                                            )}
                                                             <div className="flex justify-between items-center gap-4">
                                                                 <span className="text-gray-500">Unitario:</span>
-                                                                <span className="font-semibold">${formatNumber(item.unitPrice, "es-CO")}</span>
+                                                                <span className="font-semibold">
+                                                                    ${formatNumber(item.unitPrice, "es-CO")}
+                                                                    {item.originalUnitPrice && <span className="text-xs text-gray-500 line-through ml-1">${formatNumber(item.originalUnitPrice, "es-CO")}</span>}
+                                                                </span>
                                                             </div>
-                                                            <div className="flex justify-between items-center gap-4">
-                                                                <span className="text-gray-500">Total Prod.:</span>
-                                                                <span className="font-semibold">${formatNumber(item.baseProductTotal, "es-CO")}</span>
-                                                            </div>
+
                                                             {item.totalAdditionals > 0 && (
                                                                 <div className="flex justify-between items-center gap-4">
                                                                     <span className="text-gray-500">Adicionales:</span>

@@ -6,6 +6,13 @@ import useNumberFormat from "../../../hooks/useNumberFormat";
 // Tarjeta de artículo con imagen, nombre, descripción, precio y botón de agregar.
 const ItemCard = ({ item, onItemClick }) => {
   const { formatNumber } = useNumberFormat();
+  const discountRule = item.rules?.find(rule => rule.rule_key === 'discount');
+  const discountValue = discountRule ? parseFloat(discountRule.rule_value) : 0;
+  const hasDiscount = discountValue > 0;
+
+  const originalPrice = item.price;
+  const discountedPrice = hasDiscount ? originalPrice * (1 - discountValue / 100) : originalPrice;
+
 
   return (
     <article
@@ -27,6 +34,11 @@ const ItemCard = ({ item, onItemClick }) => {
           {/* score */}
           <span className="font-bold text-gray-900">{item.score}</span>
         </div>
+        {hasDiscount && (
+          <div className="absolute bottom-0 left-0 right-0 background_discount text-white text-center py-1 font-bold">
+            {`Descuento ${discountValue}%`}
+          </div>
+        )}
       </header>
 
 
@@ -46,9 +58,16 @@ const ItemCard = ({ item, onItemClick }) => {
 
         {/* footer */}
         <footer className="flex items-center justify-between">
-          <p className="text-xl sm:text-2xl font-bold text-orange-600">
-            ${formatNumber(item.price)}
-          </p>
+          <div className="flex flex-col">
+            {hasDiscount && (
+              <span className="text-gray-500 line-through text-base">
+                ${formatNumber(originalPrice)}
+              </span>
+            )}
+            <p className="text-xl sm:text-2xl font-bold text-orange-600">
+              ${formatNumber(discountedPrice)}
+            </p>
+          </div>
 
           <button
             className="bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white px-4 py-2 rounded-xl font-semibold transition-all duration-300 flex items-center justify-center space-x-2 shadow-lg hover:shadow-xl"
