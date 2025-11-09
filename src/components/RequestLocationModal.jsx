@@ -26,7 +26,7 @@ const RequestLocationModal = () => {
                         <li>Haz clic en el icono que indica la flecha</li>
                         <li>Entra en permisos</li>
                         <li>Permite la ubicación</li>
-                        <li>Recarga la página</li>
+                        <li>La página se recargará automáticamente.</li>
                     </ul>
                 );
             case "ios":
@@ -45,7 +45,7 @@ const RequestLocationModal = () => {
                         <li>Haz clic en el <strong>icono de información ℹ️</strong> en la barra de direcciones.</li>
                         <li>Busca la opción <strong>Ubicación</strong>.</li>
                         <li>Cámbala a <strong>Permitir</strong>.</li>
-                        <li>Recarga la página.</li>
+                        <li>La página se recargará automáticamente.</li>
                     </ul>
                 );
         }
@@ -79,10 +79,27 @@ const RequestLocationModal = () => {
     }, []);
 
     // Verifica el permiso de geolocalización al montar el componente
+    // y establece un intervalo para re-verificar si la ubicación se activa.
     useEffect(() => {
         checkPermissions();
-        // Se elimina el intervalo para evitar recargas constantes.
-    }, [checkPermissions]);
+
+        const intervalId = setInterval(() => {
+            // Solo re-verificamos si el modal está abierto (es decir, si no tenemos permiso)
+            if (isOpen) {
+                navigator.geolocation.getCurrentPosition(
+                    // Éxito: el usuario activó la ubicación. Recargamos.
+                    () => {
+                        window.location.reload();
+                    },
+                    // Error: no hacemos nada, simplemente esperamos al siguiente intervalo.
+                    () => { },
+                    { enableHighAccuracy: true, timeout: 5000, maximumAge: 0 }
+                );
+            }
+        }, 1000); // Re-verifica cada 5 segundos
+
+        return () => clearInterval(intervalId); // Limpia el intervalo al desmontar el componente
+    }, [checkPermissions, isOpen]);
 
     if (!isOpen) return null;
 
@@ -92,7 +109,7 @@ const RequestLocationModal = () => {
             open
         >
             {
-                platform === "android" && permissionStatus !== "granted" &&
+                platform === "android" && permissionStatus === "denied" &&
                 <ArrowUpLeft className="bg-orange-600 text-white p-2 w-[40px] h-[40px] rounded-full absolute top-2 left-20 animate-slide-in-top-infinite" />
             }
             <section className="bg-white rounded-2xl shadow-2xl w-full lg:w-2/4 overflow-hidden animate-fadeIn">
@@ -110,14 +127,15 @@ const RequestLocationModal = () => {
                             {instructions}
                         </div>
                     ) : (
-                        <div>
-                            <p>Para ofrecerte un mejor servicio, necesitamos tu ubicación exacta.</p>
-                            <p>¡Así los repartidores llegarán sin problemas y más rápido!</p>
+                        <div className="space-y-4">
+                            {/*    <h3 className="text-2xl font-bold text-orange-600">¡Activa tu ubicación!</h3> */}
+                            <p>Para mostrarte los restaurantes cercanos, por favor enciende la ubicación en tu dispositivo.</p>
                             <img
                                 src={ilustrations.Map65}
                                 alt="Ubicación"
                                 className="size-2/4 sm:size-2/6 mx-auto aspect-3/2"
                             />
+                            <p className="text-base text-gray-500">Una vez que la actives, la página se recargará automáticamente.</p>
                         </div>
                     )}
                 </div>
