@@ -6,7 +6,12 @@ import getCoordsCustomer from '../../../utils/getCoordsCustomer';
 //services
 import getShopCategories from './getShopCategories';
 
-const getShopDetails = async (setShop, setCategories, tag_shop) => {
+const getShopDetails = async (
+  setShop,
+  setCategories,
+  tag_shop,
+  setToggleShopNotFound
+) => {
   const { showLoader, hideLoader } = useLoaderStore.getState();
   showLoader();
   try {
@@ -30,6 +35,16 @@ const getShopDetails = async (setShop, setCategories, tag_shop) => {
       const data = response.data[0];
       setShop(data);
       getShopCategories(setCategories, data.id, hideLoader);
+    }
+  } catch (error) {
+    const statusCode = error.response.status;
+    const pageNoFound = statusCode === 404;
+    if (pageNoFound) {
+      hideLoader();
+
+      //shop not found
+      const shopNotFound = true;
+      setToggleShopNotFound(shopNotFound);
     }
   } finally {
     hideLoader();
