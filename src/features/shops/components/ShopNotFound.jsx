@@ -35,7 +35,7 @@ const ShopNotFound = ({ toggleShopNotFound }) => {
                 >Volver al menú</button>
             </div>
 
-            <a href="https://storyset.com/web" className="absolute -bottom-3/4 sm:bottom-0 left-0 p-2">Web illustrations by Storyset</a>
+            <a href="https://storyset.com/web" className="absolute -bottom-3/4 sm:-bottom-24 left-0 p-2">Web illustrations by Storyset</a>
         </section>
     )
 }
