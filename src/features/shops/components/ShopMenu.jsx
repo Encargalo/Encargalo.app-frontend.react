@@ -490,12 +490,12 @@ const ShopMenu = () => {
                                 onClick={() => handleFoodClick(item)}
                               >
                                 {/* info */}
-                                <article className="flex-1 flex flex-col justify-between gap-2">
+                                <article className="flex-1 flex flex-col justify-between gap-2 min-w-0">
                                   <div className="space-y-1 mb-2">
                                     {/* name */}
                                     <h3 className="text-base font-semibold truncate">{item.name}</h3>
                                     {/* description */}
-                                    <p className="text-sm text-gray-600 line-clamp-3">{item.description}</p>
+                                    <p className="text-sm text-gray-600 line-clamp-3 min-h-[60px]">{item.description}</p>
 
                                     {/* discount */}
                                     {item.rules?.find(r => r.rule_key === 'discount') && (
