@@ -1,10 +1,27 @@
-//lucide-react
-import { MapPin, Star, Clock, Heart } from "lucide-react";
+//icons
+import { MapPin, Motorbike, Star, Clock } from "lucide-react";
+//react
 import { useNavigate } from "react-router-dom";
+//hooks
+import useNumberFormat from "../../../hooks/useNumberFormat";
 
 const ShopCard = ({ shop, favorites, onToggleFavorite }) => {
   /* navigate */
   const navigate = useNavigate();
+
+  const { formatNumber } = useNumberFormat()
+
+  const formatDeliveryTime = (minutes) => {
+    if (!minutes || minutes <= 0) {
+      return null;
+    }
+    if (minutes < 60) {
+      return `${minutes} min`;
+    }
+    const hours = Math.floor(minutes / 60);
+    const remainingMinutes = minutes % 60;
+    return `${hours}h ${remainingMinutes > 0 ? `${remainingMinutes}min` : ''}`.trim();
+  };
 
   return (
     <section
@@ -59,17 +76,38 @@ const ShopCard = ({ shop, favorites, onToggleFavorite }) => {
       {/* shop details */}
       <div className="p-4">
         {/* shop name */}
-        <figure className="flex items-center justify-between mb-4">
-          <h3 className="text-xl sm:text- font-bold text-gray-900 group-hover:text-orange-600 transition-colors flex-1">
-            {shop.name}
-          </h3>
-          {/* shop score */}
-          <div className="flex items-center justify-center bg-gradient-to-r from-orange-100 to-orange-50 px-2 sm:px-3 py-1 rounded-full border border-orange-200">
-            <Star className="size-4 text-orange-500 fill-current mr-1" />
-            <span className="font-bold text-gray-900">
-              {parseFloat(shop.score.toFixed(1))}
-            </span>
+        <figure className="flex flex-col items-center justify-between mb-4">
+
+          {/* name and score */}
+          <div className="flex justify-between items-center w-full">
+            {/* name */}
+            <h3 className="text-xl sm:text- font-bold text-gray-900 group-hover:text-orange-600 transition-colors flex-1">
+              {shop.name}
+            </h3>
+            {/* shop score */}
+            <div className="flex items-center justify-center bg-gradient-to-r from-orange-100 to-orange-50 px-2 sm:px-3 py-1 rounded-full border border-orange-200">
+              <Star className="size-4 text-orange-500 fill-current mr-1" />
+              <span className="font-bold text-gray-900">
+                {parseFloat(shop.score.toFixed(1))}
+              </span>
+            </div>
           </div>
+
+          {/* delevery fee and time */}
+          <div className="w-full flex items-center justify-between text-gray-800 mt-4 text-sm">
+            {shop.time > 0 && (
+              <div className="flex items-center gap-1">
+                <Clock className="size-5" />
+                <span>{formatDeliveryTime(shop.time)}</span>
+              </div>
+            )}
+            <div className="flex items-center gap-1 text-orange-600">
+              <Motorbike className="size-5" />
+              <span>${formatNumber(shop.delivery_fee)}</span>
+            </div>
+          </div>
+
+
         </figure>
 
         {/* footer */}
