@@ -19,6 +19,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import getBestSellingFoods from "../services/getBestSellingFoods.js";
 import RequestLocationModal from "../../../components/RequestLocationModal.jsx";
+import ShopNotFound from "./ShopNotFound.jsx";
 
 const ShopMenu = () => {
   // Estados
@@ -31,6 +32,7 @@ const ShopMenu = () => {
   const discountedCarouselRefMobile = useRef(null);
   const bestSellingCarouselRef = useRef(null);
   const [userData, setUserData] = useState({});
+  const [toggleShopNotFound, setToggleShopNotFound] = useState(false);
 
   //onLogin
   const { openLoginModal } = useOnLoginStore()
@@ -62,7 +64,7 @@ const ShopMenu = () => {
 
   // Se ejecuta al cargar el componente para obtener los datos de la tienda
   useEffect(() => {
-    getShopDetails(setShop, setCategories, tag_shop);
+    getShopDetails(setShop, setCategories, tag_shop, setToggleShopNotFound);
   }, [tag_shop]);
 
   // Obtiene los productos más vendidos cuando la tienda está cargada
@@ -195,7 +197,7 @@ const ShopMenu = () => {
           </div>
         </header>
 
-        <main className="pb-14">
+        <main className="pb-14 sm:pb-0 relative">
           {/* banner shop*/}
           <div className="relative sm:h-[40em] h-[17em] overflow-hidden">
             <img
@@ -488,12 +490,12 @@ const ShopMenu = () => {
                                 onClick={() => handleFoodClick(item)}
                               >
                                 {/* info */}
-                                <article className="flex-1 flex flex-col justify-between gap-2">
+                                <article className="flex-1 flex flex-col justify-between gap-2 min-w-0">
                                   <div className="space-y-1 mb-2">
                                     {/* name */}
                                     <h3 className="text-base font-semibold truncate">{item.name}</h3>
                                     {/* description */}
-                                    <p className="text-sm text-gray-600 line-clamp-3">{item.description}</p>
+                                    <p className="text-sm text-gray-600 line-clamp-3 min-h-[60px]">{item.description}</p>
 
                                     {/* discount */}
                                     {item.rules?.find(r => r.rule_key === 'discount') && (
@@ -540,7 +542,11 @@ const ShopMenu = () => {
                 )
             )}
           </div>
+
+          <ShopNotFound toggleShopNotFound={toggleShopNotFound} />
         </main>
+
+        {/* modals */}
         {selectedFood && (
           <FoodDetailsModal
             food={{ ...selectedFood, shop: shop }}

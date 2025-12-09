@@ -1,3 +1,3 @@
-const routes = {
-  home: "/",
+export const routes = {
+  home: '/',
 };

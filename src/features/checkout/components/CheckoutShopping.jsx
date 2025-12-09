@@ -122,6 +122,7 @@ const CheckoutShopping = () => {
         id: generateUUIDv4(),
         shop_id: placeOrder?.shopInfo.id || "",
         method_payment: paymentMethod,
+        delivery_fee: placeOrder?.shopInfo.delivery_fee,
         address: {
             address: selectedAddress?.address,
             latitude: selectedAddress?.coords?.lat,
@@ -135,9 +136,17 @@ const CheckoutShopping = () => {
                 observation: item.observation || ""
             };
 
+            if (item.flavors && item.flavors.length > 0) {
+                orderItem.flavors = item.flavors.reduce((acc, flavor) => {
+                    acc[flavor.name] = flavor.quantity || 1;
+                    return acc;
+                }, {});
+            }
+
             if (item.additionals && item.additionals.length > 0) {
                 orderItem.additions = item.additionals.map(add => ({ addition_id: add.id }));
             }
+
             return orderItem;
         })
     }
