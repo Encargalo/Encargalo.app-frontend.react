@@ -7,8 +7,6 @@ const sendOrders = async (data) => {
     console.log(response);
   } catch (e) {
     console.log(e);
-  } finally {
-    return;
   }
 };
 
