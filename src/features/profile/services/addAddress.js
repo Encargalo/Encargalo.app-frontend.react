@@ -11,14 +11,27 @@ const addAddress = async (
 ) => {
   setIsLoading(true);
   try {
-    const response = await api.post('/customers/address', data);
+    const payload = {
+      type: 'Home',
+      label: data.label,
+      address: data.address,
+      lat: data.lat,
+      long: data.long,
+      instructions: data.instructions,
+      extra: {
+        details: data.extra?.details || '',
+      },
+    };
+
+    const response = await api.post('/customers/address', payload);
 
     if (response.status === 201) {
       getAddressCustomer(setAddress);
       setConfirmUpdate(true);
       reset({
-        alias: '',
-        reference: '',
+        label: '',
+        instructions: '',
+        details: '',
       });
     }
   } finally {

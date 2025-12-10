@@ -3,7 +3,7 @@ import getAddressCustomer from './getAddressCustomer';
 
 const deleteAddress = async (id, setConfirmDeleted, setAddress) => {
   try {
-    const response = await api.delete(`/customers/address/${id}`);
+    const response = await api.delete(`/customers/address?address_id=${id}`);
 
     if (response.status === 200) {
       setConfirmDeleted(true);
@@ -11,7 +11,7 @@ const deleteAddress = async (id, setConfirmDeleted, setAddress) => {
       return;
     }
   } finally {
-    return true;
+    return;
   }
 };
 
