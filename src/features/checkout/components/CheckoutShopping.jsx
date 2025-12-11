@@ -124,8 +124,8 @@ const CheckoutShopping = () => {
         delivery_fee: placeOrder?.shopInfo.delivery_fee,
         address: {
             address: selectedAddress?.address,
-            latitude: selectedAddress?.coords?.lat,
-            longitude: selectedAddress?.coords?.long,
+            latitude: selectedAddress?.latitude,
+            longitude: selectedAddress?.longitude,
         },
 
         items: processedItems.map(item => {
@@ -149,9 +149,6 @@ const CheckoutShopping = () => {
             return orderItem;
         })
     }
-
-    console.log(selectedAddress)
-
 
     const handleSend = () => {
         // Construye datos de compra para el mensaje
