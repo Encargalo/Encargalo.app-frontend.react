@@ -8,15 +8,18 @@ import getAddressCustomer from "../services/getAddressCustomer";
 //compentns
 import MapComponent from "../../../components/MapComponent.jsx";
 import RequestLocationModal from "../../../components/RequestLocationModal.jsx";
+import Modal from "../../../components/Modal";
 //icons
 import { DeleteIcon, Send } from "lucide-react";
 import { ilustrations } from "../../../assets/ilustrations.js";
+import { getCurrentLocationAndAddress } from "../../../utils/getCurrentLocationAndAddress";
 
 const AddAddress = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [confirmAdd, setConfirmAdd] = useState(false);
     const [confirmDeleted, setConfirmDeleted] = useState(false);
     const [address, setAddress] = useState([]);
+    const [showMapModal, setShowMapModal] = useState(false);
     const addressEmpyt = 0
 
     const {
@@ -32,12 +35,27 @@ const AddAddress = () => {
         // Transformar coords.lng a coords.long si existe coords
         let newData = { ...data };
         if (newData.coords && typeof newData.coords.lng !== "undefined") {
-            newData.coords = {
-                lat: newData.coords.lat,
-                long: newData.coords.lng,
-            };
+            newData.lat = newData.coords.lat;
+            newData.long = newData.coords.lng;
         }
-        addAddress(newData, setAddress, setConfirmAdd, setIsLoading, reset)
+        // Agregar campos fijos y estructura extra
+        newData.type = "Home";
+        newData.label = newData.label || "Mi Casa";
+        newData.extra = { details: newData.details };
+        newData.instructions = newData.instructions || "";
+
+        // Limpiar campos innecesarios antes de enviar
+        delete newData.coords;
+        delete newData.details;
+
+        addAddress(newData, setAddress, setConfirmAdd, setIsLoading, () => {
+            reset({
+                label: "",
+                instructions: "",
+                details: "",
+                alias: "",
+            });
+        });
     }
 
     //delete address
@@ -47,7 +65,19 @@ const AddAddress = () => {
 
     //address customer
     useEffect(() => {
-        getAddressCustomer(setAddress)
+        getAddressCustomer(setAddress);
+
+        // Obtener ubicación actual y setear en el formulario
+        const apiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
+        getCurrentLocationAndAddress(apiKey)
+            .then(({ address, coords }) => {
+                setValue("address", address, { shouldValidate: true });
+                setValue("coords", coords);
+            })
+            .catch((err) => {
+                // Puedes mostrar un mensaje si lo deseas
+                console.error("No se pudo obtener la ubicación actual", err);
+            });
     }, [])
 
     return (
@@ -61,7 +91,7 @@ const AddAddress = () => {
                 onSubmit={handleSubmit(onUpdateAddress)}
                 className="flex flex-col gap-5 w-full py-6 sm:p-6"
             >
-                {/* Nombre de la ubicación */}
+                {/* Label (nombre de la ubicación) */}
                 <div>
                     <label className="block text-base sm:text-lg font-semibold text-gray-700 mb-2">
                         Nombre de la ubicación
@@ -69,9 +99,9 @@ const AddAddress = () => {
                     <input
                         type="text"
                         autoComplete="off"
-                        placeholder="p. ej: Mi casa"
+                        placeholder="p. ej: Mi Casa"
                         className="w-full shadow-md px-5 py-3 sm:py-4 border-2 text-lg sm:text-lg border-gray-200 rounded-xl focus:ring-2 focus:ring-orange-500"
-                        {...register("alias", {
+                        {...register("label", {
                             required: "Escribe el nombre de la ubicación",
                             maxLength: {
                                 value: 100,
@@ -79,9 +109,9 @@ const AddAddress = () => {
                             }
                         })}
                     />
-                    {errors.alias && (
+                    {errors.label && (
                         <p className="sm:text-base my-2 pl-4 text-red-600">
-                            {errors.alias.message}
+                            {errors.label.message}
                         </p>
                     )}
                 </div>
@@ -105,38 +135,58 @@ const AddAddress = () => {
                             {errors.address.message}
                         </p>
                     )}
+                    <button
+                        type="button"
+                        className="bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white px-6 py-2 rounded-xl font-semibold transition-all duration-300 shadow-lg hover:shadow-xl sm:text-lg text-lg w-full mt-5"
+                        onClick={() => setShowMapModal(true)}
+                    >
+                        Señalar en el mapa
+                    </button>
                 </div>
 
-                {/* Mapa interactivo */}
-                <div className="w-full h-[380px] rounded-lg">
-                    <MapComponent
-                        onAddressSelect={({ address, coords }) => {
-                            setValue("address", address, { shouldValidate: true });
-                            setValue("coords", coords);
-                        }}
-                    />
-                </div>
-
-                {/* Referencia */}
+                {/* Instrucciones */}
                 <div>
                     <label className="block text-base sm:text-lg font-semibold text-gray-700 mb-2">
-                        Referencia
+                        Instrucciones
                     </label>
                     <input
                         type="text"
-                        placeholder="Al lado de la tienda azul"
+                        placeholder="Tocar el timbre junto a la puerta"
                         className="w-full shadow-md px-5 py-3 sm:py-4 border-2 text-lg sm:text-lg border-gray-200 rounded-xl focus:ring-2 focus:ring-orange-500"
-                        {...register("reference", {
-                            required: "Escribe una referencia",
+                        {...register("instructions", {
                             maxLength: {
                                 value: 100,
-                                message: "La referencia no puede ser tan larga"
+                                message: "Las instrucciones no pueden ser tan largas"
                             }
                         })}
                     />
-                    {errors.reference && (
+                    {errors.instructions && (
                         <p className="sm:text-base my-2 pl-4 text-red-600">
-                            {errors.reference.message}
+                            {errors.instructions.message}
+                        </p>
+                    )}
+                </div>
+
+                {/* Detalles */}
+                <div>
+                    <label className="block text-base sm:text-lg font-semibold text-gray-700 mb-2">
+                        Detalles
+                    </label>
+                    <input
+                        type="text"
+                        placeholder="Casa de dos pisos con jardín"
+                        className="w-full shadow-md px-5 py-3 sm:py-4 border-2 text-lg sm:text-lg border-gray-200 rounded-xl focus:ring-2 focus:ring-orange-500"
+                        {...register("details", {
+                            required: "Escribe los detalles",
+                            maxLength: {
+                                value: 100,
+                                message: "Los detalles no pueden ser tan largos"
+                            }
+                        })}
+                    />
+                    {errors.details && (
+                        <p className="sm:text-base my-2 pl-4 text-red-600">
+                            {errors.details.message}
                         </p>
                     )}
                 </div>
@@ -159,7 +209,7 @@ const AddAddress = () => {
                 </div>
             </form>
 
-            {/* adddres */}
+            {/* my adddres */}
 
             <footer className="w-full space-y-5">
                 <div className="w-full flex items-end gap-x-4">
@@ -192,9 +242,17 @@ const AddAddress = () => {
                                                     <Send className="text-orange-500 size-6" />
                                                 </div>
                                                 <p className="sm:text-lg text-gray-600">
-                                                    <span className="font-semibold">Dirreción: </span>{item.address}</p>
+                                                    <span className="font-semibold">Dirección: </span>{item.address}
+                                                </p>
                                                 <p className="sm:text-lg text-gray-600">
-                                                    <span className="font-semibold">Referencia: </span>{item.reference}</p>
+                                                    <span className="font-semibold">Instrucciones: </span>{item.instructions}
+                                                </p>
+                                                <p className="sm:text-lg text-gray-600">
+                                                    <span className="font-semibold">Detalles: </span>
+                                                    {item?.extra.map((extraItem) => (
+                                                        <span key={extraItem.Key}>{extraItem.Value}</span>
+                                                    ))}
+                                                </p>
                                             </div>
 
                                             {/* acciones */}
@@ -214,6 +272,21 @@ const AddAddress = () => {
             </footer>
             {/* modals */}
             <RequestLocationModal />
+            {/* Modal del mapa */}
+            {showMapModal && (
+                <Modal onClose={() => setShowMapModal(false)}>
+                    <div className="flex flex-col gap-4">
+                        <MapComponent
+                            onAddressSelect={({ address, coords }) => {
+                                setValue("address", address, { shouldValidate: true });
+                                setValue("coords", coords);
+                            }}
+                            onConfirm={() => setShowMapModal(false)}
+                        />
+
+                    </div>
+                </Modal>
+            )}
         </div>
     )
 }

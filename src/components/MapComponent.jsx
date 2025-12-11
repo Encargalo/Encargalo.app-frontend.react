@@ -1,19 +1,18 @@
 import { GoogleMap, useJsApiLoader } from '@react-google-maps/api';
-import { MapPin } from 'lucide-react';
 import { useEffect, useState, useRef } from 'react';
+import { encargaloLogos } from '../assets/ilustrations';
 
-const containerStyle = {
-  width: '100%',
-  height: '400px',
-  position: 'relative',
-  borderRadius: '10px',
-  display: 'flex',
-  justifyContent: 'center',
-  alignItems: 'center',
-  marginTop: '10px',
-};
-
-const MapComponent = ({ onAddressSelect }) => {
+const mapStyles = [
+  {
+    featureType: 'poi',
+    stylers: [{ visibility: 'off' }],
+  },
+  {
+    featureType: 'transit',
+    stylers: [{ visibility: 'off' }],
+  },
+];
+const MapComponent = ({ onAddressSelect, onConfirm }) => {
   const { isLoaded } = useJsApiLoader({
     id: 'google-map-script',
     googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAPS_API_KEY,
@@ -21,22 +20,6 @@ const MapComponent = ({ onAddressSelect }) => {
 
   const [center, setCenter] = useState(null); // null hasta obtener ubicación
   const mapRef = useRef(null);
-
-  // Obtener ubicación inicial
-  useEffect(() => {
-    navigator.geolocation.getCurrentPosition(
-      (position) => {
-        const coords = {
-          lat: position.coords.latitude,
-          lng: position.coords.longitude, // Google Maps usa lng, no long
-        };
-        setCenter(coords);
-        fetchAddress(coords);
-      },
-      (error) => console.error('Error obteniendo ubicación', error),
-      { enableHighAccuracy: true }
-    );
-  }, []);
 
   const fetchAddress = async (coords) => {
     const apiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
@@ -54,6 +37,22 @@ const MapComponent = ({ onAddressSelect }) => {
     }
   };
 
+  // Obtener ubicación inicial
+  useEffect(() => {
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const coords = {
+          lat: position.coords.latitude,
+          lng: position.coords.longitude, // Google Maps usa lng, no long
+        };
+        setCenter(coords);
+        fetchAddress(coords);
+      },
+      (error) => console.error('Error obteniendo ubicación', error),
+      { enableHighAccuracy: true }
+    );
+  }, []);
+
   const handleIdle = () => {
     if (mapRef.current) {
       const coords = mapRef.current.getCenter();
@@ -61,38 +60,19 @@ const MapComponent = ({ onAddressSelect }) => {
     }
   };
 
-  const goToCurrentLocation = () => {
-    if (navigator.geolocation && mapRef.current) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          const coords = {
-            lat: position.coords.latitude,
-            lng: position.coords.longitude,
-          };
-          mapRef.current.panTo(coords);
-          fetchAddress(coords);
-          setCenter(coords);
-        },
-        (error) => console.error('Error obteniendo ubicación', error),
-        { enableHighAccuracy: true }
-      );
-    }
-  };
-
   if (!isLoaded || !center)
     return (
-      <div className="h-2/3 w-full relative">
-        {/* ⚠️ Renderizamos solo cuando isLoaded y center ya tienen valor */}
-        <div className="w-12 h-12 border-4 border-orange-950 border-b-orange-600 rounded-full animate-spin absolute top-2/3 left-[150px] sm:left-[370px]"></div>
+      <div className="h-dvh w-full relative flex justify-center items-center">
+        <div className="w-12 h-12 border-4 border-orange-950 border-b-orange-600 rounded-full animate-spin"></div>
       </div>
     );
 
   return (
-    <div style={containerStyle}>
+    <div className='w-full h-dvh sm:h-[400px] relative flex flex-col mt-3 gap-2'>
       <GoogleMap
         mapContainerStyle={{
-          width: '80%',
-          height: '70%',
+          width: '100%',
+          height: '80%',
           borderRadius: '10px',
         }}
         center={center}
@@ -100,20 +80,39 @@ const MapComponent = ({ onAddressSelect }) => {
         onLoad={(map) => (mapRef.current = map)}
         onIdle={handleIdle}
         options={{
+          styles: mapStyles,
           streetViewControl: false,
           mapTypeControl: false,
           gestureHandling: 'greedy',
+          fullscreenControl: false,
+          zoomControl: false,
+          panControl: false,
+          rotateControl: false,
+          keyboardShortcuts: false,
+          clickableIcons: false,
+          disableDefaultUI: true,
         }}
       />
-      <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-full text-3xl">
-        <MapPin className="size-9 text-orange-800" />
-      </div>
       <div
-        className="absolute w-full top-0 left-0 bg-white rounded-md p-3 shadow-md border border-gra cursor-pointer flex items-center justify-center z-10"
-        onClick={goToCurrentLocation}
+        className="absolute top-1/2 left-1/2 z-10"
+        style={{
+          transform: 'translate(-50%, -100%)',
+          pointerEvents: 'none',
+        }}
       >
-        <p className="">Buscar mi ubicación</p>
+        <img
+          src={encargaloLogos.EncagaloLocation}
+          alt="Ubicación"
+          className="size-14 sm:size-12 object-contain"
+          draggable={false}
+        />
       </div>
+      <button
+        className="mt-2 px-4 py-2 bg-orange-500 text-white rounded-lg font-semibold hover:bg-orange-600 transition"
+        onClick={() => onConfirm()}
+      >
+        Confirmar ubicación
+      </button>
     </div>
   );
 };

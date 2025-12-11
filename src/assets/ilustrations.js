@@ -14,7 +14,9 @@ export const ilustrations = {
 
 /* encargalo */
 import EncagaloLogotipo from './encargalo_logos/Encargalo_Logotipo.svg';
+import EncagaloLocation from './encargalo_logos/Encargalo_Location.svg';
 
 export const encargaloLogos = {
   EncagaloLogotipo,
+  EncagaloLocation,
 };
