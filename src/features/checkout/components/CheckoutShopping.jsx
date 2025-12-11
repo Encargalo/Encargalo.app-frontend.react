@@ -21,16 +21,15 @@ const preprocessCartItems = (items) => {
         const flavorCount = item.flavors?.reduce((sum, f) => sum + (f.quantity || 1), 0) || 0;
 
         // La cantidad es el total de sabores para multi_select, o la cantidad del item para otros casos.
-        const quantity = isMultiSelect && flavorCount > 0 ? flavorCount : item.quantity || 1;
+        const finalQuantity = isMultiSelect && flavorCount > 0 ? flavorCount : item.quantity || 1;
 
         const additionalsPricePerUnit = (item.additionals || []).reduce((sum, add) => sum + (add.price || 0), 0);
 
         // El subtotal se basa en el precio del item multiplicado por la cantidad de sabores (si es multi_select)
         // o por la cantidad del producto.
-        const subtotal = isMultiSelect ? (item.price * quantity) + additionalsPricePerUnit
-            : (item.price + additionalsPricePerUnit) * quantity;
+        const subtotal = (item.price + additionalsPricePerUnit) * (isMultiSelect ? 1 : finalQuantity);
 
-        return { ...item, quantity, subtotal };
+        return { ...item, quantity: finalQuantity, subtotal };
     });
 };
 
@@ -57,7 +56,7 @@ const CheckoutShopping = () => {
         if (placeOrder && placeOrder.items && placeOrder.items.length > 0) {
             setEncryptedItem(CHECKOUT_ORDER_KEY, placeOrder);
         }
-    }, [placeOrder]);
+    }, [CHECKOUT_ORDER_KEY, placeOrder]);
 
     // Al montar, si no hay pedido en el store, intenta cargarlo del localStorage ENCRIPTADO
     useEffect(() => {
@@ -125,8 +124,8 @@ const CheckoutShopping = () => {
         delivery_fee: placeOrder?.shopInfo.delivery_fee,
         address: {
             address: selectedAddress?.address,
-            latitude: selectedAddress?.coords?.lat,
-            longitude: selectedAddress?.coords?.long,
+            latitude: selectedAddress?.latitude,
+            longitude: selectedAddress?.longitude,
         },
 
         items: processedItems.map(item => {
@@ -157,9 +156,12 @@ const CheckoutShopping = () => {
             full_name: buyerName,
             direction: selectedAddress?.address || "",
             reference: selectedAddress?.reference || "",
-            coords: selectedAddress?.coords || null,
+            delivery_fee: placeOrder?.shopInfo.delivery_fee,
+            coords: selectedAddress
+                ? { lat: selectedAddress.latitude, long: selectedAddress.longitude }
+                : null,
             whatsapp: buyerWhatsapp,
-            payment_method: paymentMethod, // Cambiado aquí
+            payment_method: paymentMethod,
             note: note || "",
         };
 

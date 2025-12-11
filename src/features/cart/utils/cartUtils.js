@@ -18,6 +18,7 @@ export function buildWhatsAppMessage(
   items = Array.isArray(items) ? items : [];
 
   let total = 0;
+  let delivery_fee = purchaseData.delivery_fee;
   let message = '¡Hola! Quiero hacer el siguiente pedido:\n';
   if (shopName) message += `Tienda: ${shopName}\n\n`;
 
@@ -111,6 +112,7 @@ export function buildWhatsAppMessage(
 
   message += `---------------------------------------\n\n`;
   message += `*Total a pagar:* ${formatNumber(total, 'es-CO')}\n\n`;
+  message += `*Costo del envio:* ${formatNumber(delivery_fee, 'es-CO')}\n\n`;
   message += `*Datos del comprador:*\n\n`;
   if (purchaseData.full_name)
     message += `*Nombre:* ${purchaseData.full_name}\n\n`;
@@ -125,14 +127,10 @@ export function buildWhatsAppMessage(
 
   // Construir el link de ubicación y ponerlo al final, en bold y con dos saltos de línea antes
   let locationLink = '';
-  if (
-    purchaseData.coords &&
-    purchaseData.coords.lat &&
-    purchaseData.coords.lng
-  ) {
-    locationLink = `https://www.google.com/maps/search/?api=1&query=${purchaseData.coords.lat},${purchaseData.coords.long}`;
+  if (purchaseData && purchaseData.latitude && purchaseData.longitude) {
+    locationLink = `https://www.google.com/maps/search/?api=1&query=${purchaseData.latitude},${purchaseData.longitude}`;
   } else if (purchaseData.direction) {
-    locationLink = `https://www.google.com/maps/search/?api=1&query=${purchaseData.coords.lat},${purchaseData.coords.long}`;
+    locationLink = `https://www.google.com/maps/search/?api=1&query=${purchaseData.latitude},${purchaseData.longitude}`;
   }
 
   if (locationLink) {

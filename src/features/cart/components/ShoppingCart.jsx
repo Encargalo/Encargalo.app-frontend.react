@@ -18,15 +18,12 @@ export const preprocessCartItems = (items) => {
         // La cantidad es el total de sabores para multi_select, o la cantidad del item para otros casos.
         const quantity = isMultiSelect && flavorCount > 0 ? flavorCount : item.quantity || 1;
 
-        const discountRule = item.rules?.find(rule => rule.rule_key === 'discount');
-        const discountPercentage = discountRule ? parseFloat(discountRule.rule_value) : 0;
-        const hasDiscount = !!discountRule;
-        const originalPrice = item.originalPrice || item.price; // Si tiene descuento, el precio ya viene descontado.
-        const discountedPrice = item.price;
+        const originalUnitPrice = item.originalPrice || (item.discountPercentage > 0 ? item.price / (1 - item.discountPercentage / 100) : item.price);
+        const unitPrice = item.price;
 
         const additionalsPricePerUnit = (item.additionals || []).reduce((sum, add) => sum + (add.price || 0), 0);
 
-        const baseProductTotal = discountedPrice * quantity;
+        const baseProductTotal = unitPrice * quantity;
         const totalAdditionals = isMultiSelect ? additionalsPricePerUnit : additionalsPricePerUnit * quantity;
         const subtotal = baseProductTotal + totalAdditionals;
 
@@ -34,9 +31,8 @@ export const preprocessCartItems = (items) => {
             ...item,
             quantity,
             subtotal,
-            unitPrice: discountedPrice,
-            originalUnitPrice: hasDiscount ? originalPrice : undefined,
-            discountPercentage: hasDiscount ? discountPercentage : 0,
+            unitPrice,
+            originalUnitPrice: item.discountPercentage > 0 ? originalUnitPrice : undefined,
             baseProductTotal,
             totalAdditionals,
         };
