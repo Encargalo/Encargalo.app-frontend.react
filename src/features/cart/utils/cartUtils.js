@@ -111,8 +111,8 @@ export function buildWhatsAppMessage(
   });
 
   message += `---------------------------------------\n\n`;
-  message += `*Total a pagar:* ${formatNumber(total, 'es-CO')}\n\n`;
   message += `*Costo del envio:* ${formatNumber(delivery_fee, 'es-CO')}\n\n`;
+  message += `*Total a pagar:* ${formatNumber(total, 'es-CO')}\n\n`;
   message += `*Datos del comprador:*\n\n`;
   if (purchaseData.full_name)
     message += `*Nombre:* ${purchaseData.full_name}\n\n`;
@@ -127,7 +127,7 @@ export function buildWhatsAppMessage(
 
   // Construir el link de ubicación y ponerlo al final, en bold y con dos saltos de línea antes
   let locationLink = '';
-  if (purchaseData && purchaseData.coords.lat && purchaseData.coords.long) {
+  if (purchaseData && purchaseData.latitude && purchaseData.longitude) {
     locationLink = `https://www.google.com/maps/search/?api=1&query=${purchaseData.coords.lat},${purchaseData.coords.long}`;
   } else if (purchaseData.direction) {
     locationLink = `https://www.google.com/maps/search/?api=1&query=${purchaseData.coords.lat},${purchaseData.coords.long}`;
