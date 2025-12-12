@@ -55,7 +55,7 @@ export function buildWhatsAppMessage(
     const discountedBaseProductTotal = discountedPrice * quantity;
 
     const subtotal = discountedBaseProductTotal + totalAdditionals;
-    total += subtotal;
+    total += subtotal + delivery_fee;
 
     message += `*Producto:* ${item.name}\n\n`;
 
@@ -127,10 +127,10 @@ export function buildWhatsAppMessage(
 
   // Construir el link de ubicación y ponerlo al final, en bold y con dos saltos de línea antes
   let locationLink = '';
-  if (purchaseData && purchaseData.latitude && purchaseData.longitude) {
-    locationLink = `https://www.google.com/maps/search/?api=1&query=${purchaseData.latitude},${purchaseData.longitude}`;
+  if (purchaseData && purchaseData.coords.lat && purchaseData.coords.long) {
+    locationLink = `https://www.google.com/maps/search/?api=1&query=${purchaseData.coords.lat},${purchaseData.coords.long}`;
   } else if (purchaseData.direction) {
-    locationLink = `https://www.google.com/maps/search/?api=1&query=${purchaseData.latitude},${purchaseData.longitude}`;
+    locationLink = `https://www.google.com/maps/search/?api=1&query=${purchaseData.coords.lat},${purchaseData.coords.long}`;
   }
 
   if (locationLink) {
